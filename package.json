@@ -33,6 +33,7 @@
     "format": "prettier {src,src/**,examples/*/src,examples/*/src/**}/*.{md,js,jsx,tsx} --write",
     "docz:build": "docz build",
     "docz:dev": "docz dev",
+    "docs": "docz build && docz serve",
     "docz:serve": "docz build && docz serve"
   },
   "files": [

@@ -1,6 +1,9 @@
 ![React Table Header](https://github.com/tannerlinsley/react-table/raw/master/media/header.png)
 
-<img src='https://github.com/tannerlinsley/react-table/raw/master/media/logo.png' width='300'/>
+> This repo is a fork of [tannerlinsley/react-table](https://github.com/tannerlinsley/react-table)    
+> It's annotated to learn the source code.
+
+> <img src='https://github.com/tannerlinsley/react-table/raw/master/media/logo.png' width='300'/>
 
 Hooks for building **lightweight, fast and extendable datagrids** for React
 
