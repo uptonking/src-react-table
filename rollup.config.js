@@ -1,13 +1,13 @@
-import babel from 'rollup-plugin-babel'
-import { terser } from 'rollup-plugin-terser'
-import size from 'rollup-plugin-size'
-import externalDeps from 'rollup-plugin-peer-deps-external'
+import babel from 'rollup-plugin-babel';
+import { terser } from 'rollup-plugin-terser';
+import size from 'rollup-plugin-size';
+import externalDeps from 'rollup-plugin-peer-deps-external';
 
-const external = ['react']
+const external = ['react'];
 
 const globals = {
   react: 'React',
-}
+};
 
 export default [
   {
@@ -41,4 +41,4 @@ export default [
       }),
     ],
   },
-]
+];
