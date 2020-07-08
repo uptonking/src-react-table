@@ -38,6 +38,11 @@ module.exports = {
   ],
   resolve: {
     extensions: ['.js', 'jsx'],
+    alias: {
+      crypto: 'crypto-browserify',
+      vm: 'vm-browserify',
+      stream: 'stream-browserify',
+    },
   },
   devtool: 'eval-source-map',
   devServer: {
@@ -50,6 +55,6 @@ module.exports = {
     hot: true,
     historyApiFallback: true,
     // clientLogLevel: 'silent',
-    clientLogLevel: 'debug',
+    // clientLogLevel: 'debug',
   },
 };

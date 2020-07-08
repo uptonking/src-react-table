@@ -13,17 +13,3 @@ export const App = () => {
     </div>
   );
 };
-
-// const rootEle = document.getElementById('app');
-
-// export const render = () => {
-//   ReactDOM.render(<App />, rootEle);
-// };
-
-// render();
-
-// if (module.hot) {
-//   module.hot.accept('./render', () => {
-//     require('./render').default();
-//   });
-// }

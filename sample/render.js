@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { App } from './demo';
+// import { App } from './demo';
+import { RTableExampleListApp as App } from './RTableExampleListApp';
 
 const render = Component => {
   ReactDOM.render(<Component />, document.getElementById('app'));
@@ -8,7 +9,7 @@ const render = Component => {
 render(App);
 
 if (module.hot) {
-  module.hot.accept('./demo.js', () => {
+  module.hot.accept('./RTableExampleListApp.js', () => {
     render(App);
   });
 }
