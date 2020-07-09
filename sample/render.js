@@ -8,8 +8,8 @@ const render = Component => {
 };
 render(App);
 
-if (module.hot) {
-  module.hot.accept('./RTableExampleListApp.js', () => {
-    render(App);
-  });
-}
+// if (module.hot) {
+//   module.hot.accept('./RTableExampleListApp.js', () => {
+//     render(App);
+//   });
+// }

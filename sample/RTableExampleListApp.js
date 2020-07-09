@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as examples from './index';
+import { Title } from './Title';
 
 const exampleNameArr = Object.keys(examples);
 
@@ -12,10 +13,8 @@ export function RTableExampleListApp() {
   const CurExampleApp = curName ? examples[curName] : () => <h4>未选择示例</h4>;
   return (
     <div>
-      <div>
-        <blockquote>react-table Examples</blockquote>
-      </div>
-      <h2>{curName}</h2>
+      <Title />
+      <h2>当前示例: {curName}</h2>
       <div
         style={{ float: 'left', backgroundColor: 'beige', padding: '10px' }}
         className='left-toc-placeholder'
@@ -28,7 +27,7 @@ export function RTableExampleListApp() {
       </div>
       {/* width必须存在，height可不存在 */}
       <div
-        style={{ float: 'left', margin: '10px', width: 720 }}
+        // style={{ float: 'left', margin: '10px', width: 720 }}
         className='right-comp-placeholder'
       >
         <CurExampleApp />

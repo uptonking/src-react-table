@@ -4,7 +4,7 @@ import { useTable } from '../../src/react-table';
 
 import makeData from './makeData';
 
-const Styles = styled.div`
+const StyledDiv = styled.div`
   padding: 1rem;
 
   table {
@@ -33,6 +33,7 @@ const Styles = styled.div`
   }
 `;
 
+/** 使用useTable实现的最基本的Table组件 */
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
   const {
@@ -78,7 +79,7 @@ function App() {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: 'UserName',
         columns: [
           {
             Header: 'First Name',
@@ -118,9 +119,9 @@ function App() {
   const data = React.useMemo(() => makeData(20), []);
 
   return (
-    <Styles>
+    <StyledDiv>
       <Table columns={columns} data={data} />
-    </Styles>
+    </StyledDiv>
   );
 }
 

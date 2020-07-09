@@ -1,8 +1,9 @@
-// default webpack config for demo
+// default webpack config for demo dev
 
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -22,11 +23,11 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
-      // {
-      //   test: /\.js$/,
-      //   use: 'source-map-loader',
-      //   enforce: 'pre',
-      // },
+      {
+        test: /\.js$/,
+        use: 'source-map-loader',
+        enforce: 'pre',
+      },
     ],
   },
   plugins: [
@@ -34,6 +35,7 @@ module.exports = {
       template: './demo.html',
       filename: 'index.html',
     }),
+    new ReactRefreshWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {
@@ -43,6 +45,10 @@ module.exports = {
       vm: 'vm-browserify',
       stream: 'stream-browserify',
     },
+  },
+  node: {
+    // process: 'mock',
+    // process: true,
   },
   devtool: 'eval-source-map',
   devServer: {
@@ -55,6 +61,6 @@ module.exports = {
     hot: true,
     historyApiFallback: true,
     // clientLogLevel: 'silent',
-    // clientLogLevel: 'debug',
+    clientLogLevel: 'debug',
   },
 };

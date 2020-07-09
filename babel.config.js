@@ -10,6 +10,7 @@ module.exports = function (api) {
     //     fileName: true,
     //   },
     // ],
+    'react-refresh/babel',
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     '@babel/proposal-class-properties',
     '@babel/plugin-proposal-numeric-separator',
@@ -31,7 +32,10 @@ module.exports = function (api) {
         debug: false,
       },
     ],
-    ['@babel/preset-react', { development: process.env.BABEL_ENV !== 'production' }],
+    [
+      '@babel/preset-react',
+      { development: process.env.BABEL_ENV !== 'production' },
+    ],
     // [
     //   '@babel/preset-typescript',
     //   {
