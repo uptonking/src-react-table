@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable } from 'react-table';
+import { useTable } from '../../src/react-table';
 
 function App() {
   const data = React.useMemo(
@@ -43,49 +43,76 @@ function App() {
   } = useTable({ columns, data });
 
   return (
+    // apply the table props
     <table {...getTableProps()} style={{ border: 'solid 1px blue' }}>
       <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th
-                {...column.getHeaderProps()}
-                style={{
-                  borderBottom: 'solid 3px red',
-                  background: 'aliceblue',
-                  color: 'black',
-                  fontWeight: 'bold',
-                }}
-              >
-                {column.render('Header')}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map(row => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map(cell => {
-                return (
-                  <td
-                    {...cell.getCellProps()}
+        {
+          // Loop over the header rows
+          headerGroups.map(headerGroup => (
+            // Apply the header row props
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {
+                // Loop over the headers in each row
+                headerGroup.headers.map(column => (
+                  // Apply the header cell props
+                  <th
+                    {...column.getHeaderProps()}
                     style={{
-                      padding: '10px',
-                      border: 'solid 1px gray',
-                      background: 'papayawhip',
+                      border: 'solid 3px blue',
+                      background: 'aliceblue',
+                      color: 'black',
+                      fontWeight: 'bold',
                     }}
                   >
-                    {cell.render('Cell')}
-                  </td>
-                );
-              })}
+                    {
+                      // Render the header
+                      column.render('Header')
+                    }
+                  </th>
+                ))
+              }
             </tr>
-          );
-        })}
+          ))
+        }
+      </thead>
+      {/* Apply the table body props */}
+      <tbody {...getTableBodyProps()}>
+        {
+          // Loop over the table rows
+          rows.map(row => {
+            // Prepare the row for display
+            prepareRow(row);
+            return (
+              // Apply the row props
+              <tr {...row.getRowProps()}>
+                {
+                  // Loop over the rows cells
+                  row.cells.map(cell => {
+                    // Apply the cell props
+                    return (
+                      <td
+                        {...cell.getCellProps()}
+                        style={{
+                          padding: '10px',
+                          border: 'solid 1px gray',
+                          background: 'snow',
+                        }}
+                      >
+                        {
+                          // Render the cell contents
+                          cell.render('Cell')
+                        }
+                      </td>
+                    );
+                  })
+                }
+              </tr>
+            );
+          })
+        }
       </tbody>
     </table>
   );
 }
+
+export default App;

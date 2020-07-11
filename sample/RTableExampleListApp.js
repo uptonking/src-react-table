@@ -5,7 +5,9 @@ import { Title } from './Title';
 const exampleNameArr = Object.keys(examples);
 
 export function RTableExampleListApp() {
-  const [curName, setCurName] = useState('A1Basic');
+  // const [curName, setCurName] = useState('');
+  const [curName, setCurName] = useState('A0Simple');
+  // const [curName, setCurName] = useState('A1Basic');
   const handleClick = name => {
     setCurName(name);
   };
