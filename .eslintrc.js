@@ -24,14 +24,15 @@ module.exports = {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
+  // plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
+  plugins: ['react', 'react-hooks', 'prettier'],
   // ESLint extends configurations recursively
   extends: [
     'alloy',
     'alloy/react',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:@typescript-eslint/recommended',
+    // 'plugin:@typescript-eslint/recommended',
     // 'plugin:prettier/recommended',
     'prettier',
     'prettier/babel',

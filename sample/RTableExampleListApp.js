@@ -8,11 +8,13 @@ export function RTableExampleListApp() {
   // const [curName, setCurName] = useState('');
   const [curName, setCurName] = useState('A0Simple');
   // const [curName, setCurName] = useState('A1Basic');
+
   const handleClick = name => {
     setCurName(name);
   };
 
   const CurExampleApp = curName ? examples[curName] : () => <h4>未选择示例</h4>;
+
   return (
     <div>
       <Title />
