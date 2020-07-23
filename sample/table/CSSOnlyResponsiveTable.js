@@ -8,7 +8,9 @@ const StyledDiv = styled('div')`
     color: #494b4d;
     font-size: 14px;
     font-family: sans-serif;
+    // 主要控制表头行的行高
     line-height: 20px;
+
     /*!
   // IE needs inline-block to position scrolling shadows otherwise use:
   // display: block;
@@ -32,21 +34,8 @@ const StyledDiv = styled('div')`
     // optional - enable iOS momentum scrolling
     -webkit-overflow-scrolling: touch;
 
-    // scrolling shadows
-    background: radial-gradient(
-          left,
-          ellipse,
-          rgba(0, 0, 0, 0.2) 0%,
-          rgba(0, 0, 0, 0) 75%
-        )
-        0 center,
-      radial-gradient(
-          right,
-          ellipse,
-          rgba(0, 0, 0, 0.2) 0%,
-          rgba(0, 0, 0, 0) 75%
-        )
-        100% center;
+    // scrolling shadows (removed)
+
     background-size: 10px 100%, 10px 100%;
     background-attachment: scroll, scroll;
     background-repeat: no-repeat;
@@ -56,11 +45,6 @@ const StyledDiv = styled('div')`
   // gradient on the first cells to hide the left shadow
   .rtable td:first-child,
   .rtable--flip tbody tr:first-child {
-    background-image: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 1) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
     background-repeat: no-repeat;
     background-size: 20px 100%;
   }
@@ -68,11 +52,6 @@ const StyledDiv = styled('div')`
   // gradient on the last cells to hide the right shadow
   .rtable td:last-child,
   .rtable--flip tbody tr:last-child {
-    background-image: linear-gradient(
-      to left,
-      rgba(255, 255, 255, 1) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
     background-repeat: no-repeat;
     background-position: 100% 0;
     background-size: 20px 100%;
@@ -169,18 +148,14 @@ const StyledDiv = styled('div')`
   table {
     margin-bottom: 30px;
   }
-
-  a {
-    color: #ff6680;
-  }
-
-  code {
-    background: #fffbcc;
-    font-size: 12px;
-  }
 `;
 
-function HtmlTable(props) {
+/**
+ * 只用css实现，
+ * 将行列数据互换后，这样移动端水平滚动浏览数据时，表头列在最左边固定住方便查看，只滚动数据列部分，
+ * 水平滚动条也不友好，但可接受，尽量减少滚动条，能只放一个就只放一个
+ */
+function CSSOnlyResponsiveTable(props) {
   return (
     <StyledDiv>
       <h2>Basic overflow:</h2>
@@ -275,7 +250,9 @@ function HtmlTable(props) {
             <td>01:07</td>
           </tr>
           <tr>
-            <td>Firefox</td>
+            {/* Add min-width to cells to better space content */}
+            <td style={{ minWidth: '100px' }}>Firefox</td>
+            {/* <td>Firefox</td> */}
             <td>2,403</td>
             <td>17.29%</td>
             <td>2,046</td>
@@ -329,4 +306,4 @@ function HtmlTable(props) {
   );
 }
 
-export default HtmlTable;
+export default CSSOnlyResponsiveTable;

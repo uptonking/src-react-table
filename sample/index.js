@@ -7,4 +7,7 @@ export { default as A3Sorting } from './simple/A3Sorting';
 // table
 
 export { default as HtmlTable } from './table/HtmlTable';
+export { default as HtmlTablePlainOld } from './table/HtmlTablePlainOld';
+export { default as CSSOnlyResponsiveTable } from './table/CSSOnlyResponsiveTable';
 export { default as DisplayTable } from './table/DisplayTable';
+export { default as TableDesignP1 } from './table/TableDesignP1';

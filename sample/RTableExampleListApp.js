@@ -6,7 +6,7 @@ const exampleNameArr = Object.keys(examples);
 
 export function RTableExampleListApp() {
   // const [curName, setCurName] = useState('');
-  const [curName, setCurName] = useState('A0Simple');
+  const [curName, setCurName] = useState('CSSOnlyResponsiveTable');
   // const [curName, setCurName] = useState('A1Basic');
 
   const handleClick = name => {
@@ -19,7 +19,7 @@ export function RTableExampleListApp() {
     <div>
       <Title />
       <h2>当前示例: {curName}</h2>
-      <div
+      {/* <div
         style={{ float: 'left', backgroundColor: 'beige', padding: '10px' }}
         className='left-toc-placeholder'
       >
@@ -28,7 +28,7 @@ export function RTableExampleListApp() {
             <h5 style={{ cursor: 'pointer' }}>{name}</h5>
           </div>
         ))}
-      </div>
+      </div> */}
       {/* width必须存在，height可不存在 */}
       <div
         // style={{ float: 'left', margin: '10px', width: 720 }}

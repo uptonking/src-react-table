@@ -42,6 +42,7 @@ module.exports = {
   rules: {
     'no-param-reassign': 0,
     'no-invalid-this': 0,
+    'no-unused-vars': 1,
     'guard-for-in': 0,
     'prefer-const': 0,
     'prefer-spread': 0,
