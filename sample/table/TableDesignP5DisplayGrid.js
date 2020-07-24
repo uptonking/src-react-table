@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-target-blank */
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 const StyledDiv = styled('div')`
@@ -28,8 +28,8 @@ const StyledDiv = styled('div')`
 
   @media screen and (max-width: 680px) {
     table {
-      border: 0;
       display: block;
+      border: 0;
       box-shadow: none;
     }
 
@@ -46,11 +46,11 @@ const StyledDiv = styled('div')`
     }
 
     tr {
-      border-top: 2px solid #3c3c3b;
-      border-bottom: 1px solid #3c3c3b;
       display: grid;
       grid-template-columns: max-content auto;
       margin-bottom: 1em;
+      border-top: 2px solid #3c3c3b;
+      border-bottom: 1px solid #3c3c3b;
     }
 
     td {
@@ -76,9 +76,12 @@ const StyledDiv = styled('div')`
 `;
 
 /**
- * 基于grid layout, 在移动端每个单元格显示一行，且每行左边显示表头名称
+ * table使用display block，tr使用display grid，td使用display contents，基于css grid layout。
+ * 在移动端每个单元格显示一行，且每行左边显示表头名称，各单元格内容左对齐。
  */
-function TableDesignP4(props) {
+function TableDesignP5DisplayGrid(props) {
+  useEffect(() => cellHeaders('respTable'));
+
   return (
     <StyledDiv>
       <table id='respTable'>
@@ -464,9 +467,10 @@ function TableDesignP4(props) {
   );
 }
 
-export default TableDesignP4;
+export default TableDesignP5DisplayGrid;
 
-/* Function modified from Adrian Roselli's article, A Responsive Accessible Table, http://adrianroselli.com/2017/11/a-responsive-accessible-table.html
+/* Function modified from Adrian Roselli's article,
+A Responsive Accessible Table, http://adrianroselli.com/2017/11/a-responsive-accessible-table.html
  */
 function cellHeaders(tableId) {
   try {
@@ -497,4 +501,4 @@ function cellHeaders(tableId) {
     console.log('cellHeaders(): ' + err);
   }
 }
-cellHeaders('respTable');
+// cellHeaders('respTable');

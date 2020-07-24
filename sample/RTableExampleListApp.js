@@ -19,8 +19,14 @@ export function RTableExampleListApp() {
     <div>
       <Title />
       <h2>当前示例: {curName}</h2>
-      {/* <div
-        style={{ float: 'left', backgroundColor: 'beige', padding: '10px' }}
+      <div
+        style={{
+          float: 'left',
+          overflow: 'hidden',
+          width: 100,
+          backgroundColor: 'beige',
+          padding: '10px',
+        }}
         className='left-toc-placeholder'
       >
         {exampleNameArr.map((name, index) => (
@@ -28,7 +34,7 @@ export function RTableExampleListApp() {
             <h5 style={{ cursor: 'pointer' }}>{name}</h5>
           </div>
         ))}
-      </div> */}
+      </div>
       {/* width必须存在，height可不存在 */}
       <div
         // style={{ float: 'left', margin: '10px', width: 720 }}
