@@ -1,5 +1,5 @@
 import React from 'react';
 
 export const Title = () => {
-  return <h2> react-table examples 200</h2>;
+  return <h2> react-table examples </h2>;
 };
