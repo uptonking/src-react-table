@@ -45,14 +45,16 @@ const StyledDiv = styled('div')`
       max-width: 25em;
     }
 
+    /* tr是grid container，只有td是grid item */
     tr {
       display: grid;
+      /* 这里使伪元素表头形成的列的宽度为文字的最大宽度，无需手动指定 */
       grid-template-columns: max-content auto;
       margin-bottom: 1em;
       border-top: 2px solid #3c3c3b;
       border-bottom: 1px solid #3c3c3b;
     }
-
+    /* 自身不创建box，会被pseudo box和child box替换 */
     td {
       display: contents;
     }
@@ -64,6 +66,8 @@ const StyledDiv = styled('div')`
       border-bottom: 1px solid;
     }
 
+    /* 缺点是必须要有内部元素，否则无法添加样式，
+    因为td被替换掉了，在dev tool中td选中后网页没有元素高亮 */
     td span {
       padding: 0.5em;
       border-bottom: 1px solid;

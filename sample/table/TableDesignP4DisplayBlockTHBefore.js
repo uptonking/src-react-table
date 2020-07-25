@@ -33,11 +33,12 @@ const StyledDiv = styled('div')`
 
   @media screen and (max-width: 680px) {
     table {
-      border: 0;
       display: block;
+      border: 0;
       box-shadow: none;
     }
 
+    /** 表头在视觉上隐藏，但存在markup，提供accessible */
     thead {
       position: absolute;
       opacity: 0;
@@ -49,18 +50,21 @@ const StyledDiv = styled('div')`
       max-width: 25em;
     }
 
+    /** tr和td都是block，每个单元格显示成一行 */
     tr {
-      border-top: 2px solid #3c3c3b;
-      border-bottom: 2px solid #3c3c3b;
       display: block;
       margin-bottom: 1em;
+      border-top: 2px solid #3c3c3b;
+      border-bottom: 2px solid #3c3c3b;
     }
 
     td {
-      border-bottom: 1px solid #3c3c3b;
       display: flex;
+      border-bottom: 1px solid #3c3c3b;
     }
 
+    /* 作为伪元素的表头标题的样式，
+    伪元素会创建box就像它们是原来元素的直接子元素，所以before元素是flex容器td的子元素 */
     td::before {
       display: inline-block;
       font-weight: bold;

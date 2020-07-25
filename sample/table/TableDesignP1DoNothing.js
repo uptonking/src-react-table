@@ -11,6 +11,7 @@ const StyledDiv = styled('div')`
     max-width: 100%;
   }
 
+  /* 奇数行使用灰色背景，形成条纹，下面表头选择器再修改表头色 */
   tr:nth-child(odd) {
     background-color: #eee;
   }

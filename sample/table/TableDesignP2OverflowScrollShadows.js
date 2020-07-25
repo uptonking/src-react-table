@@ -2,14 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledDiv = styled('div')`
-  /* margin: 0;
-  padding: 0;
-  border: 0; */
-
   table {
     border-collapse: collapse;
     border-spacing: 0;
-    white-space: nowrap;
   }
 
   main {
@@ -17,8 +12,11 @@ const StyledDiv = styled('div')`
   }
 
   .table-wrapper {
+    /* 水平和竖直方向都自动出现滚动条 */
     overflow: auto;
     max-width: 100%;
+
+    /* 表格左侧和右侧的阴影指示器 */
     background: linear-gradient(to right, white 30%, rgba(255, 255, 255, 0)),
       linear-gradient(to right, rgba(255, 255, 255, 0), white 70%) 0 100%,
       radial-gradient(
@@ -67,7 +65,7 @@ const StyledDiv = styled('div')`
 `;
 
 /**
- * 使用滚动条和竖直方向滚动阴影scrolling shadows. css only.
+ * 使用滚动条和左右两侧的滚动阴影scrolling shadows. css only.
  */
 function TableDesignP2OverflowScrollShadows(props) {
   return (

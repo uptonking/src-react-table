@@ -29,10 +29,12 @@ const StyledDiv = styled('div')`
   }
 
   @media screen and (max-width: 1140px) {
+    /** table成flex容器后，thead和tbody会水平排列 */
     table {
       display: flex;
     }
 
+    /** tbody成flex容器后，tr会水平排列，同时设置水平滚动条 */
     tbody {
       display: flex;
       position: relative;
@@ -60,6 +62,7 @@ const StyledDiv = styled('div')`
       background-attachment: local, local, scroll, scroll;
     }
 
+    /* 单元格作为block显示，上下堆叠 */
     th,
     td {
       display: block;
@@ -86,7 +89,7 @@ const StyledDiv = styled('div')`
 `;
 
 /**
- * 行列互换，表头列在最左边固定，只滚动右边的数据列。
+ * 行列互换，表头列在最左边固定，只滚动右边的数据列。css only.
  * 示例中包含emoji表情文本，表情符号高度不同会导致单元格下划线有起伏。
  */
 function TableDesignP3Row2ColFlex(props) {
