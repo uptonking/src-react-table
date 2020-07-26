@@ -68,6 +68,7 @@ const StyledDiv = styled('div')`
     td::before {
       display: inline-block;
       font-weight: bold;
+      /* 伪元素标题会占据剩余空间，将单元格内容挤到最右边，形成右对齐的效果 */
       margin-right: auto;
       padding-right: 1em;
     }
