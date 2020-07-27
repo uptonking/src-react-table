@@ -14,3 +14,4 @@ export { default as TableDesignP2OverflowScrollShadows } from './table/TableDesi
 export { default as TableDesignP3Row2ColFlex } from './table/TableDesignP3Row2ColFlex';
 export { default as TableDesignP4DisplayBlockTHBefore } from './table/TableDesignP4DisplayBlockTHBefore';
 export { default as TableDesignP5DisplayGrid } from './table/TableDesignP5DisplayGrid';
+export { default as ResponsiveTableFlex } from './table/ResponsiveTableFlex';

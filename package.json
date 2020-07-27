@@ -137,6 +137,7 @@
     "yarn": "^1.22.4"
   },
   "dependencies": {
+    "jquery": "^3.5.1",
     "namor": "^1.1.3"
   }
 }
