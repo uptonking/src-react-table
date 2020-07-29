@@ -51,12 +51,21 @@ const StyledDiv = styled('div')`
     border: 2px outset #000099;
     background-color: #ddddff;
   }
+
+  /* .level2to3 { ,若使用类选择器，特指度不如div.lev2高，不能覆盖样式*/
+  #level2to3 {
+    top: -30px;
+    left: 110px;
+    width: 100px;
+    padding-left: 5px;
+    /* padding-top: -5px; */
+  }
 `;
 
 /**
  * 示例：3-level HTML hierarchy, z-index on the second level
  * 这是一个错误用法的示例。
- * 可通过添加一个div wrapper使用id选择器而不是类选择器，来解决第2层modal会挡住弹出的第3层菜单的问题。
+ * 可通过将内层div扁平化到外层再用css调整两者相对位置，来解决第2层modal会挡住弹出的第3层菜单的问题。
  * This problem can be avoided by removing overlapping between different level menus,
  * or by using individual (and different) z-index values assigned through the id selector instead of class selector,
  * or by flattening the HTML hierarchy.
@@ -115,6 +124,12 @@ function ZIndex3Level(props) {
           <div className='lev2'>
             <br />
             <span className='bold'>LEVEL #2</span>
+            <br />
+            z-index: 1;
+          </div>
+          <div id='level2to3' className='lev2'>
+            <br />
+            <span className='bold'>level2 mock level3</span>
             <br />
             z-index: 1;
           </div>
