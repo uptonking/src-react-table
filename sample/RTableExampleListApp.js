@@ -6,7 +6,7 @@ const exampleNameArr = Object.keys(examples);
 
 export function RTableExampleListApp() {
   // const [curName, setCurName] = useState('');
-  const [curName, setCurName] = useState('TableTabAccordion');
+  const [curName, setCurName] = useState('ZIndexLastLevel');
   // const [curName, setCurName] = useState('A1Basic');
 
   const handleClick = name => {
@@ -16,13 +16,13 @@ export function RTableExampleListApp() {
   const CurExampleApp = curName ? examples[curName] : () => <h4>未选择示例</h4>;
 
   return (
-    <div style={{ boxSizing: 'border-box' }}>
+    <div>
       <Title />
       <h2>当前示例: {curName}</h2>
-      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+      <div style={{ display: 'flex' }}>
         <div
           style={{
-            width: 240,
+            width: 200,
             overflow: 'auto',
             backgroundColor: 'beige',
             // padding: '8px',

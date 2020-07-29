@@ -15,3 +15,10 @@ export { default as TableDesignP3Row2ColFlex } from './table/TableDesignP3Row2Co
 export { default as TableDesignP4DisplayBlockTHBefore } from './table/TableDesignP4DisplayBlockTHBefore';
 export { default as TableDesignP5DisplayGrid } from './table/TableDesignP5DisplayGrid';
 export { default as TableTabAccordion } from './table/TableTabAccordion';
+export { default as StickyTable } from './table/StickyTable';
+export { default as StickyTableAbsolutePosition } from './table/StickyTableAbsolutePosition';
+
+// layer
+export { default as ZIndexLastLevel } from './layer/ZIndexLastLevel';
+export { default as ZIndexAllLevels } from './layer/ZIndexAllLevels';
+export { default as ZIndex3Level } from './layer/ZIndex3Level';
