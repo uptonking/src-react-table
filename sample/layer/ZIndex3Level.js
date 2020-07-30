@@ -52,7 +52,7 @@ const StyledDiv = styled('div')`
     background-color: #ddddff;
   }
 
-  /* .level2to3 { ,若使用类选择器，特指度不如div.lev2高，不能覆盖样式*/
+  /* .level2to3 ,若使用类选择器，特指度不如div.lev2高，不能覆盖样式*/
   #level2to3 {
     top: -30px;
     left: 110px;
@@ -120,16 +120,16 @@ function ZIndex3Level(props) {
               </div>
             </div>
           </div>
-
           <div className='lev2'>
             <br />
             <span className='bold'>LEVEL #2</span>
             <br />
             z-index: 1;
           </div>
+          {/* 用level2模拟level3，通过提升并扁平化div实现，添加样式要考虑使用id选择器，因为类选择器难以覆盖 */}
           <div id='level2to3' className='lev2'>
             <br />
-            <span className='bold'>level2 mock level3</span>
+            <span className='bold'>use level2 mock level3</span>
             <br />
             z-index: 1;
           </div>
