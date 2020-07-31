@@ -1,7 +1,7 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 
-let DefaultRow = createReactClass({
+const DefaultRow = createReactClass({
   getDefaultProps: function () {
     return {
       data: {},
@@ -25,7 +25,8 @@ let DefaultRow = createReactClass({
         onClick={this.handleOnClick}
       >
         <span className='expand-arrow'>
-          {this.props.renderRowExpand && expandIcon}
+          {/* {this.props.renderRowExpand && expandIcon} */}
+          {this.props.renderRowExpand && 'expandIcon'}
         </span>
         <div className={'defaultRow ' + this.props.className}>
           {this.props.columnMetadata.map((columnMeta, columnIndex) => {
@@ -43,6 +44,7 @@ let DefaultRow = createReactClass({
             if (columnMeta.flexShrink !== undefined) {
               style.flexShrink = columnMeta.flexShrink;
             }
+            let cell;
             if (typeof columnMeta.render === 'function') {
               cell = columnMeta.render(
                 this.props,
@@ -51,11 +53,11 @@ let DefaultRow = createReactClass({
                 columnIndex,
               );
             } else {
-              var cell = this.props.data[columnMeta.columnName];
+              cell = this.props.data[columnMeta.columnName];
             }
-
+            let cellToolTip;
             if (typeof columnMeta.formatter === 'function') {
-              var cellToolTip = columnMeta.formatter(
+              cellToolTip = columnMeta.formatter(
                 this.props.data[columnMeta.columnName],
               );
             } else if (
@@ -92,4 +94,5 @@ let DefaultRow = createReactClass({
   },
 });
 
-module.exports = DefaultRow;
+// module.exports = DefaultRow;
+export default DefaultRow;

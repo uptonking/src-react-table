@@ -1,8 +1,8 @@
 import React from 'react';
-import DefaultHeader from './DefaultHeader.js';
 import createReactClass from 'create-react-class';
+import DefaultHeader from './DefaultHeader';
 
-let GridHeader = createReactClass({
+const GridHeader = createReactClass({
   getDefaultProps: function () {
     return {
       columnMetadata: [],
@@ -31,7 +31,7 @@ let GridHeader = createReactClass({
     this.props.onHeaderClick && this.props.onHeaderClick(data, event);
   },
   render: function () {
-    var Header;
+    let Header;
     let headerContainerClass;
     if (this.props.customHeader) {
       Header = this.props.CustomHeader;
@@ -41,9 +41,7 @@ let GridHeader = createReactClass({
       headerContainerClass = 'defaultHeaderContainer';
     }
 
-    var Header = this.props.CustomHeader
-      ? this.props.CustomHeader
-      : DefaultHeader;
+    Header = this.props.CustomHeader ? this.props.CustomHeader : DefaultHeader;
 
     let headerContainer = (
       <div className='checkbox-wrapper'>
@@ -63,11 +61,10 @@ let GridHeader = createReactClass({
     let header = this.props.showHeader ? headerContainer : null;
 
     return (
-      <div className={'headerContainer' + ' ' + headerContainerClass}>
-        {header}
-      </div>
+      <div className={'headerContainer ' + headerContainerClass}>{header}</div>
     );
   },
 });
 
-module.exports = GridHeader;
+// module.exports = GridHeader;
+export default GridHeader;

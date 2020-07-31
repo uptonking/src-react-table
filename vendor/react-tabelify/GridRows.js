@@ -1,8 +1,8 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
-import GridRowfrom from './GridRow';
+import GridRow from './GridRow';
 
-let GridRows = createReactClass({
+const GridRows = createReactClass({
   getDefaultProps: function () {
     return {
       data: [],
@@ -49,3 +49,4 @@ let GridRows = createReactClass({
 });
 
 module.exports = GridRows;
+export default GridRows;

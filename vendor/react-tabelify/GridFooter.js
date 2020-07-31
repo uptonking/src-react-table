@@ -1,13 +1,8 @@
-import DefaultFooter from './DefaultFooter.js';
 import React from 'react';
 import createReactClass from 'create-react-class';
+import DefaultFooter from './DefaultFooter';
 
-let GridFooter = createReactClass({
-  onChangeGrid: function (event, data) {
-    let newData = data;
-    newData.selectedRows = {};
-    this.props.onChangeGrid(event, newData);
-  },
+const GridFooter = createReactClass({
   getInitialState: function () {
     let totalPages = Math.ceil(
       this.props.numberOfEntries / this.props.resultsPerPage,
@@ -15,6 +10,11 @@ let GridFooter = createReactClass({
     return {
       totalPages: totalPages,
     };
+  },
+  onChangeGrid: function (event, data) {
+    let newData = data;
+    newData.selectedRows = {};
+    this.props.onChangeGrid(event, newData);
   },
   handleFooterClick: function (data, event) {
     this.props.onFooterClick && this.props.onFooterClick(data, event);
@@ -45,3 +45,4 @@ let GridFooter = createReactClass({
 });
 
 // module.exports = GridFooter;
+export default GridFooter;

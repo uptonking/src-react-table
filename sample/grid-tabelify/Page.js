@@ -233,7 +233,7 @@ export default class Page extends React.Component {
         onChangeGrid: this.onChangeGrid,
         selectedRows: {},
         onRowClick: this.onRowClick,
-        resultsPerPage: 10,
+        resultsPerPage: 5,
         // CustomRow: require('./CustomRow.js')
         // CustomHeader: require('./CustomHeader')
         // showHeader:false,
@@ -256,7 +256,7 @@ export default class Page extends React.Component {
   render() {
     return (
       <div>
-        <Tabelify style={{ margin: '30px' }} {...this.state.tableConfig} />
+        <Tabelify style={{ margin: '16px' }} {...this.state.tableConfig} />
       </div>
     );
   }

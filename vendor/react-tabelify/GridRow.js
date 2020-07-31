@@ -1,8 +1,8 @@
 import React from 'react';
-import DefaultRow from './DefaultRow';
 import createReactClass from 'create-react-class';
+import DefaultRow from './DefaultRow';
 
-let GridRow = createReactClass({
+const GridRow = createReactClass({
   handleOnChange: function (event) {
     let selectedRows = this.props.selectedRows;
     if (selectedRows[this.props.rowId]) {
@@ -42,4 +42,5 @@ let GridRow = createReactClass({
   },
 });
 
-module.exports = GridRow;
+// module.exports = GridRow;
+export default GridRow;

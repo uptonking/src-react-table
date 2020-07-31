@@ -1,7 +1,7 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 
-let DefaultFooter = createReactClass({
+const DefaultFooter = createReactClass({
   getInitialState: function () {
     let totalPages = this.computePage(
       this.props.totalCount,
@@ -11,7 +11,7 @@ let DefaultFooter = createReactClass({
       totalPages: totalPages,
     };
   },
-  componentWillReceiveProps: function (nextProps) {
+  UNSAFE_componentWillReceiveProps: function (nextProps) {
     let totalPages = this.computePage(
       nextProps.totalCount,
       nextProps.resultsPerPage,
@@ -57,25 +57,26 @@ let DefaultFooter = createReactClass({
   },
   render: function () {
     let optionsArray = [];
-    let arr = [10, 20, 50, 100];
-    for (var i = 0; i < arr.length; i++) {
-      let selected = this.props.resultsPerPage === arr[i] ? true : false;
+    let arr = [5, 10, 20, 50, 100];
+    for (let i = 0; i < arr.length; i++) {
+      // let selected = this.props.resultsPerPage === arr[i] ? true : false;
       optionsArray.push(
-        <option value={arr[i]} selected={selected}>
+        // <option value={arr[i]} selected={selected} key={'option ' + i}>
+        <option value={arr[i]} key={'option ' + i}>
           {arr[i]}
         </option>,
       );
     }
     let pageArr = [];
     for (
-      // eslint-disable-next-line no-var
-      var i = 1;
+      let i = 1;
       i <= Math.ceil(this.props.totalCount / this.props.resultsPerPage);
       i++
     ) {
-      let selected = this.props.currentPage === i ? true : false;
+      // let selected = this.props.currentPage === i ? true : false;
       pageArr.push(
-        <option value={i} selected={selected}>
+        // <option value={i} selected={selected} key={'page ' + i}>
+        <option value={i} key={'page ' + i}>
           {i}
         </option>,
       );
@@ -84,7 +85,12 @@ let DefaultFooter = createReactClass({
       <div className='defaultFooter'>
         <div className='pagination pull-left'>
           Rows per page :{' '}
-          <select onChange={this.handleOnChange}>{optionsArray}</select>{' '}
+          <select
+            value={this.props.resultsPerPage}
+            onChange={this.handleOnChange}
+          >
+            {optionsArray}
+          </select>{' '}
         </div>
         <div className='pagination pull-right'>
           <div style={{ display: 'inline-block' }}>
@@ -105,7 +111,13 @@ let DefaultFooter = createReactClass({
               {'< Prev'}
             </button>
 
-            <select onChange={this.handleOnChangePage}> {pageArr} </select>
+            <select
+              value={this.props.currentPage}
+              onChange={this.handleOnChangePage}
+            >
+              {' '}
+              {pageArr}{' '}
+            </select>
 
             <button
               className='btn nextButton'
@@ -122,4 +134,5 @@ let DefaultFooter = createReactClass({
   },
 });
 
-module.exports = DefaultFooter;
+// module.exports = DefaultFooter;
+export default DefaultFooter;

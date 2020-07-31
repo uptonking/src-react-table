@@ -1,7 +1,7 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 
-let DefaultHeader = createReactClass({
+const DefaultHeader = createReactClass({
   handleOnClick: function (event) {
     let sortColumn = event.currentTarget.getAttribute('data-column');
     let sortDirection = null;
@@ -64,4 +64,5 @@ let DefaultHeader = createReactClass({
   },
 });
 
-module.exports = DefaultHeader;
+// module.exports = DefaultHeader;
+export default DefaultHeader;

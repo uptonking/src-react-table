@@ -1,6 +1,6 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
-import _ from 'underscore';
+// import _ from 'underscore';
 import GridHeader from './GridHeader';
 import GridFooter from './GridFooter';
 import GridRows from './GridRows';
@@ -83,6 +83,7 @@ let SmartGrid = createReactClass({
     if (!text) {
       return data;
     }
+    // eslint-disable-next-line no-unused-vars
     let that = this;
     let columnMetadata = this.props.columnMetadata;
 
