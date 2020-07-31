@@ -22,3 +22,6 @@ export { default as StickyTableAbsolutePosition } from './table/StickyTableAbsol
 export { default as ZIndexLastLevel } from './layer/ZIndexLastLevel';
 export { default as ZIndexAllLevels } from './layer/ZIndexAllLevels';
 export { default as ZIndex3Level } from './layer/ZIndex3Level';
+
+// grid
+export { default as TabelifyApp } from './grid-tabelify/TabelifyApp';
