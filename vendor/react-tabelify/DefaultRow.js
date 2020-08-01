@@ -11,7 +11,11 @@ const DefaultRow = createReactClass({
       onRowClick: () => {},
     };
   },
-
+  getInitialState: function () {
+    return {
+      expand: true,
+    };
+  },
   handleOnClick: function (event) {
     this.props.onRowClick(this.props.data, event);
     event.isExpanded = !this.state.expand;
@@ -44,8 +48,11 @@ const DefaultRow = createReactClass({
             if (columnMeta.flexShrink !== undefined) {
               style.flexShrink = columnMeta.flexShrink;
             }
+
+            // 代表每个cell组件的react element
             let cell;
             if (typeof columnMeta.render === 'function') {
+              // 自定义每列cell的渲染
               cell = columnMeta.render(
                 this.props,
                 this.state,

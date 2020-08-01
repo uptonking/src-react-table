@@ -1,11 +1,13 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
-// import _ from 'underscore';
 import GridHeader from './GridHeader';
 import GridFooter from './GridFooter';
 import GridRows from './GridRows';
 
-let SmartGrid = createReactClass({
+/**
+ * 受控组件类型的grid，只有form元素才有state
+ */
+const SmartGrid = createReactClass({
   getDefaultProps: function () {
     return {
       className: '',
@@ -163,16 +165,16 @@ let SmartGrid = createReactClass({
               data={data}
             />
           </div>
+          <GridFooter
+            {...this.props}
+            className=''
+            style={{}}
+            currentPage={parseInt(this.props.currentPage)}
+            totalCount={this.props.data.length}
+            onChangeGrid={this.onChangeGrid}
+            resultsOnPage={resultsOnPage}
+          />
         </div>
-        <GridFooter
-          {...this.props}
-          className=''
-          style={{}}
-          currentPage={parseInt(this.props.currentPage)}
-          totalCount={this.props.data.length}
-          onChangeGrid={this.onChangeGrid}
-          resultsOnPage={resultsOnPage}
-        />
       </div>
     );
   },

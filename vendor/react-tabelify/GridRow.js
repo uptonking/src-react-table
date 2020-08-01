@@ -1,7 +1,9 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 import DefaultRow from './DefaultRow';
-
+/**
+ * 每行前面有复选框
+ */
 const GridRow = createReactClass({
   handleOnChange: function (event) {
     let selectedRows = this.props.selectedRows;

@@ -1,7 +1,9 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 import DefaultHeader from './DefaultHeader';
-
+/**
+ * 在表头前显示一个checkbox
+ */
 const GridHeader = createReactClass({
   getDefaultProps: function () {
     return {

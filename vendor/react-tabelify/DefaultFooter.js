@@ -1,6 +1,9 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 
+/**
+ * 表尾显示当前页数、每页项数
+ */
 const DefaultFooter = createReactClass({
   getInitialState: function () {
     let totalPages = this.computePage(

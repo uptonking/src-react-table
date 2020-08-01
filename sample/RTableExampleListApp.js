@@ -19,7 +19,7 @@ export function RTableExampleListApp() {
     <div>
       <Title />
       <h2>当前示例: {curName}</h2>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div
           style={{
             width: 200,

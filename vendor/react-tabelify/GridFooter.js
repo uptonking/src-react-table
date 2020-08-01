@@ -1,7 +1,9 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
 import DefaultFooter from './DefaultFooter';
-
+/**
+ * 表格末尾部分
+ */
 const GridFooter = createReactClass({
   getInitialState: function () {
     let totalPages = Math.ceil(

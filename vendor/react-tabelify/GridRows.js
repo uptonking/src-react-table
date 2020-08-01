@@ -48,5 +48,5 @@ const GridRows = createReactClass({
   },
 });
 
-module.exports = GridRows;
+// module.exports = GridRows;
 export default GridRows;
