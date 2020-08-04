@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import './datatable.css';
 import Pagination from './Pagination';
 
+/**
+ * 基于display table实现的表格
+ */
 export default class DataTable extends React.Component {
   _preSearchData = null;
 

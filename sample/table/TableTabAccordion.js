@@ -299,7 +299,8 @@ const StyledDiv = styled('div')`
 `;
 
 /**
- * 在表格中显示tab或accordion。
+ * 基于flex实现的表格，只有两层div。
+ * 第一个示例在表格中显示tab或accordion。
  * Tab and accordion markup is inside the table in a logical position
  */
 function TableTabAccordion(props) {
@@ -515,7 +516,7 @@ function TableTabAccordion(props) {
         </div>
       </div>
 
-      {/* ------装饰单元格 */}
+      {/* ------装饰单元格后的表格 */}
       <h2>Example table cell styling</h2>
       <div className='Rtable Rtable--3cols'>
         <div style={{ order: 0 }} className='Rtable-cell Rtable-cell--head'>

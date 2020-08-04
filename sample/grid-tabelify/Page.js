@@ -220,6 +220,10 @@ const columnMetadata = [
     // "flexBasis":'190px'
   },
 ];
+
+/**
+ * 完全受控的表格组件
+ */
 export default class Page extends React.Component {
   constructor(props) {
     super(props);
