@@ -17,6 +17,8 @@ export { default as TableDesignP5DisplayGrid } from './table/TableDesignP5Displa
 export { default as TableTabAccordion } from './table/TableTabAccordion';
 export { default as StickyTable } from './table/StickyTable';
 export { default as StickyTableAbsolutePosition } from './table/StickyTableAbsolutePosition';
+export { default as FlexRowSpan } from './table/FlexRowSpan';
+export { default as FlexRowSpan2 } from './table/FlexRowSpan2';
 
 // layer
 export { default as ZIndexLastLevel } from './layer/ZIndexLastLevel';

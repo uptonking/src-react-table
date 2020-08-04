@@ -17,57 +17,56 @@ const StyledDiv = styled('div')`
 
   .button {
     flex: 1;
-    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* color: white; */
   }
 
   .button.rowspan {
     flex: 2;
   }
+  .bg-red {
+    background: coral;
+  }
+  .bg-green {
+    background: mediumseagreen;
+  }
+  .bg-blue {
+    background: deepskyblue;
+  }
+  .bg-yellow {
+    background: yellow;
+  }
 `;
 
 /**
- * 使用flex实现row span
+ * 使用flex column实现row span
  */
 function FlexRowSpan(props) {
   return (
     <StyledDiv>
       <div className='container'>
         <div className='column'>
-          <div className='button rowspan' style='background: red;'>
-            Column 1 - rowspan
-          </div>
+          <div className='button rowspan bg-yellow'>COL 1 - rowspan</div>
 
-          <div className='button' style='background: green;'>
-            Column 7
-          </div>
+          <div className='button bg-green'>COL 7</div>
         </div>
 
         <div className='column'>
-          <div className='button' style='background: green'>
-            Column 2
-          </div>
+          <div className='button bg-green'>COL 2</div>
 
-          <div className='button' style='background: red'>
-            Column 5
-          </div>
+          <div className='button bg-red'>COL 5</div>
 
-          <div className='button' style='background: blue'>
-            Column 8
-          </div>
+          <div className='button bg-blue'>COL 8</div>
         </div>
 
         <div className='column'>
-          <div className='button' style='background: blue'>
-            Column 3
-          </div>
+          <div className='button bg-blue'>COL 3</div>
 
-          <div className='button' style='background: green'>
-            Column 6
-          </div>
+          <div className='button bg-green'>COL 6</div>
 
-          <div className='button' style='background: red'>
-            Column 9
-          </div>
+          <div className='button bg-red'>COL 9</div>
         </div>
       </div>
     </StyledDiv>
