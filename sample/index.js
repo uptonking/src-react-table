@@ -4,6 +4,11 @@ export { default as A1Basic } from './simple/A1Basic';
 export { default as A2Footer } from './simple/A2Footer';
 export { default as A3Sorting } from './simple/A3Sorting';
 
+// layout
+export { default as AbsoluteLayoutTable } from './layout/AbsoluteLayoutTable';
+export { default as BlockLayoutTable } from './layout/BlockLayoutTable';
+export { default as FlexLayoutTable } from './layout/FlexLayoutTable';
+
 // table
 export { default as HtmlTable } from './table/HtmlTable';
 export { default as HtmlTablePlainOld } from './table/HtmlTablePlainOld';
