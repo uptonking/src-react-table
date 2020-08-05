@@ -28,3 +28,7 @@ export { default as ZIndex3Level } from './layer/ZIndex3Level';
 // grid
 export { default as TabelifyApp } from './grid-tabelify/TabelifyApp';
 export { default as UdemyDataTableApp } from './grid-udemy/UdemyDataTableApp';
+
+// list
+export { default as ScrollUpAbsolutePosition } from './list/ScrollUpAbsolutePosition';
+export { default as ScrollUpRelativePosition } from './list/ScrollUpRelativePosition';
