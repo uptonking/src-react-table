@@ -1,7 +1,7 @@
-import React from 'react'
-import { useTable } from '../../hooks/useTable'
-import { useFlexLayout } from '../useFlexLayout'
-import { render } from '../../../test-utils/react-testing'
+import React from 'react';
+import { useTable } from '../../hooks/useTable';
+import { useFlexLayout } from '../useFlexLayout';
+import { render } from '../../../test-utils/react-testing';
 
 const data = [
   {
@@ -28,14 +28,14 @@ const data = [
     status: 'Complicated',
     progress: 10,
   },
-]
+];
 
 const defaultColumn = {
   Cell: ({ value, column: { id } }) => `${id}: ${value}`,
   width: 200,
   minWidth: 100,
   maxWidth: 300,
-}
+};
 
 function Table({ columns, data }) {
   const {
@@ -50,16 +50,16 @@ function Table({ columns, data }) {
       data,
       defaultColumn,
     },
-    useFlexLayout
-  )
+    useFlexLayout,
+  );
 
   return (
-    <div {...getTableProps()} className="table">
+    <div {...getTableProps()} className='table'>
       <div>
         {headerGroups.map(headerGroup => (
-          <div {...headerGroup.getHeaderGroupProps()} className="row">
+          <div {...headerGroup.getHeaderGroupProps()} className='row'>
             {headerGroup.headers.map(column => (
-              <div {...column.getHeaderProps()} className="cell header">
+              <div {...column.getHeaderProps()} className='cell header'>
                 {column.render('Header')}
               </div>
             ))}
@@ -71,20 +71,20 @@ function Table({ columns, data }) {
         {rows.map(
           (row, i) =>
             prepareRow(row) || (
-              <div {...row.getRowProps()} className="row">
+              <div {...row.getRowProps()} className='row'>
                 {row.cells.map(cell => {
                   return (
-                    <div {...cell.getCellProps()} className="cell">
+                    <div {...cell.getCellProps()} className='cell'>
                       {cell.render('Cell')}
                     </div>
-                  )
+                  );
                 })}
               </div>
-            )
+            ),
         )}
       </div>
     </div>
-  )
+  );
 }
 
 function App() {
@@ -129,23 +129,23 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={data} />;
 }
 
 test('renders a table', () => {
-  const rendered = render(<App />)
+  const rendered = render(<App />);
 
-  const [headerRow, , firstRow] = rendered.queryAllByRole('row')
+  const [headerRow, , firstRow] = rendered.queryAllByRole('row');
 
   expect(headerRow.getAttribute('style')).toEqual(
-    'display: flex; flex: 1 0 auto; min-width: 800px;'
-  )
+    'display: flex; flex: 1 0 auto; min-width: 800px;',
+  );
 
   expect(
-    Array.from(firstRow.children).map(d => d.getAttribute('style'))
+    Array.from(firstRow.children).map(d => d.getAttribute('style')),
   ).toEqual([
     'box-sizing: border-box; flex: 0 0 auto; min-width: 100px; width: 250px;',
     'box-sizing: border-box; flex: 0 0 auto; min-width: 100px; width: 300px;',
@@ -153,5 +153,5 @@ test('renders a table', () => {
     'box-sizing: border-box; flex: 0 0 auto; min-width: 100px; width: 150px;',
     'box-sizing: border-box; flex: 0 0 auto; min-width: 100px; width: 200px;',
     'box-sizing: border-box; flex: 0 0 auto; min-width: 100px; width: 200px;',
-  ])
-})
+  ]);
+});

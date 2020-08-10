@@ -1,6 +1,6 @@
-import React from 'react'
-import { render } from '@testing-library/react'
-import { useTable } from '../useTable'
+import React from 'react';
+import { render } from '@testing-library/react';
+import { useTable } from '../useTable';
 
 const data = [
   {
@@ -27,7 +27,7 @@ const data = [
     status: 'Complicated',
     progress: 10,
   },
-]
+];
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -40,7 +40,7 @@ function Table({ columns, data }) {
   } = useTable({
     columns,
     data,
-  })
+  });
 
   // Render the UI for your table
   return (
@@ -60,14 +60,16 @@ function Table({ columns, data }) {
             prepareRow(row) || (
               <tr {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  );
                 })}
               </tr>
-            )
+            ),
         )}
       </tbody>
     </table>
-  )
+  );
 }
 
 function App() {
@@ -108,19 +110,19 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={data} />;
 }
 
 test('renders a basic table', () => {
-  const rtl = render(<App />)
+  const rtl = render(<App />);
 
-  expect(rtl.getByText('tanner')).toBeInTheDocument()
-  expect(rtl.getByText('linsley')).toBeInTheDocument()
-  expect(rtl.getByText('29')).toBeInTheDocument()
-  expect(rtl.getByText('100')).toBeInTheDocument()
-  expect(rtl.getByText('In Relationship')).toBeInTheDocument()
-  expect(rtl.getByText('50')).toBeInTheDocument()
-})
+  expect(rtl.getByText('tanner')).toBeInTheDocument();
+  expect(rtl.getByText('linsley')).toBeInTheDocument();
+  expect(rtl.getByText('29')).toBeInTheDocument();
+  expect(rtl.getByText('100')).toBeInTheDocument();
+  expect(rtl.getByText('In Relationship')).toBeInTheDocument();
+  expect(rtl.getByText('50')).toBeInTheDocument();
+});

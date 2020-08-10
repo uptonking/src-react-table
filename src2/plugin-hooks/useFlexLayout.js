@@ -1,14 +1,14 @@
 export function useFlexLayout(hooks) {
-  hooks.getTableProps.push(getTableProps)
-  hooks.getRowProps.push(getRowStyles)
-  hooks.getHeaderGroupProps.push(getRowStyles)
-  hooks.getFooterGroupProps.push(getRowStyles)
-  hooks.getHeaderProps.push(getHeaderProps)
-  hooks.getCellProps.push(getCellProps)
-  hooks.getFooterProps.push(getFooterProps)
+  hooks.getTableProps.push(getTableProps);
+  hooks.getRowProps.push(getRowStyles);
+  hooks.getHeaderGroupProps.push(getRowStyles);
+  hooks.getFooterGroupProps.push(getRowStyles);
+  hooks.getHeaderProps.push(getHeaderProps);
+  hooks.getCellProps.push(getCellProps);
+  hooks.getFooterProps.push(getFooterProps);
 }
 
-useFlexLayout.pluginName = 'useFlexLayout'
+useFlexLayout.pluginName = 'useFlexLayout';
 
 const getTableProps = (props, { instance }) => [
   props,
@@ -17,7 +17,7 @@ const getTableProps = (props, { instance }) => [
       minWidth: `${instance.totalColumnsWidth}px`,
     },
   },
-]
+];
 
 const getRowStyles = (props, { instance }) => [
   props,
@@ -28,7 +28,7 @@ const getRowStyles = (props, { instance }) => [
       minWidth: `${instance.totalColumnsMinWidth}px`,
     },
   },
-]
+];
 
 const getHeaderProps = (props, { column }) => [
   props,
@@ -42,7 +42,7 @@ const getHeaderProps = (props, { column }) => [
       width: `${column.totalWidth}px`,
     },
   },
-]
+];
 
 const getCellProps = (props, { cell }) => [
   props,
@@ -54,7 +54,7 @@ const getCellProps = (props, { cell }) => [
       width: `${cell.column.totalWidth}px`,
     },
   },
-]
+];
 
 const getFooterProps = (props, { column }) => [
   props,
@@ -68,4 +68,4 @@ const getFooterProps = (props, { column }) => [
       width: `${column.totalWidth}px`,
     },
   },
-]
+];

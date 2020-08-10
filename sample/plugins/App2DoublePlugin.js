@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 /**
  * 自定义hook作为基础hook，接收传入自定义plugin的逻辑
  * @param {*} options

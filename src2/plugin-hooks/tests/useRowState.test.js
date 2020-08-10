@@ -1,7 +1,7 @@
-import React from 'react'
-import { render, fireEvent } from '../../../test-utils/react-testing'
-import { useTable } from '../../hooks/useTable'
-import { useRowState } from '../useRowState'
+import React from 'react';
+import { render, fireEvent } from '../../../test-utils/react-testing';
+import { useTable } from '../../hooks/useTable';
+import { useRowState } from '../useRowState';
 
 const data = [
   {
@@ -36,7 +36,7 @@ const data = [
     status: 'In Relationship',
     progress: 70,
   },
-]
+];
 
 const defaultColumn = {
   Cell: ({ column, cell, row }) => (
@@ -49,7 +49,7 @@ const defaultColumn = {
       </button>
     </div>
   ),
-}
+};
 
 function Table({ columns, data }) {
   const {
@@ -66,8 +66,8 @@ function Table({ columns, data }) {
       initialRowStateAccessor: () => ({ count: 0 }),
       initialCellStateAccessor: () => ({ count: 0 }),
     },
-    useRowState
-  )
+    useRowState,
+  );
 
   return (
     <table {...getTableProps()}>
@@ -102,11 +102,11 @@ function Table({ columns, data }) {
                   <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 ))}
               </tr>
-            )
+            ),
         )}
       </tbody>
     </table>
-  )
+  );
 }
 
 function App() {
@@ -147,37 +147,37 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={data} />;
 }
 
 test('renders a filterable table', () => {
-  const rendered = render(<App />)
+  const rendered = render(<App />);
 
-  fireEvent.click(rendered.getByText('Row 1 Toggle'))
-  fireEvent.click(rendered.getByText('Row 1 Toggle'))
+  fireEvent.click(rendered.getByText('Row 1 Toggle'));
+  fireEvent.click(rendered.getByText('Row 1 Toggle'));
 
-  rendered.getByText('Row Count 2')
+  rendered.getByText('Row Count 2');
 
-  fireEvent.click(rendered.getByText('Row 1 Cell firstName Toggle'))
+  fireEvent.click(rendered.getByText('Row 1 Cell firstName Toggle'));
 
-  rendered.getByText('Row 1 Cell firstName Count 1')
+  rendered.getByText('Row 1 Cell firstName Count 1');
 
-  fireEvent.click(rendered.getByText('Row 2 Cell lastName Toggle'))
-  fireEvent.click(rendered.getByText('Row 2 Cell lastName Toggle'))
+  fireEvent.click(rendered.getByText('Row 2 Cell lastName Toggle'));
+  fireEvent.click(rendered.getByText('Row 2 Cell lastName Toggle'));
 
-  rendered.getByText('Row 2 Cell lastName Count 2')
+  rendered.getByText('Row 2 Cell lastName Count 2');
 
-  fireEvent.click(rendered.getByText('Row 3 Cell age Toggle'))
-  fireEvent.click(rendered.getByText('Row 3 Cell age Toggle'))
-  fireEvent.click(rendered.getByText('Row 3 Cell age Toggle'))
+  fireEvent.click(rendered.getByText('Row 3 Cell age Toggle'));
+  fireEvent.click(rendered.getByText('Row 3 Cell age Toggle'));
+  fireEvent.click(rendered.getByText('Row 3 Cell age Toggle'));
 
-  rendered.getByText('Row 3 Cell age Count 3')
+  rendered.getByText('Row 3 Cell age Count 3');
 
-  fireEvent.click(rendered.getByText('Row 1 Toggle'))
-  fireEvent.click(rendered.getByText('Row 1 Toggle'))
+  fireEvent.click(rendered.getByText('Row 1 Toggle'));
+  fireEvent.click(rendered.getByText('Row 1 Toggle'));
 
-  rendered.getByText('Row Count 4')
-})
+  rendered.getByText('Row Count 4');
+});

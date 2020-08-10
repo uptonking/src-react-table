@@ -67,10 +67,12 @@ function Table({ columns, data }) {
   return (
     <table {...getTableProps()}>
       <thead>
-        {headerGroups.map(group => (
-          <tr {...group.getHeaderGroupProps()}>
-            {group.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+        {headerGroups.map((group, index) => (
+          <tr {...group.getHeaderGroupProps()} key={index}>
+            {group.headers.map((column, index2) => (
+              <th {...column.getHeaderProps()} key={index2}>
+                {column.render('Header')}
+              </th>
             ))}
           </tr>
         ))}
@@ -79,19 +81,25 @@ function Table({ columns, data }) {
         {rows.map((row, i) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map(cell => {
-                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+            <tr {...row.getRowProps()} key={i}>
+              {row.cells.map((cell, index) => {
+                return (
+                  <td {...cell.getCellProps()} key={index}>
+                    {cell.render('Cell')}
+                  </td>
+                );
               })}
             </tr>
           );
         })}
       </tbody>
       <tfoot>
-        {footerGroups.map(group => (
-          <tr {...group.getFooterGroupProps()}>
-            {group.headers.map(column => (
-              <td {...column.getFooterProps()}>{column.render('Footer')}</td>
+        {footerGroups.map((group, index) => (
+          <tr {...group.getFooterGroupProps()} key={index}>
+            {group.headers.map((column, index2) => (
+              <td {...column.getFooterProps()} key={index2}>
+                {column.render('Footer')}
+              </td>
             ))}
           </tr>
         ))}

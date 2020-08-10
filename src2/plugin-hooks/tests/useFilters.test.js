@@ -1,8 +1,8 @@
-import React from 'react'
-import { render, fireEvent } from '../../../test-utils/react-testing'
-import { useTable } from '../../hooks/useTable'
-import { useFilters } from '../useFilters'
-import { useGlobalFilter } from '../useGlobalFilter'
+import React from 'react';
+import { render, fireEvent } from '../../../test-utils/react-testing';
+import { useTable } from '../../hooks/useTable';
+import { useFilters } from '../useFilters';
+import { useGlobalFilter } from '../useGlobalFilter';
 
 const makeData = () => [
   {
@@ -37,7 +37,7 @@ const makeData = () => [
     status: 'In Relationship',
     progress: 70,
   },
-]
+];
 
 const defaultColumn = {
   Cell: ({ value, column: { id } }) => `${id}: ${value}`,
@@ -45,19 +45,19 @@ const defaultColumn = {
     <input
       value={filterValue || ''}
       onChange={e => {
-        setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+        setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
       }}
-      placeholder="Search..."
+      placeholder='Search...'
     />
   ),
-}
+};
 
 function App(props) {
-  const [data, setData] = React.useState(makeData)
+  const [data, setData] = React.useState(makeData);
 
   const columns = React.useMemo(() => {
     if (props.columns) {
-      return props.columns
+      return props.columns;
     }
     return [
       {
@@ -94,8 +94,8 @@ function App(props) {
           },
         ],
       },
-    ]
-  }, [props.columns])
+    ];
+  }, [props.columns]);
 
   const {
     getTableProps,
@@ -113,10 +113,10 @@ function App(props) {
       defaultColumn,
     },
     useFilters,
-    useGlobalFilter
-  )
+    useGlobalFilter,
+  );
 
-  const reset = () => setData(makeData())
+  const reset = () => setData(makeData());
 
   return (
     <>
@@ -144,9 +144,9 @@ function App(props) {
                 <input
                   value={state.globalFilter || ''}
                   onChange={e => {
-                    setGlobalFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+                    setGlobalFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
                   }}
-                  placeholder={`Global search...`}
+                  placeholder='Global search...'
                   style={{
                     fontSize: '1.1rem',
                     border: '0',
@@ -165,89 +165,89 @@ function App(props) {
                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                   ))}
                 </tr>
-              )
+              ),
           )}
         </tbody>
       </table>
     </>
-  )
+  );
 }
 
 test('renders a filterable table', async () => {
-  const rendered = render(<App />)
+  const rendered = render(<App />);
 
-  const resetButton = rendered.getByText('Reset Data')
-  const globalFilterInput = rendered.getByPlaceholderText('Global search...')
-  const filterInputs = rendered.getAllByPlaceholderText('Search...')
+  const resetButton = rendered.getByText('Reset Data');
+  const globalFilterInput = rendered.getByPlaceholderText('Global search...');
+  const filterInputs = rendered.getAllByPlaceholderText('Search...');
 
-  expect(filterInputs).toHaveLength(6)
+  expect(filterInputs).toHaveLength(6);
 
-  fireEvent.change(filterInputs[1], { target: { value: 'l' } })
+  fireEvent.change(filterInputs[1], { target: { value: 'l' } });
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
-  ).toEqual(['firstName: tanner', 'firstName: jaylen'])
+      .map(row => Array.from(row.children)[0].textContent),
+  ).toEqual(['firstName: tanner', 'firstName: jaylen']);
 
-  fireEvent.change(filterInputs[1], { target: { value: 'er' } })
+  fireEvent.change(filterInputs[1], { target: { value: 'er' } });
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
-  ).toEqual(['firstName: derek', 'firstName: joe'])
+      .map(row => Array.from(row.children)[0].textContent),
+  ).toEqual(['firstName: derek', 'firstName: joe']);
 
-  fireEvent.change(filterInputs[2], { target: { value: 'nothing' } })
+  fireEvent.change(filterInputs[2], { target: { value: 'nothing' } });
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
-  ).toEqual([])
+      .map(row => Array.from(row.children)[0].textContent),
+  ).toEqual([]);
 
-  fireEvent.change(filterInputs[1], { target: { value: '' } })
+  fireEvent.change(filterInputs[1], { target: { value: '' } });
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
-  ).toEqual([])
+      .map(row => Array.from(row.children)[0].textContent),
+  ).toEqual([]);
 
-  fireEvent.change(filterInputs[2], { target: { value: '' } })
+  fireEvent.change(filterInputs[2], { target: { value: '' } });
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
+      .map(row => Array.from(row.children)[0].textContent),
   ).toEqual([
     'firstName: tanner',
     'firstName: derek',
     'firstName: joe',
     'firstName: jaylen',
-  ])
+  ]);
 
-  fireEvent.change(globalFilterInput, { target: { value: 'li' } })
+  fireEvent.change(globalFilterInput, { target: { value: 'li' } });
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
-  ).toEqual(['firstName: tanner', 'firstName: joe', 'firstName: jaylen'])
+      .map(row => Array.from(row.children)[0].textContent),
+  ).toEqual(['firstName: tanner', 'firstName: joe', 'firstName: jaylen']);
 
-  fireEvent.click(resetButton)
+  fireEvent.click(resetButton);
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
+      .map(row => Array.from(row.children)[0].textContent),
   ).toEqual([
     'firstName: tanner',
     'firstName: derek',
     'firstName: joe',
     'firstName: jaylen',
-  ])
-})
+  ]);
+});
 
 test('does not filter columns marked as disableFilters', () => {
   const columns = [
@@ -287,35 +287,35 @@ test('does not filter columns marked as disableFilters', () => {
         },
       ],
     },
-  ]
-  const rendered = render(<App columns={columns} />)
+  ];
+  const rendered = render(<App columns={columns} />);
 
-  const filterInputs = rendered.getAllByPlaceholderText('Search...')
+  const filterInputs = rendered.getAllByPlaceholderText('Search...');
 
-  expect(filterInputs).toHaveLength(4)
+  expect(filterInputs).toHaveLength(4);
 
   // should be Age column
-  fireEvent.change(filterInputs[0], { target: { value: '45' } })
+  fireEvent.change(filterInputs[0], { target: { value: '45' } });
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
-  ).toEqual(['firstName: joe'])
+      .map(row => Array.from(row.children)[0].textContent),
+  ).toEqual(['firstName: joe']);
 
-  fireEvent.change(filterInputs[0], { target: { value: '' } })
+  fireEvent.change(filterInputs[0], { target: { value: '' } });
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
+      .map(row => Array.from(row.children)[0].textContent),
   ).toEqual([
     'firstName: tanner',
     'firstName: derek',
     'firstName: joe',
     'firstName: jaylen',
-  ])
-})
+  ]);
+});
 
 test('does not filter columns with GlobalFilter if marked disableGlobalFilter', () => {
   const columns = [
@@ -355,39 +355,39 @@ test('does not filter columns with GlobalFilter if marked disableGlobalFilter', 
         },
       ],
     },
-  ]
-  const rendered = render(<App columns={columns} />)
+  ];
+  const rendered = render(<App columns={columns} />);
 
-  const globalFilterInput = rendered.getByPlaceholderText('Global search...')
+  const globalFilterInput = rendered.getByPlaceholderText('Global search...');
 
-  fireEvent.change(globalFilterInput, { target: { value: '' } })
+  fireEvent.change(globalFilterInput, { target: { value: '' } });
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
+      .map(row => Array.from(row.children)[0].textContent),
   ).toEqual([
     'firstName: tanner',
     'firstName: derek',
     'firstName: joe',
     'firstName: jaylen',
-  ])
+  ]);
 
   // global filter shouldn't apply to firstName or lastName
-  fireEvent.change(globalFilterInput, { target: { value: 'li' } })
+  fireEvent.change(globalFilterInput, { target: { value: 'li' } });
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
-  ).toEqual(['firstName: joe'])
+      .map(row => Array.from(row.children)[0].textContent),
+  ).toEqual(['firstName: joe']);
 
   // double check global filter ignore (should ignore joe bergevin)
-  fireEvent.change(globalFilterInput, { target: { value: 'in' } })
+  fireEvent.change(globalFilterInput, { target: { value: 'in' } });
   expect(
     rendered
       .queryAllByRole('row')
       .slice(3)
-      .map(row => Array.from(row.children)[0].textContent)
-  ).toEqual(['firstName: tanner', 'firstName: derek', 'firstName: jaylen'])
-})
+      .map(row => Array.from(row.children)[0].textContent),
+  ).toEqual(['firstName: tanner', 'firstName: derek', 'firstName: jaylen']);
+});

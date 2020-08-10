@@ -57,12 +57,15 @@ function Table({ columns, data }) {
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+          {headerGroups.map((headerGroup, index) => (
+            <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+              {headerGroup.headers.map((column, index2) => (
                 // Add the sorting props to control sorting. For this example
                 // we can add them into the header props
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  key={index}
+                >
                   {column.render('Header')}
                   {/* Add a sort direction indicator */}
                   <span>
@@ -81,10 +84,12 @@ function Table({ columns, data }) {
           {firstPageRows.map((row, i) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
+              <tr {...row.getRowProps()} key={i}>
+                {row.cells.map((cell, index) => {
                   return (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    <td {...cell.getCellProps()} key={index}>
+                      {cell.render('Cell')}
+                    </td>
                   );
                 })}
               </tr>

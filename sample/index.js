@@ -1,10 +1,10 @@
-// basic
+// grid-basic
 export { default as A0Simple } from './simple/A0Simple';
 export { default as A1Basic } from './simple/A1Basic';
 export { default as A2Footer } from './simple/A2Footer';
 export { default as A3Sorting } from './simple/A3Sorting';
 
-// layout
+// grid-layout
 export { default as AbsoluteLayoutTable } from './layout/AbsoluteLayoutTable';
 export { default as BlockLayoutTable } from './layout/BlockLayoutTable';
 export { default as FlexLayoutTable } from './layout/FlexLayoutTable';
@@ -30,10 +30,15 @@ export { default as ZIndexLastLevel } from './layer/ZIndexLastLevel';
 export { default as ZIndexAllLevels } from './layer/ZIndexAllLevels';
 export { default as ZIndex3Level } from './layer/ZIndex3Level';
 
-// grid
+// grid-building
 export { default as TabelifyApp } from './grid-tabelify/TabelifyApp';
 export { default as UdemyDataTableApp } from './grid-udemy/UdemyDataTableApp';
 
 // list
 export { default as ScrollUpAbsolutePosition } from './list/ScrollUpAbsolutePosition';
 export { default as ScrollUpRelativePosition } from './list/ScrollUpRelativePosition';
+
+// plugins
+export { default as App1CustomHooks } from './plugins/App1CustomHooks';
+export { default as App2DoublePlugin } from './plugins/App2DoublePlugin';
+export { default as App3PluginInstance } from './plugins/App3PluginInstance';

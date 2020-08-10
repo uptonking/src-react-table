@@ -1,6 +1,4 @@
-import React from 'react'
-
-//
+import React from 'react';
 
 import {
   actions,
@@ -8,23 +6,23 @@ import {
   functionalUpdate,
   useMountedLayoutEffect,
   useGetLatest,
-} from '../publicUtils'
+} from '../publicUtils';
 
-import { expandRows } from '../utils'
+import { expandRows } from '../utils';
 
-const pluginName = 'usePagination'
+const pluginName = 'usePagination';
 
 // Actions
-actions.resetPage = 'resetPage'
-actions.gotoPage = 'gotoPage'
-actions.setPageSize = 'setPageSize'
+actions.resetPage = 'resetPage';
+actions.gotoPage = 'gotoPage';
+actions.setPageSize = 'setPageSize';
 
 export const usePagination = hooks => {
-  hooks.stateReducers.push(reducer)
-  hooks.useInstance.push(useInstance)
-}
+  hooks.stateReducers.push(reducer);
+  hooks.useInstance.push(useInstance);
+};
 
-usePagination.pluginName = pluginName
+usePagination.pluginName = pluginName;
 
 function reducer(state, action, previousState, instance) {
   if (action.type === actions.init) {
@@ -32,52 +30,52 @@ function reducer(state, action, previousState, instance) {
       pageSize: 10,
       pageIndex: 0,
       ...state,
-    }
+    };
   }
 
   if (action.type === actions.resetPage) {
     return {
       ...state,
       pageIndex: instance.initialState.pageIndex || 0,
-    }
+    };
   }
 
   if (action.type === actions.gotoPage) {
-    const { pageCount, page } = instance
-    const newPageIndex = functionalUpdate(action.pageIndex, state.pageIndex)
-    let canNavigate = false
+    const { pageCount, page } = instance;
+    const newPageIndex = functionalUpdate(action.pageIndex, state.pageIndex);
+    let canNavigate = false;
 
     if (newPageIndex > state.pageIndex) {
       // next page
       canNavigate =
         pageCount === -1
           ? page.length >= state.pageSize
-          : newPageIndex <= pageCount
+          : newPageIndex <= pageCount;
     } else if (newPageIndex < state.pageIndex) {
       // prev page
-      canNavigate = newPageIndex > -1
+      canNavigate = newPageIndex > -1;
     }
 
     if (!canNavigate) {
-      return state
+      return state;
     }
 
     return {
       ...state,
       pageIndex: newPageIndex,
-    }
+    };
   }
 
   if (action.type === actions.setPageSize) {
-    const { pageSize } = action
-    const topRowIndex = state.pageSize * state.pageIndex
-    const pageIndex = Math.floor(topRowIndex / pageSize)
+    const { pageSize } = action;
+    const topRowIndex = state.pageSize * state.pageIndex;
+    const pageIndex = Math.floor(topRowIndex / pageSize);
 
     return {
       ...state,
       pageIndex,
       pageSize,
-    }
+    };
   }
 }
 
@@ -102,19 +100,19 @@ function useInstance(instance) {
     dispatch,
     data,
     manualPagination,
-  } = instance
+  } = instance;
 
   ensurePluginOrder(
     plugins,
     ['useGlobalFilter', 'useFilters', 'useGroupBy', 'useSortBy', 'useExpanded'],
-    'usePagination'
-  )
+    'usePagination',
+  );
 
-  const getAutoResetPage = useGetLatest(autoResetPage)
+  const getAutoResetPage = useGetLatest(autoResetPage);
 
   useMountedLayoutEffect(() => {
     if (getAutoResetPage()) {
-      dispatch({ type: actions.resetPage })
+      dispatch({ type: actions.resetPage });
     }
   }, [
     dispatch,
@@ -123,37 +121,37 @@ function useInstance(instance) {
     filters,
     groupBy,
     sortBy,
-  ])
+  ]);
 
   const pageCount = manualPagination
     ? userPageCount
-    : Math.ceil(rows.length / pageSize)
+    : Math.ceil(rows.length / pageSize);
 
   const pageOptions = React.useMemo(
     () =>
       pageCount > 0
         ? [...new Array(pageCount)].fill(null).map((d, i) => i)
         : [],
-    [pageCount]
-  )
+    [pageCount],
+  );
 
   const page = React.useMemo(() => {
-    let page
+    let page;
 
     if (manualPagination) {
-      page = rows
+      page = rows;
     } else {
-      const pageStart = pageSize * pageIndex
-      const pageEnd = pageStart + pageSize
+      const pageStart = pageSize * pageIndex;
+      const pageEnd = pageStart + pageSize;
 
-      page = rows.slice(pageStart, pageEnd)
+      page = rows.slice(pageStart, pageEnd);
     }
 
     if (paginateExpandedRows) {
-      return page
+      return page;
     }
 
-    return expandRows(page, { manualExpandedKey, expanded, expandSubRows })
+    return expandRows(page, { manualExpandedKey, expanded, expandSubRows });
   }, [
     expandSubRows,
     expanded,
@@ -163,33 +161,33 @@ function useInstance(instance) {
     pageSize,
     paginateExpandedRows,
     rows,
-  ])
+  ]);
 
-  const canPreviousPage = pageIndex > 0
+  const canPreviousPage = pageIndex > 0;
   const canNextPage =
-    pageCount === -1 ? page.length >= pageSize : pageIndex < pageCount - 1
+    pageCount === -1 ? page.length >= pageSize : pageIndex < pageCount - 1;
 
   const gotoPage = React.useCallback(
     pageIndex => {
-      dispatch({ type: actions.gotoPage, pageIndex })
+      dispatch({ type: actions.gotoPage, pageIndex });
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   const previousPage = React.useCallback(() => {
-    return gotoPage(old => old - 1)
-  }, [gotoPage])
+    return gotoPage(old => old - 1);
+  }, [gotoPage]);
 
   const nextPage = React.useCallback(() => {
-    return gotoPage(old => old + 1)
-  }, [gotoPage])
+    return gotoPage(old => old + 1);
+  }, [gotoPage]);
 
   const setPageSize = React.useCallback(
     pageSize => {
-      dispatch({ type: actions.setPageSize, pageSize })
+      dispatch({ type: actions.setPageSize, pageSize });
     },
-    [dispatch]
-  )
+    [dispatch],
+  );
 
   Object.assign(instance, {
     pageOptions,
@@ -201,5 +199,5 @@ function useInstance(instance) {
     previousPage,
     nextPage,
     setPageSize,
-  })
+  });
 }

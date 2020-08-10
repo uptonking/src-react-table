@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 /**
  * 自定义hook作为入口hook，接收自定义plugin对象，
  * react-table v7的useTable采用的这种插件架构

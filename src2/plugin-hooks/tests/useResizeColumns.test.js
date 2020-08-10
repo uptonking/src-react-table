@@ -1,8 +1,8 @@
-import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
-import { useTable } from '../../hooks/useTable'
-import { useBlockLayout } from '../useBlockLayout'
-import { useResizeColumns } from '../useResizeColumns'
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import { useTable } from '../../hooks/useTable';
+import { useBlockLayout } from '../useBlockLayout';
+import { useResizeColumns } from '../useResizeColumns';
 
 const data = [
   {
@@ -29,7 +29,7 @@ const data = [
     status: 'Complicated',
     progress: 10,
   },
-]
+];
 function Table({ columns, data }) {
   const defaultColumn = React.useMemo(
     () => ({
@@ -37,8 +37,8 @@ function Table({ columns, data }) {
       width: 150,
       maxWidth: 400,
     }),
-    []
-  )
+    [],
+  );
 
   const {
     getTableProps,
@@ -53,16 +53,16 @@ function Table({ columns, data }) {
       defaultColumn,
     },
     useBlockLayout,
-    useResizeColumns
-  )
+    useResizeColumns,
+  );
 
   return (
-    <div {...getTableProps()} className="table">
+    <div {...getTableProps()} className='table'>
       <div>
         {headerGroups.map(headerGroup => (
-          <div {...headerGroup.getHeaderGroupProps()} className="tr">
+          <div {...headerGroup.getHeaderGroupProps()} className='tr'>
             {headerGroup.headers.map(column => (
-              <div {...column.getHeaderProps()} className="th">
+              <div {...column.getHeaderProps()} className='th'>
                 {column.render('Header')}
                 {/* Use column.getResizerProps to hook up the events correctly */}
                 <div
@@ -77,22 +77,22 @@ function Table({ columns, data }) {
 
       <div {...getTableBodyProps()}>
         {rows.map((row, i) => {
-          prepareRow(row)
+          prepareRow(row);
           return (
-            <div {...row.getRowProps()} className="tr">
+            <div {...row.getRowProps()} className='tr'>
               {row.cells.map(cell => {
                 return (
-                  <div {...cell.getCellProps()} className="td">
+                  <div {...cell.getCellProps()} className='td'>
                     {cell.render('Cell')}
                   </div>
-                )
+                );
               })}
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }
 
 function App() {
@@ -135,15 +135,15 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={data} />;
 }
 
-const start = 20
-const move = 100
-const end = 100
+const start = 20;
+const move = 100;
+const end = 100;
 
 const sizesBefore = [
   '300px',
@@ -154,7 +154,7 @@ const sizesBefore = [
   '60px',
   '150px',
   '150px',
-]
+];
 
 const sizesAfter = [
   '300px',
@@ -165,70 +165,70 @@ const sizesAfter = [
   '71.70731707317073px',
   '179.26829268292684px',
   '179.26829268292684px',
-]
+];
 
 test('table can be resized by a mouse', () => {
-  const rtl = render(<App />)
+  const rtl = render(<App />);
 
   const infoResizer = rtl
     .getAllByRole('separator')
-    .find(d => d.previousSibling.textContent === 'Info')
+    .find(d => d.previousSibling.textContent === 'Info');
 
   expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
-    sizesBefore
-  )
+    sizesBefore,
+  );
 
-  fireEvent.mouseDown(infoResizer, { clientX: start })
-  fireEvent.mouseMove(infoResizer, { clientX: move })
-  fireEvent.mouseUp(infoResizer, { clientX: end })
+  fireEvent.mouseDown(infoResizer, { clientX: start });
+  fireEvent.mouseMove(infoResizer, { clientX: move });
+  fireEvent.mouseUp(infoResizer, { clientX: end });
 
   expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
-    sizesAfter
-  )
-})
+    sizesAfter,
+  );
+});
 
 test('table can be resized by a touch device', () => {
-  const rtl = render(<App />)
+  const rtl = render(<App />);
 
   const infoResizer = rtl
     .getAllByRole('separator')
-    .find(d => d.previousSibling.textContent === 'Info')
+    .find(d => d.previousSibling.textContent === 'Info');
 
   expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
-    sizesBefore
-  )
+    sizesBefore,
+  );
 
-  fireEvent.touchStart(infoResizer, { touches: [{ clientX: start }] })
-  fireEvent.touchMove(infoResizer, { touches: [{ clientX: move }] })
-  fireEvent.touchEnd(infoResizer, { touches: [{ clientX: end }] })
+  fireEvent.touchStart(infoResizer, { touches: [{ clientX: start }] });
+  fireEvent.touchMove(infoResizer, { touches: [{ clientX: move }] });
+  fireEvent.touchEnd(infoResizer, { touches: [{ clientX: end }] });
 
   expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
-    sizesAfter
-  )
-})
+    sizesAfter,
+  );
+});
 
 test('table can not be resized with multiple touches', () => {
-  const rtl = render(<App />)
+  const rtl = render(<App />);
 
   const infoResizer = rtl
     .getAllByRole('separator')
-    .find(d => d.previousSibling.textContent === 'Info')
+    .find(d => d.previousSibling.textContent === 'Info');
 
   expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
-    sizesBefore
-  )
+    sizesBefore,
+  );
 
   fireEvent.touchStart(infoResizer, {
     touches: [{ clientX: start }, { clientX: start }],
-  })
+  });
   fireEvent.touchMove(infoResizer, {
     touches: [{ clientX: move }, { clientX: move }],
-  })
+  });
   fireEvent.touchEnd(infoResizer, {
     touches: [{ clientX: end }, { clientX: end }],
-  })
+  });
 
   expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
-    sizesBefore
-  )
-})
+    sizesBefore,
+  );
+});

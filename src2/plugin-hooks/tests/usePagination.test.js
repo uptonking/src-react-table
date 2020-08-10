@@ -1,9 +1,9 @@
-import React from 'react'
-import { renderHook, act } from '@testing-library/react-hooks'
-import { render, fireEvent } from '../../../test-utils/react-testing'
-import { useTable } from '../../hooks/useTable'
-import { usePagination } from '../usePagination'
-import { useFilters } from '../useFilters'
+import React from 'react';
+import { renderHook, act } from '@testing-library/react-hooks';
+import { render, fireEvent } from '../../../test-utils/react-testing';
+import { useTable } from '../../hooks/useTable';
+import { usePagination } from '../usePagination';
+import { useFilters } from '../useFilters';
 
 const data = [...new Array(1000)].fill(null).map((d, i) => ({
   firstName: `tanner ${i + 1}`,
@@ -12,7 +12,7 @@ const data = [...new Array(1000)].fill(null).map((d, i) => ({
   visits: 100,
   status: 'In Relationship',
   progress: 50,
-}))
+}));
 
 const columns = [
   {
@@ -49,7 +49,7 @@ const columns = [
       },
     ],
   },
-]
+];
 
 function Table({ columns, data }) {
   const {
@@ -73,8 +73,8 @@ function Table({ columns, data }) {
       data,
       initialState: { pageIndex: 2 },
     },
-    usePagination
-  )
+    usePagination,
+  );
 
   return (
     <>
@@ -96,14 +96,14 @@ function Table({ columns, data }) {
                   {row.cells.map(cell => {
                     return (
                       <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    )
+                    );
                   })}
                 </tr>
-              )
+              ),
           )}
         </tbody>
       </table>
-      <div className="pagination">
+      <div className='pagination'>
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
         </button>{' '}
@@ -125,11 +125,11 @@ function Table({ columns, data }) {
         <span>
           | Go to page:{' '}
           <input
-            type="number"
+            type='number'
             defaultValue={pageIndex + 1}
             onChange={e => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(page)
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              gotoPage(page);
             }}
             style={{ width: '100px' }}
           />
@@ -137,9 +137,9 @@ function Table({ columns, data }) {
         <select
           value={pageSize}
           onChange={e => {
-            setPageSize(Number(e.target.value))
+            setPageSize(Number(e.target.value));
           }}
-          data-testid="page-size-select"
+          data-testid='page-size-select'
         >
           {[10, 20, 30, 40, 50].map(pageSize => (
             <option key={pageSize} value={pageSize}>
@@ -149,71 +149,69 @@ function Table({ columns, data }) {
         </select>
       </div>
     </>
-  )
+  );
 }
 
 function App() {
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={data} />;
 }
 
 test('renders a paginated table', () => {
-  const rendered = render(<App />)
+  const rendered = render(<App />);
 
-  expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 21')
+  expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 21');
 
-  fireEvent.click(rendered.getByText('>'))
-  expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 31')
+  fireEvent.click(rendered.getByText('>'));
+  expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 31');
 
-  fireEvent.click(rendered.getByText('>'))
-  expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 41')
+  fireEvent.click(rendered.getByText('>'));
+  expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 41');
 
-  fireEvent.click(rendered.getByText('>>'))
-  expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 991')
+  fireEvent.click(rendered.getByText('>>'));
+  expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 991');
 
-  fireEvent.click(rendered.getByText('<<'))
-  expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 1')
+  fireEvent.click(rendered.getByText('<<'));
+  expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 1');
 
   fireEvent.change(rendered.getByTestId('page-size-select'), {
     target: { value: 30 },
-  })
+  });
 
   expect(
-    rendered
-      .queryAllByRole('row')
-      .slice(2)
-      .reverse()[0].children[0].textContent
-  ).toEqual('tanner 30')
-})
+    rendered.queryAllByRole('row').slice(2).reverse()[0].children[0]
+      .textContent,
+  ).toEqual('tanner 30');
+});
 
 describe('usePagination', () => {
   test('renders a paginated table', () => {
-    const rendered = render(<App />)
+    const rendered = render(<App />);
 
-    expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 21')
+    expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 21');
 
-    fireEvent.click(rendered.getByText('>'))
-    expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 31')
+    fireEvent.click(rendered.getByText('>'));
+    expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 31');
 
-    fireEvent.click(rendered.getByText('>'))
-    expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 41')
+    fireEvent.click(rendered.getByText('>'));
+    expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 41');
 
-    fireEvent.click(rendered.getByText('>>'))
-    expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 991')
+    fireEvent.click(rendered.getByText('>>'));
+    expect(rendered.queryAllByRole('cell')[0].textContent).toEqual(
+      'tanner 991',
+    );
 
-    fireEvent.click(rendered.getByText('<<'))
-    expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 1')
+    fireEvent.click(rendered.getByText('<<'));
+    expect(rendered.queryAllByRole('cell')[0].textContent).toEqual('tanner 1');
 
     fireEvent.change(rendered.getByTestId('page-size-select'), {
       target: { value: 30 },
-    })
+    });
 
     expect(
-      rendered
-        .queryAllByRole('row')
-        .slice(2)
-        .reverse()[0].children[0].textContent
-    ).toEqual('tanner 30')
-  })
+      rendered.queryAllByRole('row').slice(2).reverse()[0].children[0]
+        .textContent,
+    ).toEqual('tanner 30');
+  });
 
   test('changing filters resets pagination', async () => {
     const { result } = renderHook(() =>
@@ -223,14 +221,14 @@ describe('usePagination', () => {
           data,
         },
         useFilters,
-        usePagination
-      )
-    )
+        usePagination,
+      ),
+    );
 
-    act(() => result.current.nextPage())
-    act(() => result.current.nextPage())
-    expect(result.current.state.pageIndex).toEqual(2)
-    act(() => result.current.visibleColumns[0].setFilter('tanner'))
-    expect(result.current.state.pageIndex).toEqual(0)
-  })
-})
+    act(() => result.current.nextPage());
+    act(() => result.current.nextPage());
+    expect(result.current.state.pageIndex).toEqual(2);
+    act(() => result.current.visibleColumns[0].setFilter('tanner'));
+    expect(result.current.state.pageIndex).toEqual(0);
+  });
+});

@@ -1,7 +1,7 @@
-import React from 'react'
-import { render } from '@testing-library/react'
-import { useTable } from '../../hooks/useTable'
-import { useAbsoluteLayout } from '../useAbsoluteLayout'
+import React from 'react';
+import { render } from '@testing-library/react';
+import { useTable } from '../../hooks/useTable';
+import { useAbsoluteLayout } from '../useAbsoluteLayout';
 
 const data = [
   {
@@ -28,14 +28,14 @@ const data = [
     status: 'Complicated',
     progress: 10,
   },
-]
+];
 
 const defaultColumn = {
   Cell: ({ value, column: { id } }) => `${id}: ${value}`,
   width: 200,
   minWidth: 100,
   maxWidth: 300,
-}
+};
 
 function Table({ columns, data }) {
   const {
@@ -50,16 +50,16 @@ function Table({ columns, data }) {
       data,
       defaultColumn,
     },
-    useAbsoluteLayout
-  )
+    useAbsoluteLayout,
+  );
 
   return (
-    <div {...getTableProps()} className="table">
+    <div {...getTableProps()} className='table'>
       <div>
         {headerGroups.map(headerGroup => (
-          <div {...headerGroup.getHeaderGroupProps()} className="row">
+          <div {...headerGroup.getHeaderGroupProps()} className='row'>
             {headerGroup.headers.map(column => (
-              <div {...column.getHeaderProps()} className="cell header">
+              <div {...column.getHeaderProps()} className='cell header'>
                 {column.render('Header')}
               </div>
             ))}
@@ -71,20 +71,20 @@ function Table({ columns, data }) {
         {rows.map(
           (row, i) =>
             prepareRow(row) || (
-              <div {...row.getRowProps()} className="row">
+              <div {...row.getRowProps()} className='row'>
                 {row.cells.map(cell => {
                   return (
-                    <div {...cell.getCellProps()} className="cell">
+                    <div {...cell.getCellProps()} className='cell'>
                       {cell.render('Cell')}
                     </div>
-                  )
+                  );
                 })}
               </div>
-            )
+            ),
         )}
       </div>
     </div>
-  )
+  );
 }
 
 function App() {
@@ -129,21 +129,23 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={data} />;
 }
 
 test('renders a table', () => {
-  const rtl = render(<App />)
+  const rtl = render(<App />);
 
   expect(
-    rtl.getAllByRole('columnheader').every(d => d.style.position === 'absolute')
-  ).toBe(true)
+    rtl
+      .getAllByRole('columnheader')
+      .every(d => d.style.position === 'absolute'),
+  ).toBe(true);
 
   expect(
-    rtl.getAllByRole('columnheader').map(d => [d.style.left, d.style.width])
+    rtl.getAllByRole('columnheader').map(d => [d.style.left, d.style.width]),
   ).toStrictEqual([
     ['0px', '550px'],
     ['550px', '850px'],
@@ -153,5 +155,5 @@ test('renders a table', () => {
     ['850px', '150px'],
     ['1000px', '200px'],
     ['1200px', '200px'],
-  ])
-})
+  ]);
+});
