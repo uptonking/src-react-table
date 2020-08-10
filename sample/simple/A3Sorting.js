@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 // import { useTable, useSortBy } from 'react-table';
-import { useTable, useSortBy } from '../../src/react-table';
+import { useTable, useSortBy } from '../../src2/react-table';
 
 import makeData from './makeData';
 

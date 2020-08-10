@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useTable, useAbsoluteLayout } from '../../src/react-table';
+import { useTable, useAbsoluteLayout } from '../../src2/react-table';
 
 import makeData from '../simple/makeData';
 

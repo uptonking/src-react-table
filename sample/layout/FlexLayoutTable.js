@@ -5,7 +5,7 @@ import {
   useResizeColumns,
   useFlexLayout,
   useRowSelect,
-} from '../../src/react-table';
+} from '../../src2/react-table';
 
 import makeData from '../simple/makeData';
 

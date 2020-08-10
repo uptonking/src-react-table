@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable } from '../../src/react-table';
+import { useTable } from '../../src2/react-table';
 
 function App() {
   const data = React.useMemo(
@@ -48,12 +48,12 @@ function App() {
       <thead>
         {
           // Loop over the header rows
-          headerGroups.map(headerGroup => (
+          headerGroups.map((headerGroup, index) => (
             // Apply the header row props
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <tr {...headerGroup.getHeaderGroupProps()} key={index}>
               {
                 // Loop over the headers in each row
-                headerGroup.headers.map(column => (
+                headerGroup.headers.map((column, i) => (
                   // Apply the header cell props
                   <th
                     {...column.getHeaderProps()}
@@ -63,6 +63,7 @@ function App() {
                       color: 'black',
                       fontWeight: 'bold',
                     }}
+                    key={i}
                   >
                     {
                       // Render the header
@@ -79,15 +80,15 @@ function App() {
       <tbody {...getTableBodyProps()}>
         {
           // Loop over the table rows
-          rows.map(row => {
+          rows.map((row, index) => {
             // Prepare the row for display
             prepareRow(row);
             return (
               // Apply the row props
-              <tr {...row.getRowProps()}>
+              <tr {...row.getRowProps()} key={index}>
                 {
                   // Loop over the rows cells
-                  row.cells.map(cell => {
+                  row.cells.map((cell, i) => {
                     // Apply the cell props
                     return (
                       <td
@@ -97,6 +98,7 @@ function App() {
                           border: 'solid 1px gray',
                           background: 'snow',
                         }}
+                        key={i}
                       >
                         {
                           // Render the cell contents

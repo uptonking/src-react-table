@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useTable } from '../../src/react-table';
+import { useTable } from '../../src2/react-table';
 
 import makeData from './makeData';
 
@@ -51,10 +51,12 @@ function Table({ columns, data }) {
   return (
     <table {...getTableProps()}>
       <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+        {headerGroups.map((headerGroup, index) => (
+          <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+            {headerGroup.headers.map((column, i) => (
+              <th {...column.getHeaderProps()} key={i}>
+                {column.render('Header')}
+              </th>
             ))}
           </tr>
         ))}
@@ -63,9 +65,13 @@ function Table({ columns, data }) {
         {rows.map((row, i) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map(cell => {
-                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+            <tr {...row.getRowProps()} key={i}>
+              {row.cells.map((cell, ii) => {
+                return (
+                  <td {...cell.getCellProps()} key={ii}>
+                    {cell.render('Cell')}
+                  </td>
+                );
               })}
             </tr>
           );
