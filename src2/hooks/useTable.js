@@ -32,7 +32,7 @@ const defaultUseControlledState = d => d;
 
 /**
  * 声明并设置一些重要props的默认值
- * @param {*} props 自定义props
+ * @param {*} props 表格数据及操作相关的options，作为props
  */
 function applyDefaults(props) {
   const {
@@ -59,10 +59,19 @@ function applyDefaults(props) {
 /**
  * 入口hook。
  * 主要流程：
+ * 1.`useTable` is called. A table ref instance is created.
+ * 2.The `instance.state` is resolved from either a custom user state or a generated one.
+ * 3.A collection of plugin points is created at `instance.hooks`.
+ * 4.Each plugin is given the opportunity to add hooks to `instance.hook`.
+ * 5.As the `useTable` logic proceeds to run, each plugin hook type is used at a specific point
+ *   in time with each individual hook function being executed the order it was registered.
+ * 6.The final instance object is returned from `useTable`,
+ *   which the developer then uses to construct their table.
  * @param {*} props 其实是options，主要配置项
  * @param  {...any} plugins 支持官方和第三方插件
  */
 export const useTable = (props, ...plugins) => {
+  console.log('==useTable');
   console.log('props, ', props);
   console.log('plugins, ', plugins);
   // Apply default props
@@ -72,7 +81,7 @@ export const useTable = (props, ...plugins) => {
   plugins = [useColumnVisibility, ...plugins];
 
   // Create the table instance，
-  // 创建存放table数据的顶级ref对象，包括传入的props,plugins,hooks，也是useTable最后返回的对象
+  // 创建存放相关数据及操作的顶级ref对象，包括传入的props,plugins,hooks，也是useTable最后返回的对象
   const instanceRef = React.useRef({});
 
   // Create a getter for the instance (helps avoid a lot of potential memory leaks)
@@ -95,7 +104,8 @@ export const useTable = (props, ...plugins) => {
   getInstance().getHooks = getHooks;
   delete getInstance().hooks;
 
-  // Allow useOptions hooks to modify the options coming into the table，给顶级ref对象添加修改options的能力
+  // Allow useOptions hooks to modify the options coming into the table，
+  // 在useOptions修改defaultProps
   Object.assign(
     getInstance(),
     reduceHooks(getHooks().useOptions, applyDefaults(props)),
@@ -112,10 +122,10 @@ export const useTable = (props, ...plugins) => {
     useControlledState,
   } = getInstance();
 
-  // Setup user reducer ref
+  // Setup user reducer ref，用ref保存stateReducer
   const getStateReducer = useGetLatest(stateReducer);
 
-  // Build the reducer
+  // Build the reducer，用于更新state的reducer方法
   const reducer = React.useCallback(
     (state, action) => {
       // Detect invalid actions
@@ -139,7 +149,7 @@ export const useTable = (props, ...plugins) => {
     [getHooks, getStateReducer, getInstance],
   );
 
-  // Start the reducer，获取最顶级的reducerState状态对象
+  // Start the reducer，获取最顶级的reducerState状态对象和更新状态的dispatch方法
   const [reducerState, dispatch] = React.useReducer(reducer, undefined, () =>
     reducer(initialState, { type: actions.init }),
   );
