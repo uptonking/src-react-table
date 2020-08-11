@@ -19,11 +19,13 @@ export function RTableExampleListApp() {
     <div>
       <Title />
       <h2>当前示例: {curName}</h2>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex' }}>
         <div
           style={{
             width: 200,
-            overflow: 'auto',
+            // 如果设置overflowX为hidden，窄屏幕上这个toc菜单会全部隐藏
+            // overflowX: 'hidden',
+            // overflowY: 'auto',
             backgroundColor: 'beige',
             // padding: '8px',
           }}

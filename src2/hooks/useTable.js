@@ -1,5 +1,7 @@
+// 本文件只export了useTable一个custom hook，
+// 文件主要结构为一系列模块级的代表defaultProps的变量，
+// 以及4个func：applyDefaults,useTable,calculateHeaderWidths,accessRowsForColumn
 import React from 'react';
-
 import {
   linkColumnStructure,
   flattenColumns,
@@ -8,7 +10,6 @@ import {
   makeHeaderGroups,
   decorateColumn,
 } from '../utils';
-
 import {
   useGetLatest,
   reduceHooks,
@@ -17,11 +18,10 @@ import {
   makePropGetter,
   makeRenderer,
 } from '../publicUtils';
-
 import makeDefaultPluginHooks from '../makeDefaultPluginHooks';
-
 import { useColumnVisibility } from './useColumnVisibility';
 
+// 下面的变量都会在applyDefaults()中赋值给props，作为默认值
 const defaultInitialState = {};
 const defaultColumnInstance = {};
 const defaultReducer = (state, action, prevState) => state;
@@ -30,13 +30,17 @@ const defaultGetRowId = (row, index, parent) =>
   `${parent ? [parent.id, index].join('.') : index}`;
 const defaultUseControlledState = d => d;
 
+/**
+ * 声明并设置一些重要props的默认值
+ * @param {*} props 自定义props
+ */
 function applyDefaults(props) {
   const {
     initialState = defaultInitialState,
     defaultColumn = defaultColumnInstance,
+    stateReducer = defaultReducer,
     getSubRows = defaultGetSubRows,
     getRowId = defaultGetRowId,
-    stateReducer = defaultReducer,
     useControlledState = defaultUseControlledState,
     ...rest
   } = props;
@@ -51,32 +55,37 @@ function applyDefaults(props) {
     useControlledState,
   };
 }
+
 /**
- * 入口hook
- * @param {*} props
+ * 入口hook。
+ * 主要流程：
+ * @param {*} props 其实是options，主要配置项
  * @param  {...any} plugins 支持官方和第三方插件
  */
 export const useTable = (props, ...plugins) => {
+  console.log('props, ', props);
+  console.log('plugins, ', plugins);
   // Apply default props
   props = applyDefaults(props);
 
   // Add core plugins
   plugins = [useColumnVisibility, ...plugins];
 
-  // Create the table instance
-  let instanceRef = React.useRef({});
+  // Create the table instance，
+  // 创建存放table数据的顶级ref对象，包括传入的props,plugins,hooks，也是useTable最后返回的对象
+  const instanceRef = React.useRef({});
 
   // Create a getter for the instance (helps avoid a lot of potential memory leaks)
   const getInstance = useGetLatest(instanceRef.current);
 
-  // Assign the props, plugins and hooks to the instance
+  // Assign the props, plugins and hooks to the instance，将输入的props，plugins和hooks都保存到instanceRef.current
   Object.assign(getInstance(), {
     ...props,
     plugins,
     hooks: makeDefaultPluginHooks(),
   });
 
-  // Allow plugins to register hooks as early as possible
+  // Allow plugins to register hooks as early as possible，给每个plugin传入所有hooks
   plugins.filter(Boolean).forEach(plugin => {
     plugin(getInstance().hooks);
   });
@@ -86,7 +95,7 @@ export const useTable = (props, ...plugins) => {
   getInstance().getHooks = getHooks;
   delete getInstance().hooks;
 
-  // Allow useOptions hooks to modify the options coming into the table
+  // Allow useOptions hooks to modify the options coming into the table，给顶级ref对象添加修改options的能力
   Object.assign(
     getInstance(),
     reduceHooks(getHooks().useOptions, applyDefaults(props)),
@@ -97,9 +106,9 @@ export const useTable = (props, ...plugins) => {
     columns: userColumns,
     initialState,
     defaultColumn,
+    stateReducer,
     getSubRows,
     getRowId,
-    stateReducer,
     useControlledState,
   } = getInstance();
 
@@ -115,7 +124,7 @@ export const useTable = (props, ...plugins) => {
         throw new Error('Unknown Action 👆');
       }
 
-      // Reduce the state from all plugin reducers
+      // Reduce the state from all plugin reducers，计算默认和用户传入的reducer处理后的state
       return [
         ...getHooks().stateReducers,
         // Allow the user to add their own state reducer(s)
@@ -130,7 +139,7 @@ export const useTable = (props, ...plugins) => {
     [getHooks, getStateReducer, getInstance],
   );
 
-  // Start the reducer
+  // Start the reducer，获取最顶级的reducerState状态对象
   const [reducerState, dispatch] = React.useReducer(reducer, undefined, () =>
     reducer(initialState, { type: actions.init }),
   );
@@ -147,7 +156,7 @@ export const useTable = (props, ...plugins) => {
     dispatch,
   });
 
-  // Decorate All the columns
+  // Decorate All the columns，累计调用columns数组中的方法
   const columns = React.useMemo(
     () =>
       linkColumnStructure(
@@ -184,10 +193,10 @@ export const useTable = (props, ...plugins) => {
   );
   getInstance().allColumns = allColumns;
 
-  // Access the row model using initial columns
+  // Access the row model using initial columns，向顶级ref对象中添加rows数据
   const [rows, flatRows, rowsById] = React.useMemo(() => {
-    let rows = [];
-    let flatRows = [];
+    const rows = [];
+    const flatRows = [];
     const rowsById = {};
 
     const allColumnsQueue = [...allColumns];
@@ -218,11 +227,11 @@ export const useTable = (props, ...plugins) => {
     // materializedColumns,
   });
 
+  //
   loopHooks(getHooks().useInstanceAfterData, getInstance());
 
-  // Get the flat list of all columns AFTER the rows
-  // have been access, and allow hooks to decorate
-  // those columns (and trigger this memoization via deps)
+  // Get the flat list of all columns AFTER the rows have been access,
+  // and allow hooks to decorate those columns (and trigger this memoization via deps)
   let visibleColumns = React.useMemo(
     () =>
       reduceHooks(getHooks().visibleColumns, allColumns, {
@@ -240,7 +249,7 @@ export const useTable = (props, ...plugins) => {
     ],
   );
 
-  // Combine new visible columns with all columns
+  // Combine new visible columns with all columns，计算可见的列
   allColumns = React.useMemo(() => {
     const columns = [...visibleColumns];
 
@@ -353,6 +362,7 @@ export const useTable = (props, ...plugins) => {
     },
   );
 
+  // 更新要显示的表头
   getInstance().headerGroups = React.useMemo(
     () =>
       headerGroups.filter((headerGroup, i) => {
@@ -393,9 +403,9 @@ export const useTable = (props, ...plugins) => {
 
   getInstance().footerGroups = [...getInstance().headerGroups].reverse();
 
-  // The prepareRow function is absolutely necessary and MUST be called on
-  // any rows the user wishes to be displayed.
-
+  // The prepareRow function is absolutely necessary
+  // and MUST be called on any rows the user wishes to be displayed.
+  // prepareRow()用来
   getInstance().prepareRow = React.useCallback(
     row => {
       row.getRowProps = makePropGetter(getHooks().getRowProps, {
@@ -452,9 +462,15 @@ export const useTable = (props, ...plugins) => {
 
   loopHooks(getHooks().useFinalInstance, getInstance());
 
+  // 返回的对象其实是 instanceRef.current
   return getInstance();
 };
 
+/**
+ * 计算表头宽度
+ * @param {*} headers
+ * @param {*} left
+ */
 function calculateHeaderWidths(headers, left = 0) {
   let sumTotalMinWidth = 0;
   let sumTotalWidth = 0;
@@ -462,7 +478,7 @@ function calculateHeaderWidths(headers, left = 0) {
   let sumTotalFlexWidth = 0;
 
   headers.forEach(header => {
-    let { headers: subHeaders } = header;
+    const { headers: subHeaders } = header;
 
     header.totalLeft = left;
 
@@ -498,6 +514,10 @@ function calculateHeaderWidths(headers, left = 0) {
   return [sumTotalMinWidth, sumTotalWidth, sumTotalMaxWidth, sumTotalFlexWidth];
 }
 
+/**
+ * 一列一列的获取行中的数据
+ * @param {*} param0 包含数据的行对象
+ */
 function accessRowsForColumn({
   data,
   rows,

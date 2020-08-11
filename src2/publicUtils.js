@@ -72,6 +72,13 @@ export const makePropGetter = (hooks, meta = {}) => {
     );
 };
 
+/**
+ * 遍历hooks数组，调用每个hook方法，并传入meta数据，返回计算结果
+ * @param {*} hooks 函数数组
+ * @param {*} initial 初始值
+ * @param {*} meta 函数调用时会传入的参数数据
+ * @param {*} allowUndefined 每个函数调用计算的结果是否可为undefined
+ */
 export const reduceHooks = (hooks, initial, meta = {}, allowUndefined) =>
   hooks.reduce((prev, next) => {
     const nextValue = next(prev, meta);
@@ -137,6 +144,10 @@ export function functionalUpdate(updater, old) {
   return typeof updater === 'function' ? updater(old) : updater;
 }
 
+/**
+ * 使用ref保存输入的obj，并返回获取`ref.current`值的方法
+ * @param {*} obj 要保存的obj
+ */
 export function useGetLatest(obj) {
   const ref = React.useRef();
   ref.current = obj;

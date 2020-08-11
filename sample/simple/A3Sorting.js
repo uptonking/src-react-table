@@ -64,7 +64,7 @@ function Table({ columns, data }) {
                 // we can add them into the header props
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
-                  key={index}
+                  key={index2}
                 >
                   {column.render('Header')}
                   {/* Add a sort direction indicator */}
