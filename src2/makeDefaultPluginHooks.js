@@ -44,6 +44,9 @@ const defaultGetCellProps = (props, { cell }) => ({
   ...props,
 });
 
+/**
+ * 返回一个对象，包含表格创建及操作的各种配置项
+ */
 export default function makeDefaultPluginHooks() {
   return {
     useOptions: [],

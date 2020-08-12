@@ -6,7 +6,9 @@ export const actions = {
   init: 'init',
 };
 
+/** 默认渲染自身的组件 */
 export const defaultRenderer = ({ value = '' }) => value;
+/** 默认渲染一个空格转义字符 */
 export const emptyRenderer = () => <>&nbsp;</>;
 
 export const defaultColumn = {
@@ -16,6 +18,7 @@ export const defaultColumn = {
   maxWidth: Number.MAX_SAFE_INTEGER,
 };
 
+/** 合并参数对象的所有props，最后返回一个大对象，会单独处理style和className */
 function mergeProps(...propList) {
   return propList.reduce((props, next) => {
     const { style, className, ...rest } = next;
@@ -45,6 +48,7 @@ function mergeProps(...propList) {
   }, {});
 }
 
+/** 合并prevProps和userProps */
 function handlePropGetter(prevProps, userProps, meta) {
   // Handle a lambda, pass it the previous props
   if (typeof userProps === 'function') {
@@ -60,11 +64,16 @@ function handlePropGetter(prevProps, userProps, meta) {
   return mergeProps(prevProps, userProps);
 }
 
+/**
+ * 一个高阶函数，会返回一个方法，合并输入对象的属性
+ * @param {*} hooks
+ * @param {*} meta
+ */
 export const makePropGetter = (hooks, meta = {}) => {
   return (userProps = {}) =>
     [...hooks, userProps].reduce(
-      (prev, next) =>
-        handlePropGetter(prev, next, {
+      (aac, next) =>
+        handlePropGetter(aac, next, {
           ...meta,
           userProps,
         }),
@@ -76,12 +85,12 @@ export const makePropGetter = (hooks, meta = {}) => {
  * 遍历hooks数组，调用每个hook方法，并传入meta数据，返回计算结果
  * @param {*} hooks 函数数组
  * @param {*} initial 初始值
- * @param {*} meta 函数调用时会传入的参数数据
+ * @param {*} meta 每个函数调用时会传入的参数数据
  * @param {*} allowUndefined 每个函数调用计算的结果是否可为undefined
  */
 export const reduceHooks = (hooks, initial, meta = {}, allowUndefined) =>
-  hooks.reduce((prev, next) => {
-    const nextValue = next(prev, meta);
+  hooks.reduce((aac, next) => {
+    const nextValue = next(aac, meta);
     if (process.env.NODE_ENV !== 'production') {
       if (!allowUndefined && typeof nextValue === 'undefined') {
         console.info(next);
@@ -93,6 +102,12 @@ export const reduceHooks = (hooks, initial, meta = {}, allowUndefined) =>
     return nextValue;
   }, initial);
 
+/**
+ * 遍历并调用hooks数组中的方法
+ * @param {*} hooks 函数数组
+ * @param {*} context 传入函数的第一参数
+ * @param {*} meta 传入函数的第二参数
+ */
 export const loopHooks = (hooks, context, meta = {}) =>
   hooks.forEach(hook => {
     const nextValue = hook(context, meta);
@@ -167,7 +182,6 @@ export function useMountedLayoutEffect(fn, deps) {
       fn();
     }
     mountedRef.current = true;
-    // eslint-disable-next-line
   }, deps);
 }
 
@@ -206,7 +220,12 @@ export function useAsyncDebounce(defaultFn, defaultWait = 0) {
     [getDefaultFn, getDefaultWait],
   );
 }
-
+/**
+ * 多层高阶方法，最终的目标是返回一个组件
+ * @param {*} instance
+ * @param {*} column
+ * @param {*} meta
+ */
 export function makeRenderer(instance, column, meta = {}) {
   return (type, userProps = {}) => {
     const Comp = typeof type === 'string' ? column[type] : type;

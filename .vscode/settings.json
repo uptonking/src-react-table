@@ -5,7 +5,7 @@
     "titleBar.inactiveForeground": "#ffffff", // change this color!
     "titleBar.activeForeground": "#ffffff" // change this color!
   },
-"editor.codeActionsOnSave": {
+  "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -18,38 +18,41 @@
   "scss.validate": false,
   "html.format.enable": false,
   "eslint.enable": true,
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "eslint.options": {
     "extensions": [".js", ".jsx", ".ts", ".tsx"]
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "markdownFormatter.enable": true,
-    "markdownFormatter.fullWidthTurnHalfWidth": "auto",
-    "markdownFormatter.codeAreaToBlock": "",
-    "markdownFormatter.formatCodes": false,
-    "markdownFormatter.formatULSymbol": false,
-    "markdownFormatter.formatOpt": {
-        "indent_size": 2,
-        "indent_with_tabs": false,
-        "space_after_anon_function": false,
-        "space_after_named_function": false,
-        "e4x": true
+  "markdownFormatter.fullWidthTurnHalfWidth": "auto",
+  "markdownFormatter.codeAreaToBlock": "",
+  "markdownFormatter.formatCodes": false,
+  "markdownFormatter.formatULSymbol": false,
+  "markdownFormatter.formatOpt": {
+    "indent_size": 2,
+    "indent_with_tabs": false,
+    "space_after_anon_function": false,
+    "space_after_named_function": false,
+    "e4x": true
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false,
+    "editor.renderWhitespace": "all",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
     },
-    "[markdown]": {
-        "editor.formatOnSave": false,
-        "editor.renderWhitespace": "all",
-        "editor.quickSuggestions": {
-            "other": true,
-            "comments": true,
-            "strings": true
-        },
-        "editor.snippetSuggestions": "top",
-        "editor.tabCompletion": "on",
-        "editor.acceptSuggestionOnEnter": "on",
-        "editor.defaultFormatter": "mervin.markdown-formatter"
-    }
-}
-
-
+    "editor.snippetSuggestions": "top",
+    "editor.tabCompletion": "on",
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.defaultFormatter": "mervin.markdown-formatter"
+  },
+  "bookmarks.saveBookmarksInProject": true
 }
