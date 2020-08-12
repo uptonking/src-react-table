@@ -6,8 +6,8 @@ const exampleNameArr = Object.keys(examples);
 
 export function RTableExampleListApp() {
   // const [curName, setCurName] = useState('');
-  const [curName, setCurName] = useState('AbsoluteLayoutTable');
-  // const [curName, setCurName] = useState('A1Basic');
+  // const [curName, setCurName] = useState('AbsoluteLayoutTable');
+  const [curName, setCurName] = useState('A0Simple');
 
   const handleClick = name => {
     setCurName(name);
