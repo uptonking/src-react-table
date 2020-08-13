@@ -58,15 +58,7 @@ function applyDefaults(props) {
 
 /**
  * react-table的入口hook。
- * 主要流程：
- * 1.`useTable` is called. A table ref instance is created.
- * 2.The `instance.state` is resolved from either a custom user state or a generated one.
- * 3.A collection of plugin points is created at `instance.hooks`.
- * 4.Each plugin is given the opportunity to add hooks to `instance.hook`.
- * 5.As the `useTable` logic proceeds to run, each plugin hook type is used at a specific point
- *   in time with each individual hook function being executed the order it was registered.
- * 6.The final instance object is returned from `useTable`,
- *   which the developer then uses to construct their table.
+ * 主要流程： 创建保存数据或配置的顶级ref对象 > 通过useReducer创建state > 处理表头 > 计算行和单元格
  * @param {*} props 其实是options，传入数据和配置项，必需包含data,columns。最后会加入到返回对象的属性中。
  * @param  {...any} plugins 支持官方和第三方插件。最后会加入到返回对象的属性中。
  */
@@ -74,6 +66,7 @@ export const useTable = (props, ...plugins) => {
   console.log('==useTable');
   console.log('props4useTable, ', props);
   // console.log('plugins, ', plugins);
+
   // Apply default props
   props = applyDefaults(props);
 
@@ -85,6 +78,8 @@ export const useTable = (props, ...plugins) => {
   const instanceRef = React.useRef({});
 
   // Create a getter for the instance (helps avoid a lot of potential memory leaks)
+  // 作者的观点是，保存getter函数引用而不保存数据对象自身，才可以让浏览器自动回收旧的无用的数据对象
+  // 因为没有对instanceRef.current创建闭包
   const getInstance = useGetLatest(instanceRef.current);
 
   // Assign the props, plugins and hooks to the instance，将输入的props，plugins和默认hooks都保存到instanceRef.current
@@ -93,6 +88,8 @@ export const useTable = (props, ...plugins) => {
     plugins,
     hooks: makeDefaultPluginHooks(),
   });
+
+  console.log('getInstance-init, ', getInstance());
 
   // Allow plugins to register hooks as early as possible，给每个plugin传入所有hooks相关配置
   plugins.filter(Boolean).forEach(plugin => {

@@ -160,7 +160,7 @@ export function functionalUpdate(updater, old) {
 }
 
 /**
- * 使用ref保存输入的obj，并返回获取`ref.current`值的方法
+ * 使用ref保存输入的obj，并返回获取`ref.current`值的方法，是为了避免内存泄漏
  * @param {*} obj 要保存的obj
  */
 export function useGetLatest(obj) {
