@@ -89,7 +89,7 @@ export const useTable = (props, ...plugins) => {
     hooks: makeDefaultPluginHooks(),
   });
 
-  console.log('getInstance-init, ', getInstance());
+  console.log('getInstance-init, ', JSON.parse(JSON.stringify(getInstance())));
 
   // Allow plugins to register hooks as early as possible，给每个plugin传入所有hooks相关配置
   plugins.filter(Boolean).forEach(plugin => {
@@ -109,12 +109,13 @@ export const useTable = (props, ...plugins) => {
   );
 
   const {
-    /** 数据数组 */
+    /** 原始数据数组 */
     data,
     /** 使用变量别名，代表表头配置 */
     columns: userColumns,
-    /** 初始状态 */
+    /** 初始state */
     initialState,
+    /** The default column object for every column  */
     defaultColumn,
     /** state更新时，先执行stateReducer修改state，再更新 */
     stateReducer,
@@ -126,7 +127,7 @@ export const useTable = (props, ...plugins) => {
     useControlledState,
   } = getInstance();
 
-  // Setup user reducer ref，用ref保存stateReducer
+  // Setup user reducer ref，用ref保存stateReducer方法
   const getStateReducer = useGetLatest(stateReducer);
 
   // Build the reducer，用于更新state的reducer方法
@@ -169,7 +170,7 @@ export const useTable = (props, ...plugins) => {
   );
 
   console.log('==state-init', state);
-
+  console.log(JSON.parse(JSON.stringify(state)));
   // 将表格状态及修改状态的方法添加到顶级ref对象
   Object.assign(getInstance(), {
     state,
