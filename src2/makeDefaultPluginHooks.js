@@ -46,7 +46,8 @@ const defaultGetCellProps = (props, { cell }) => ({
 });
 
 /**
- * 返回一个对象，包含表格创建及操作的各种配置项，主要实现无障碍a11y
+ * 返回一个hooks配置对象，包含表格创建及操作的各种配置项，
+ * 会被传给所有plugins，同时每个plugin都可以修改这个配置对象，如修改属性值或添加新属性
  */
 export default function makeDefaultPluginHooks() {
   return {

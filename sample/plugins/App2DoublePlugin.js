@@ -38,10 +38,6 @@ export function useCount(options = {}, plugins = []) {
  */
 export const incrementDoublePlugin = {
   setCount: old => old * 2,
-  useInstance: instance => {
-    instance.doubleVaule = useMemo(() => instance.count * 2, [instance.count]);
-    return instance;
-  },
 };
 
 export function PluginApp(props) {

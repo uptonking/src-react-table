@@ -10,7 +10,10 @@ export function findMaxDepth(columns, depth = 0) {
   }, 0);
 }
 
-// Build the visible columns, headers and flat column list
+/**
+ * 递归计算每个表头的信息，特别是所处的层级depth。
+ * Build the visible columns, headers and flat column list
+ */
 export function linkColumnStructure(columns, parent, depth = 0) {
   return columns.map(column => {
     column = {
@@ -32,6 +35,7 @@ export function flattenColumns(columns) {
   return flattenBy(columns, 'columns');
 }
 
+/** 给每个表头添加取该列数据的方法accessor以及id */
 export function assignColumnAccessor(column) {
   // First check for string accessor
   let { id, accessor, Header } = column;
@@ -63,7 +67,11 @@ export function assignColumnAccessor(column) {
 
   return column;
 }
-
+/**
+ * 设置表头各列要渲染的组件
+ * @param {*} column 表头列
+ * @param {*} userDefaultColumn 该列要渲染header和footer组件
+ */
 export function decorateColumn(column, userDefaultColumn) {
   if (!userDefaultColumn) {
     throw new Error();
@@ -84,7 +92,12 @@ export function decorateColumn(column, userDefaultColumn) {
   return column;
 }
 
-// Build the header groups from the bottom up
+/**
+ * Build the header groups from the bottom up
+ * @param {*} allColumns column表头构成的一维数组
+ * @param {*} defaultColumn 默认列组件
+ * @param {*} additionalHeaderProperties 表头属性
+ */
 export function makeHeaderGroups(
   allColumns,
   defaultColumn,
@@ -117,6 +130,7 @@ export function makeHeaderGroups(
 
       if (hasParents) {
         // If the column has a parent, add it if necessary
+        // 若当前表头存在parent，则创建parent表头对象
         if (column.parent) {
           newParent = {
             ...column.parent,
@@ -127,6 +141,7 @@ export function makeHeaderGroups(
           };
         } else {
           // If other columns have parents, we'll need to add a place holder if necessary
+          // 若当前表头不存在parent，则创建一个placeholder的表头对象
           const originalId = `${column.id}_placeholder`;
           newParent = decorateColumn(
             {
@@ -140,8 +155,8 @@ export function makeHeaderGroups(
           );
         }
 
-        // If the resulting parent columns are the same, just add
-        // the column and increment the header span
+        // If the resulting parent columns are the same,
+        // just add the column and increment the header span
         if (
           latestParentColumn &&
           latestParentColumn.originalId === newParent.originalId
@@ -166,6 +181,12 @@ export function makeHeaderGroups(
 
 const pathObjCache = new Map();
 
+/**
+ * 从一个对象的属性路径中取值
+ * @param {*} obj  对象
+ * @param {*} path 属性对应的路径
+ * @param {*} def 若属性值不存在，则返回这个默认值
+ */
 export function getBy(obj, path, def) {
   if (!path) {
     return obj;
@@ -229,6 +250,7 @@ export function isFunction(a) {
   }
 }
 
+/** 将数组arr的元素中存在key属性的元素提升到arr数组，最终返回合并key属性值的一维数组 */
 export function flattenBy(arr, key) {
   const flat = [];
 

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
   actions,
   functionalUpdate,
@@ -12,7 +11,10 @@ actions.resetHiddenColumns = 'resetHiddenColumns';
 actions.toggleHideColumn = 'toggleHideColumn';
 actions.setHiddenColumns = 'setHiddenColumns';
 actions.toggleHideAllColumns = 'toggleHideAllColumns';
-
+/**
+ * 作为一个plugin，会修改传入的hooks配置对象，处理隐藏列相关的计算
+ * @param {*} hooks 配置对象
+ */
 export const useColumnVisibility = hooks => {
   hooks.getToggleHiddenProps = [defaultGetToggleHiddenProps];
   hooks.getToggleHideAllColumnsProps = [defaultGetToggleHideAllColumnsProps];
@@ -58,6 +60,7 @@ const defaultGetToggleHideAllColumnsProps = (props, { instance }) => [
   },
 ];
 
+/** 根据action.type更新state，这里会给state对象加上hiddenColumns属性 */
 function reducer(state, action, previousState, instance) {
   if (action.type === actions.init) {
     return {
@@ -108,7 +111,7 @@ function reducer(state, action, previousState, instance) {
     };
   }
 }
-
+/** 计算各级表头中可见表头的数量 */
 function useInstanceBeforeDimensions(instance) {
   const {
     headers,
@@ -149,6 +152,7 @@ function useInstanceBeforeDimensions(instance) {
   );
 }
 
+/** 添加设置表头列的可见性的各种方法到顶级ref对象 */
 function useInstance(instance) {
   const {
     columns,

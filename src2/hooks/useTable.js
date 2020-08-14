@@ -70,7 +70,7 @@ export const useTable = (props, ...plugins) => {
   // Apply default props
   props = applyDefaults(props);
 
-  // Add core plugins
+  // Add core plugins，这里添加初始默认pugins，plugin在后面可以给state对象添加新属性或修改属性值
   plugins = [useColumnVisibility, ...plugins];
 
   // Create the table instance，
@@ -82,16 +82,21 @@ export const useTable = (props, ...plugins) => {
   // 因为没有对instanceRef.current创建闭包
   const getInstance = useGetLatest(instanceRef.current);
 
-  // Assign the props, plugins and hooks to the instance，将输入的props，plugins和默认hooks都保存到instanceRef.current
+  // Assign the props, plugins and hooks to the instance，
+  // 将输入的props，plugins和默认的hooks配置对象都保存到instanceRef.current
   Object.assign(getInstance(), {
     ...props,
     plugins,
     hooks: makeDefaultPluginHooks(),
   });
 
-  console.log('getInstance-init, ', JSON.parse(JSON.stringify(getInstance())));
+  console.log(
+    '==getInstance-init, ',
+    JSON.parse(JSON.stringify(getInstance())),
+  );
 
-  // Allow plugins to register hooks as early as possible，给每个plugin传入所有hooks相关配置
+  // Allow plugins to register hooks as early as possible，
+  // 给每个plugin都传入hooks配置对象，每个plugin都可以修改配置对象
   plugins.filter(Boolean).forEach(plugin => {
     plugin(getInstance().hooks);
   });
@@ -130,7 +135,7 @@ export const useTable = (props, ...plugins) => {
   // Setup user reducer ref，用ref保存stateReducer方法
   const getStateReducer = useGetLatest(stateReducer);
 
-  // Build the reducer，用于更新state的reducer方法
+  // Build the reducer，用于更新state的reducer方法，action的处理逻辑在plugin中
   const reducer = React.useCallback(
     (state, action) => {
       // Detect invalid actions
@@ -139,7 +144,8 @@ export const useTable = (props, ...plugins) => {
         throw new Error('Unknown Action 👆');
       }
 
-      // Reduce the state from all plugin reducers，计算默认和用户的reducer处理后的state
+      // Reduce the state from all plugin reducers，
+      // 计算plugin的reducer处理和用户的reducer处理后的state
       return [
         ...getHooks().stateReducers,
         // Allow the user to add their own state reducer(s)，在状态更新前修改state
@@ -154,12 +160,13 @@ export const useTable = (props, ...plugins) => {
     [getHooks, getStateReducer, getInstance],
   );
 
-  // Start the reducer，获取最顶级的reducerState状态对象和更新状态的dispatch方法
+  // Start the reducer，获取最顶级的reducerState状态对象和dispatch更新方法
   // todo ==== reducerState的初始值通过init触发计算得到，是lazy init吗，是不是只计算一次？
   const [reducerState, dispatch] = React.useReducer(reducer, undefined, () => {
     console.log('==init reducerState');
     return reducer(initialState, { type: actions.init });
   });
+  console.log('==useReducer, ', JSON.parse(JSON.stringify(reducerState)));
 
   // Allow the user to control the final state with hooks，
   // 合并单独控制的部分状态数据，返回值作为table的最顶级state
@@ -169,15 +176,14 @@ export const useTable = (props, ...plugins) => {
     { instance: getInstance() },
   );
 
-  console.log('==state-init', state);
-  console.log(JSON.parse(JSON.stringify(state)));
+  console.log('==state-init， ', JSON.parse(JSON.stringify(state)));
   // 将表格状态及修改状态的方法添加到顶级ref对象
   Object.assign(getInstance(), {
     state,
     dispatch,
   });
 
-  // Decorate All the columns，处理表头列
+  // Decorate All the columns，计算表头树型信息
   const columns = React.useMemo(
     () =>
       linkColumnStructure(
@@ -197,7 +203,7 @@ export const useTable = (props, ...plugins) => {
 
   // Get the flat list of all columns
   // and allow hooks to decorate those columns (and trigger this memoization via deps)
-  // 打平所有表头列，方便计算
+  // 打平所有表头列为一维数组，方便计算
   let allColumns = React.useMemo(
     () =>
       reduceHooks(getHooks().allColumns, flattenColumns(columns), {
@@ -217,12 +223,15 @@ export const useTable = (props, ...plugins) => {
 
   // Access the row model using initial columns，
   const [rows, flatRows, rowsById] = React.useMemo(() => {
+    // 存放所有行的数据，这里的计算将单元格的数据放在row.values，而没有放在row.cells
     const rows = [];
     const flatRows = [];
     const rowsById = {};
 
     const allColumnsQueue = [...allColumns];
 
+    // 遍历表头所有列，在处理一列时再遍历所有行，从每行中取出该列的数据
+    // todo 减少算法复杂度，while循环内的方法中还有循环
     while (allColumnsQueue.length) {
       const column = allColumnsQueue.shift();
       accessRowsForColumn({
@@ -250,12 +259,12 @@ export const useTable = (props, ...plugins) => {
     // materializedColumns,
   });
 
-  // 数据解析后的处理
+  // 数据解析后的处理逻辑
   loopHooks(getHooks().useInstanceAfterData, getInstance());
 
   // Get the flat list of all columns AFTER the rows have been access,
   // and allow hooks to decorate those columns (and trigger this memoization via deps)
-  // 对visibleColumns进行样式设置
+  // 从allColumns中设置可见表头要渲染的默认组件或自定义组件，返回的是扁平化的一维数组
   let visibleColumns = React.useMemo(
     () =>
       reduceHooks(getHooks().visibleColumns, allColumns, {
@@ -273,7 +282,8 @@ export const useTable = (props, ...plugins) => {
     ],
   );
 
-  // Combine new visible columns with all columns，合并visibleColumns到allColumns
+  // Combine new visible columns with all columns，
+  // 合并修改后的visibleColumns到allColumns
   allColumns = React.useMemo(() => {
     const columns = [...visibleColumns];
 
@@ -287,6 +297,7 @@ export const useTable = (props, ...plugins) => {
   }, [allColumns, visibleColumns]);
   getInstance().allColumns = allColumns;
 
+  // 开发环境下会提示表头id重复的列
   if (process.env.NODE_ENV !== 'production') {
     const duplicateColumns = allColumns.filter((column, i) => {
       return allColumns.findIndex(d => d.id === column.id) !== i;
@@ -302,7 +313,8 @@ export const useTable = (props, ...plugins) => {
     }
   }
 
-  // Make the headerGroups，计算分组表头数据，用二维数组存放所有扁平化的表头后
+  // Make the headerGroups
+  // 计算可见分组表头结构，用二维数组存放所有扁平化的表头，数组每个元素存放表头一行包含的所有表头
   const headerGroups = React.useMemo(
     () =>
       reduceHooks(
@@ -323,7 +335,8 @@ export const useTable = (props, ...plugins) => {
   );
   getInstance().headerGroups = headerGroups;
 
-  // Get the first level of headers，获取嵌套数组形式表示的表头，便于排序
+  // Get the first level of headers
+  // 获取表头的第一行，便于排序，有些表头可能是placeholder
   const headers = React.useMemo(
     () => (headerGroups.length ? headerGroups[0].headers : []),
     [headerGroups],
@@ -336,7 +349,7 @@ export const useTable = (props, ...plugins) => {
     [],
   );
 
-  //
+  // 计算可见表头的数量
   loopHooks(getHooks().useInstanceBeforeDimensions, getInstance());
 
   // Filter columns down to visible ones，计算visibleColumns的id
@@ -347,6 +360,7 @@ export const useTable = (props, ...plugins) => {
     .sort()
     .join('_');
 
+  // 计算最终显示的可见表头
   visibleColumns = React.useMemo(
     () => visibleColumns.filter(d => d.isVisible),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -549,8 +563,7 @@ function calculateHeaderWidths(headers, left = 0) {
 }
 
 /**
- * 一列一列的获取行中的数据
- * @param {*} param0 包含数据的行对象
+ * 遍历所有行时，获取各行中column列的数据，可以处理行中行的情况
  */
 function accessRowsForColumn({
   data,
@@ -563,15 +576,18 @@ function accessRowsForColumn({
   accessValueHooks,
   getInstance,
 }) {
-  // Access the row's data column-by-column
+  // Access the row's data column-by-column.
   // We do it this way so we can incrementally add materialized
   // columns after the first pass and avoid excessive looping
+  // 处理一行数据，可以是新创建一个row对象，也可以是访问已有的row对象，
+  // 创建新row对象时未创建cells数据
   const accessRow = (originalRow, rowIndex, depth = 0, parent, parentRows) => {
     // Keep the original reference around
     const original = originalRow;
 
     const id = getRowId(originalRow, rowIndex, parent);
 
+    // 这一行数据最后会保存到这里
     let row = rowsById[id];
 
     // If the row hasn't been created, let's make it
@@ -601,7 +617,7 @@ function accessRowsForColumn({
       // Also keep track of every row by its ID
       rowsById[id] = row;
 
-      // Get the original subrows
+      // Get the original subrows，计算originalSubRows，可能内部还有subRows
       row.originalSubRows = getSubRows(originalRow, rowIndex);
 
       // Then recursively access them
@@ -614,7 +630,7 @@ function accessRowsForColumn({
         row.subRows = subRows;
       }
     } else if (row.subRows) {
-      // If the row exists, then it's already been accessed
+      // If the row exists, then it's already been accessed.
       // Keep recursing, but don't worry about passing the
       // accumlator array (those rows already exist)
       row.originalSubRows.forEach((d, i) => accessRow(d, i, depth + 1, row));
@@ -625,7 +641,7 @@ function accessRowsForColumn({
       row.values[column.id] = column.accessor(originalRow, rowIndex, row);
     }
 
-    // Allow plugins to manipulate the column value
+    // Allow plugins to manipulate the column value，插件在这里修改值
     row.values[column.id] = reduceHooks(
       accessValueHooks,
       row.values[column.id],
