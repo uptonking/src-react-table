@@ -6,9 +6,9 @@ export const actions = {
   init: 'init',
 };
 
-/** 直接返回输入值的函数 */
+/** 直接返回输入值的函数，用来渲染默认cell */
 export const defaultRenderer = ({ value = '' }) => value;
-/** 渲染一个空格转义字符的组件 */
+/** 渲染一个空格转义字符的组件，用来渲染默认header,footer */
 export const emptyRenderer = () => <>&nbsp;</>;
 
 /** 表头列默认渲染的组件和样式配置 */

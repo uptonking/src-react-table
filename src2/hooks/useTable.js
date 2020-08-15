@@ -102,11 +102,10 @@ export const useTable = (props, ...plugins) => {
   plugins.filter(Boolean).forEach(plugin => {
     plugin(getInstance().hooks);
   });
-  // console.log(
-  //   'getInstance-hooks, ',
-  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
-  // );
-  console.log('getInstance-hooks, ', getInstance());
+  console.log(
+    'getInstance-hooks, ',
+    JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  );
 
   // Consume all hooks and make a getter for them
   const getHooks = useGetLatest(getInstance().hooks);
@@ -192,7 +191,7 @@ export const useTable = (props, ...plugins) => {
     dispatch,
   });
 
-  // Decorate All the columns，计算表头树型结构保存到columns
+  // Decorate All the columns，计算表头树型结构保存到columns，主要加了depth属性
   const columns = React.useMemo(
     () =>
       linkColumnStructure(
@@ -209,7 +208,7 @@ export const useTable = (props, ...plugins) => {
     ],
   );
   getInstance().columns = columns;
-  console.log('instance.columns, ', columns);
+  console.log('instance.columns, ', JSON.parse(JSON.stringify(columns)));
 
   // Get the flat list of all columns
   // and allow hooks to decorate those columns (and trigger this memoization via deps)
@@ -230,7 +229,7 @@ export const useTable = (props, ...plugins) => {
     ],
   );
   getInstance().allColumns = allColumns;
-  // console.log('instance.allColumns, ', allColumns);
+  console.log('instance.allColumns, ', JSON.parse(JSON.stringify(allColumns)));
 
   // Access the row model using initial columns，
   const [rows, flatRows, rowsById] = React.useMemo(() => {
@@ -276,10 +275,18 @@ export const useTable = (props, ...plugins) => {
 
   // 数据解析后的处理逻辑
   loopHooks(getHooks().useInstanceAfterData, getInstance());
+  console.log(
+    'getInstance-useInstanceAfterData, ',
+    JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  );
 
+  console.log(
+    'getHooks().visibleColumns.length, ',
+    getHooks().visibleColumns.length,
+  );
   // Get the flat list of all columns AFTER the rows have been access,
   // and allow hooks to decorate those columns (and trigger this memoization via deps)
-  // 从allColumns中设置可见表头要渲染的默认组件或自定义组件，返回的是扁平化的一维数组
+  // 从allColumns中，第一次设置可见表头要渲染的默认组件或自定义组件，返回的是扁平化的一维数组
   let visibleColumns = React.useMemo(
     () =>
       reduceHooks(getHooks().visibleColumns, allColumns, {
@@ -296,6 +303,10 @@ export const useTable = (props, ...plugins) => {
       }),
     ],
   );
+  console.log(
+    'visibleColumns, ',
+    JSON.parse(JSON.stringify(visibleColumns, getCircularReplacer())),
+  );
 
   // Combine new visible columns with all columns，
   // 合并修改后的visibleColumns到allColumns
@@ -311,6 +322,10 @@ export const useTable = (props, ...plugins) => {
     return columns;
   }, [allColumns, visibleColumns]);
   getInstance().allColumns = allColumns;
+  // console.log(
+  //   'allColumns, ',
+  //   JSON.parse(JSON.stringify(allColumns, getCircularReplacer())),
+  // );
 
   // 开发环境下会提示表头id重复的列
   if (process.env.NODE_ENV !== 'production') {
@@ -328,8 +343,13 @@ export const useTable = (props, ...plugins) => {
     }
   }
 
+  console.log(
+    'getHooks().headerGroups.length, ',
+    getHooks().headerGroups.length,
+  );
+
   // Make the headerGroups
-  // 计算可见分组表头结构，用二维数组存放所有扁平化的表头，数组每个元素存放表头一行包含的所有列
+  // 第一次计算可见分组表头结构，用二维数组存放所有扁平化的表头，数组每个元素存放表头一行包含的所有列
   const headerGroups = React.useMemo(
     () =>
       reduceHooks(
@@ -349,7 +369,10 @@ export const useTable = (props, ...plugins) => {
     ],
   );
   getInstance().headerGroups = headerGroups;
-  console.log('instance.headerGroups, ', headerGroups);
+  console.log(
+    'instance.headerGroups, ',
+    JSON.parse(JSON.stringify(headerGroups)),
+  );
 
   // Get the first level of headers
   // 获取表头的第一行，有些表头可能是placeholder，与原始columns属性类似，但便于排序
@@ -358,7 +381,7 @@ export const useTable = (props, ...plugins) => {
     [headerGroups],
   );
   getInstance().headers = headers;
-  console.log('instance.headers, ', headers);
+  // console.log('instance.headers, ', headers);
 
   // Provide a flat header list for utilities，扁平化表头方便计算
   getInstance().flatHeaders = headerGroups.reduce(
@@ -403,17 +426,17 @@ export const useTable = (props, ...plugins) => {
 
   // 通过useInstance修改顶级ref对象
   loopHooks(getHooks().useInstance, getInstance());
-  // console.log(
-  //   'getInstance-useInstance, ',
-  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
-  // );
+  console.log(
+    'getInstance-useInstance, ',
+    JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  );
 
   // Each materialized header needs to be assigned a render function and other prop getter properties here.
   // 设置要每个表头列要渲染的组件
   [...getInstance().flatHeaders, ...getInstance().allColumns].forEach(
     column => {
       // Give columns/headers rendering power
-      // 从column中取出表头列组件
+      // render属性值是个方法，可创建表头列组件
       column.render = makeRenderer(getInstance(), column);
 
       // Give columns/headers a default getHeaderProps，合并表头列的属性
@@ -532,7 +555,6 @@ export const useTable = (props, ...plugins) => {
   //   'getInstance-prepareRow, ',
   //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
   // );
-  console.log('getInstance-prepareRow, ', getInstance());
 
   // getTableProps() is used to resolve any props needed for table wrapper.
   getInstance().getTableProps = makePropGetter(getHooks().getTableProps, {

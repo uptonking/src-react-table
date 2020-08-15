@@ -80,6 +80,7 @@ export function decorateColumn(column, userDefaultColumn) {
     // Make sure there is a fallback header, just in case
     Header: emptyRenderer,
     Footer: emptyRenderer,
+    // 这里设置了单元格默认的渲染组件
     ...defaultColumn,
     ...userDefaultColumn,
     ...column,
