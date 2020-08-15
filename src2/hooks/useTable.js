@@ -2,6 +2,7 @@
 // 文件主要结构为一系列模块级的代表defaultProps的变量，
 // 以及4个func：applyDefaults,useTable,calculateHeaderWidths,accessRowsForColumn
 import React from 'react';
+import { getCircularReplacer } from '../../test-utils/logUtils';
 import {
   linkColumnStructure,
   flattenColumns,
@@ -90,13 +91,22 @@ export const useTable = (props, ...plugins) => {
     hooks: makeDefaultPluginHooks(),
   });
 
-  // console.log('getInstance-init, ', JSON.parse(JSON.stringify(getInstance())));
+  // console.log(
+  //   'getInstance-init, ',
+  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  // );
+  // console.log('getInstance-init, ', getInstance());
 
   // Allow plugins to register hooks as early as possible，
   // 给每个plugin都传入hooks配置对象，每个plugin都可以修改配置对象
   plugins.filter(Boolean).forEach(plugin => {
     plugin(getInstance().hooks);
   });
+  // console.log(
+  //   'getInstance-hooks, ',
+  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  // );
+  console.log('getInstance-hooks, ', getInstance());
 
   // Consume all hooks and make a getter for them
   const getHooks = useGetLatest(getInstance().hooks);
@@ -123,7 +133,7 @@ export const useTable = (props, ...plugins) => {
     stateReducer,
     /** 获取一行的subrows，甚至可以用来创建subrows */
     getSubRows,
-    /** 获取每行row的id */
+    /** 获取一行row的id */
     getRowId,
     /** If you need to control part of table state, this is the place to do it. */
     useControlledState,
@@ -133,7 +143,7 @@ export const useTable = (props, ...plugins) => {
   const getStateReducer = useGetLatest(stateReducer);
 
   // Build the reducer，
-  // 用于更新state的reducer方法，action的处理逻辑在plugin中
+  // 用于更新state的reducer方法，action的各种type的处理逻辑在plugin中
   const reducer = React.useCallback(
     (state, action) => {
       // Detect invalid actions
@@ -165,7 +175,7 @@ export const useTable = (props, ...plugins) => {
     console.log('==init reducerState');
     return reducer(initialState, { type: actions.init });
   });
-  console.log('==useReducer, ', JSON.parse(JSON.stringify(reducerState)));
+  // console.log('==useReducer, ', JSON.parse(JSON.stringify(reducerState)));
 
   // Allow the user to control the final state with hooks，
   // 再合并单独控制的部分状态到reducerState，返回值作为table的最顶级state
@@ -199,6 +209,7 @@ export const useTable = (props, ...plugins) => {
     ],
   );
   getInstance().columns = columns;
+  console.log('instance.columns, ', columns);
 
   // Get the flat list of all columns
   // and allow hooks to decorate those columns (and trigger this memoization via deps)
@@ -219,6 +230,7 @@ export const useTable = (props, ...plugins) => {
     ],
   );
   getInstance().allColumns = allColumns;
+  // console.log('instance.allColumns, ', allColumns);
 
   // Access the row model using initial columns，
   const [rows, flatRows, rowsById] = React.useMemo(() => {
@@ -257,6 +269,10 @@ export const useTable = (props, ...plugins) => {
     rowsById,
     // materializedColumns,
   });
+  // console.log(
+  //   'getInstance-rows, ',
+  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  // );
 
   // 数据解析后的处理逻辑
   loopHooks(getHooks().useInstanceAfterData, getInstance());
@@ -333,14 +349,16 @@ export const useTable = (props, ...plugins) => {
     ],
   );
   getInstance().headerGroups = headerGroups;
+  console.log('instance.headerGroups, ', headerGroups);
 
   // Get the first level of headers
-  // 获取表头的第一行，便于排序，有些表头可能是placeholder
+  // 获取表头的第一行，有些表头可能是placeholder，与原始columns属性类似，但便于排序
   const headers = React.useMemo(
     () => (headerGroups.length ? headerGroups[0].headers : []),
     [headerGroups],
   );
   getInstance().headers = headers;
+  console.log('instance.headers, ', headers);
 
   // Provide a flat header list for utilities，扁平化表头方便计算
   getInstance().flatHeaders = headerGroups.reduce(
@@ -350,6 +368,10 @@ export const useTable = (props, ...plugins) => {
 
   // 计算可见表头的数量
   loopHooks(getHooks().useInstanceBeforeDimensions, getInstance());
+  // console.log(
+  //   'getInstance-useInstanceBeforeDimensions, ',
+  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  // );
 
   // Filter columns down to visible ones，计算visibleColumns的id
   // todo Replace .filter().map() with .reduce()
@@ -381,6 +403,10 @@ export const useTable = (props, ...plugins) => {
 
   // 通过useInstance修改顶级ref对象
   loopHooks(getHooks().useInstance, getInstance());
+  // console.log(
+  //   'getInstance-useInstance, ',
+  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  // );
 
   // Each materialized header needs to be assigned a render function and other prop getter properties here.
   // 设置要每个表头列要渲染的组件
@@ -443,6 +469,10 @@ export const useTable = (props, ...plugins) => {
       }),
     [headerGroups, getInstance, getHooks],
   );
+  // console.log(
+  //   'getInstance-headerGroups-filter, ',
+  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  // );
 
   // 表尾处理
   getInstance().footerGroups = [...getInstance().headerGroups].reverse();
@@ -498,13 +528,18 @@ export const useTable = (props, ...plugins) => {
     },
     [getHooks, getInstance, allColumns, visibleColumns],
   );
+  // console.log(
+  //   'getInstance-prepareRow, ',
+  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  // );
+  console.log('getInstance-prepareRow, ', getInstance());
 
   // getTableProps() is used to resolve any props needed for table wrapper.
   getInstance().getTableProps = makePropGetter(getHooks().getTableProps, {
     instance: getInstance(),
   });
 
-  // is used to resolve any props needed for your table body wrapper.
+  // resolve any props needed for your table body wrapper.
   getInstance().getTableBodyProps = makePropGetter(
     getHooks().getTableBodyProps,
     {
@@ -514,6 +549,7 @@ export const useTable = (props, ...plugins) => {
 
   // 在返回顶级ref对象前，最后一次提供修改该对象的机会
   loopHooks(getHooks().useFinalInstance, getInstance());
+  console.log('getInstance-useFinalInstance, ', getInstance());
 
   // 最后返回的对象其实是 instanceRef.current
   return getInstance();

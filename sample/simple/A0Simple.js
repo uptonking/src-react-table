@@ -48,7 +48,7 @@ function App() {
   return (
     // apply the table props
     <table
-      // {...getTableProps()}
+      {...getTableProps()}
       style={{
         border: 'solid 2px teal',
         // borderCollapse: 'collapse'
@@ -59,16 +59,13 @@ function App() {
           // Loop over the header rows
           headerGroups.map((headerGroup, index) => (
             // Apply the header row props
-            <tr
-              // {...headerGroup.getHeaderGroupProps()}
-              key={index}
-            >
+            <tr {...headerGroup.getHeaderGroupProps()} key={index}>
               {
                 // Loop over the headers in each row
                 headerGroup.headers.map((column, i) => (
                   // Apply the header cell props
                   <th
-                    // {...column.getHeaderProps()}
+                    {...column.getHeaderProps()}
                     style={{
                       border: 'solid 1px blue',
                       background: 'aliceblue',
@@ -87,9 +84,7 @@ function App() {
         }
       </thead>
       {/* Apply the table body props */}
-      <tbody
-      // {...getTableBodyProps()}
-      >
+      <tbody {...getTableBodyProps()}>
         {
           // Loop over the table rows
           rows.map((row, index) => {
@@ -97,17 +92,14 @@ function App() {
             prepareRow(row);
             return (
               // Apply the row props
-              <tr
-                // {...row.getRowProps()}
-                key={index}
-              >
+              <tr {...row.getRowProps()} key={index}>
                 {
                   // Loop over the rows cells
                   row.cells.map((cell, i) => {
                     // Apply the cell props
                     return (
                       <td
-                        // {...cell.getCellProps()}
+                        {...cell.getCellProps()}
                         style={{
                           padding: '10px',
                           border: 'solid 1px silver',
