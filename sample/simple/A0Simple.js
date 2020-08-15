@@ -34,7 +34,7 @@ function App() {
     [],
   );
 
-  const tableInstance = { columns, data };
+  const tableInstance = useTable({ columns, data });
   console.log('==tableInstance,', tableInstance);
   const {
     getTableProps,

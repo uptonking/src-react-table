@@ -1,16 +1,17 @@
 import React from 'react';
 
 const renderErr = 'Renderer Error ☝️';
-
+/** 更新顶级state的action类型，各个plugin都会dispatch自己类型的action */
 export const actions = {
   init: 'init',
 };
 
-/** 默认渲染自身的组件 */
+/** 直接返回输入值的函数 */
 export const defaultRenderer = ({ value = '' }) => value;
-/** 默认渲染一个空格转义字符 */
+/** 渲染一个空格转义字符的组件 */
 export const emptyRenderer = () => <>&nbsp;</>;
 
+/** 表头列默认渲染的组件和样式配置 */
 export const defaultColumn = {
   Cell: defaultRenderer,
   width: 150,
@@ -66,8 +67,6 @@ function handlePropGetter(prevProps, userProps, meta) {
 
 /**
  * 一个高阶函数，会返回一个方法，合并输入对象的属性
- * @param {*} hooks
- * @param {*} meta
  */
 export const makePropGetter = (hooks, meta = {}) => {
   return (userProps = {}) =>
@@ -121,6 +120,7 @@ export const loopHooks = (hooks, context, meta = {}) =>
     }
   });
 
+/** 保证插件调用的顺序，会检查pluginName名称 */
 export function ensurePluginOrder(plugins, befores, pluginName, afters) {
   if (process.env.NODE_ENV !== 'production' && afters) {
     throw new Error(
@@ -171,9 +171,11 @@ export function useGetLatest(obj) {
 }
 
 // SSR has issues with useLayoutEffect still, so use useEffect during SSR
+/** 默认使用useLayoutEffect，在SSR中使用useEffect */
 export const safeUseLayoutEffect =
   typeof document !== 'undefined' ? React.useLayoutEffect : React.useEffect;
 
+/** 挂载后才会执行fn */
 export function useMountedLayoutEffect(fn, deps) {
   const mountedRef = React.useRef(false);
 
@@ -221,13 +223,15 @@ export function useAsyncDebounce(defaultFn, defaultWait = 0) {
   );
 }
 /**
- * 多层高阶方法，最终的目标是返回一个组件
- * @param {*} instance
- * @param {*} column
- * @param {*} meta
+ * 多层高阶方法，最终的目标是创建一个组件，并将所有参数instance, column, meta都作为props传给它。
+ * 此方法从column.type中去除要渲染的组件类型。
+ * @param {*} instance 顶级ref对象
+ * @param {*} column 表头列对象
+ * @param {*} meta 其他数据或属性
  */
 export function makeRenderer(instance, column, meta = {}) {
   return (type, userProps = {}) => {
+    // 从column对象中获取要渲染的表头组件
     const Comp = typeof type === 'string' ? column[type] : type;
 
     if (typeof Comp === 'undefined') {
@@ -261,6 +265,7 @@ function isClassComponent(component) {
   );
 }
 
+/** 判断组件是否是React.memo/forwardRef包裹的组件 */
 function isExoticComponent(component) {
   return (
     typeof component === 'object' &&

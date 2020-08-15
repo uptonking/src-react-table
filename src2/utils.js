@@ -1,6 +1,6 @@
 import { defaultColumn, emptyRenderer } from './publicUtils';
 
-// Find the depth of the columns
+/** Find the depth of the columns */
 export function findMaxDepth(columns, depth = 0) {
   return columns.reduce((prev, curr) => {
     if (curr.columns) {
@@ -30,12 +30,12 @@ export function linkColumnStructure(columns, parent, depth = 0) {
     return column;
   });
 }
-
+/** 将columns表头数组打平成元素不包含columns的一维数组，便于以后计算 */
 export function flattenColumns(columns) {
   return flattenBy(columns, 'columns');
 }
 
-/** 给每个表头添加取该列数据的方法accessor以及id */
+/** 给每个表头添加获取该列数据的方法accessor以及id */
 export function assignColumnAccessor(column) {
   // First check for string accessor
   let { id, accessor, Header } = column;
@@ -68,7 +68,7 @@ export function assignColumnAccessor(column) {
   return column;
 }
 /**
- * 设置表头各列要渲染的组件
+ * 设置表头各列要渲染的组件，可以是默认的emptyRenderer或自定义传入的。
  * @param {*} column 表头列
  * @param {*} userDefaultColumn 该列要渲染header和footer组件
  */
@@ -93,7 +93,8 @@ export function decorateColumn(column, userDefaultColumn) {
 }
 
 /**
- * Build the header groups from the bottom up
+ * Build the header groups from the bottom up.
+ * 根据扁平后的表头列数组创建树型表头结构，先创建叶节点表头，再创建父节点表头直到根节点。
  * @param {*} allColumns column表头构成的一维数组
  * @param {*} defaultColumn 默认列组件
  * @param {*} additionalHeaderProperties 表头属性

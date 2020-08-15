@@ -90,10 +90,7 @@ export const useTable = (props, ...plugins) => {
     hooks: makeDefaultPluginHooks(),
   });
 
-  console.log(
-    '==getInstance-init, ',
-    JSON.parse(JSON.stringify(getInstance())),
-  );
+  // console.log('getInstance-init, ', JSON.parse(JSON.stringify(getInstance())));
 
   // Allow plugins to register hooks as early as possible，
   // 给每个plugin都传入hooks配置对象，每个plugin都可以修改配置对象
@@ -135,7 +132,8 @@ export const useTable = (props, ...plugins) => {
   // Setup user reducer ref，用ref保存stateReducer方法
   const getStateReducer = useGetLatest(stateReducer);
 
-  // Build the reducer，用于更新state的reducer方法，action的处理逻辑在plugin中
+  // Build the reducer，
+  // 用于更新state的reducer方法，action的处理逻辑在plugin中
   const reducer = React.useCallback(
     (state, action) => {
       // Detect invalid actions
@@ -147,6 +145,7 @@ export const useTable = (props, ...plugins) => {
       // Reduce the state from all plugin reducers，
       // 计算plugin的reducer处理和用户的reducer处理后的state
       return [
+        // 先执行其他plugin添加的reducer
         ...getHooks().stateReducers,
         // Allow the user to add their own state reducer(s)，在状态更新前修改state
         ...(Array.isArray(getStateReducer())
@@ -169,7 +168,7 @@ export const useTable = (props, ...plugins) => {
   console.log('==useReducer, ', JSON.parse(JSON.stringify(reducerState)));
 
   // Allow the user to control the final state with hooks，
-  // 合并单独控制的部分状态数据，返回值作为table的最顶级state
+  // 再合并单独控制的部分状态到reducerState，返回值作为table的最顶级state
   const state = reduceHooks(
     [...getHooks().useControlledState, useControlledState],
     reducerState,
@@ -183,7 +182,7 @@ export const useTable = (props, ...plugins) => {
     dispatch,
   });
 
-  // Decorate All the columns，计算表头树型信息
+  // Decorate All the columns，计算表头树型结构保存到columns
   const columns = React.useMemo(
     () =>
       linkColumnStructure(
@@ -314,7 +313,7 @@ export const useTable = (props, ...plugins) => {
   }
 
   // Make the headerGroups
-  // 计算可见分组表头结构，用二维数组存放所有扁平化的表头，数组每个元素存放表头一行包含的所有表头
+  // 计算可见分组表头结构，用二维数组存放所有扁平化的表头，数组每个元素存放表头一行包含的所有列
   const headerGroups = React.useMemo(
     () =>
       reduceHooks(
@@ -371,7 +370,7 @@ export const useTable = (props, ...plugins) => {
   // Header Visibility is needed by this point，计算表头各列宽度并添加到顶级ref对象
   const [
     totalColumnsMinWidth,
-    /** is the total width of all visible columns，不使用table标签时才有用 */
+    /** the total width of all visible columns，不使用table标签时才有用 */
     totalColumnsWidth,
     totalColumnsMaxWidth,
   ] = calculateHeaderWidths(headers);
@@ -380,17 +379,18 @@ export const useTable = (props, ...plugins) => {
   getInstance().totalColumnsWidth = totalColumnsWidth;
   getInstance().totalColumnsMaxWidth = totalColumnsMaxWidth;
 
-  //
+  // 通过useInstance修改顶级ref对象
   loopHooks(getHooks().useInstance, getInstance());
 
   // Each materialized header needs to be assigned a render function and other prop getter properties here.
-  // 设置要每列要渲染的组件对应的表头组件
+  // 设置要每个表头列要渲染的组件
   [...getInstance().flatHeaders, ...getInstance().allColumns].forEach(
     column => {
       // Give columns/headers rendering power
+      // 从column中取出表头列组件
       column.render = makeRenderer(getInstance(), column);
 
-      // Give columns/headers a default getHeaderProps，配置表头单元格
+      // Give columns/headers a default getHeaderProps，合并表头列的属性
       column.getHeaderProps = makePropGetter(getHooks().getHeaderProps, {
         instance: getInstance(),
         column,
@@ -404,7 +404,7 @@ export const useTable = (props, ...plugins) => {
     },
   );
 
-  // 计算分组表头中要显示的表头列
+  // 计算分组表头中要显示的表头列，去除过滤掉的列
   getInstance().headerGroups = React.useMemo(
     () =>
       headerGroups.filter((headerGroup, i) => {
@@ -449,16 +449,18 @@ export const useTable = (props, ...plugins) => {
 
   // The prepareRow function is absolutely necessary
   // and MUST be called on any rows the user wishes to be displayed.
-  // ==== 调用prepareRow()创建要显示的行元素，其中提供了设置单元格的方法。
+  // ==== 调用prepareRow()会获取要行中要显示的单元格数据，再设置单元格要渲染的的组件。
   // This function is responsible for lazily preparing a row for rendering.
   getInstance().prepareRow = React.useCallback(
     row => {
+      // 合并rowProps
       row.getRowProps = makePropGetter(getHooks().getRowProps, {
         instance: getInstance(),
         row,
       });
 
       // Build the visible cells for each row
+      // 遍历表头，取出各列数据保存到row.allCells
       row.allCells = allColumns.map(column => {
         const value = row.values[column.id];
 
@@ -468,13 +470,14 @@ export const useTable = (props, ...plugins) => {
           value,
         };
 
-        // Give each cell a getCellProps base
+        // Give each cell a getCellProps base，合并cellProps
         cell.getCellProps = makePropGetter(getHooks().getCellProps, {
           instance: getInstance(),
           cell,
         });
 
         // Give each cell a renderer function (supports multiple renderers)
+        // 从column中去除要渲染的cell组件
         cell.render = makeRenderer(getInstance(), column, {
           row,
           cell,
@@ -484,11 +487,13 @@ export const useTable = (props, ...plugins) => {
         return cell;
       });
 
+      // 这里才将单元格的值从row.values填充到row.cells
       row.cells = visibleColumns.map(column =>
         row.allCells.find(cell => cell.column.id === column.id),
       );
 
       // need to apply any row specific hooks (useExpanded requires this)
+      // todo 只有存在折叠行时才执行
       loopHooks(getHooks().prepareRow, row, { instance: getInstance() });
     },
     [getHooks, getInstance, allColumns, visibleColumns],
@@ -507,7 +512,7 @@ export const useTable = (props, ...plugins) => {
     },
   );
 
-  // 在返回顶级ref对象前，提供修改该对象的机会
+  // 在返回顶级ref对象前，最后一次提供修改该对象的机会
   loopHooks(getHooks().useFinalInstance, getInstance());
 
   // 最后返回的对象其实是 instanceRef.current
@@ -516,8 +521,8 @@ export const useTable = (props, ...plugins) => {
 
 /**
  * 计算表头宽度
- * @param {*} headers
- * @param {*} left
+ * @param {*} headers 树型结构的表头
+ * @param {number} left 距离左边的距离
  */
 function calculateHeaderWidths(headers, left = 0) {
   let sumTotalMinWidth = 0;
@@ -525,11 +530,13 @@ function calculateHeaderWidths(headers, left = 0) {
   let sumTotalMaxWidth = 0;
   let sumTotalFlexWidth = 0;
 
+  // 遍历表头各列，递归计算子表头各列宽度
   headers.forEach(header => {
     const { headers: subHeaders } = header;
 
     header.totalLeft = left;
 
+    // / 若子表头存在且数量大于0，则递归计算
     if (subHeaders && subHeaders.length) {
       const [
         totalMinWidth,
@@ -542,6 +549,8 @@ function calculateHeaderWidths(headers, left = 0) {
       header.totalMaxWidth = totalMaxWidth;
       header.totalFlexWidth = totalFlexWidth;
     } else {
+      // / 若子表头不存在，则直接计算第一层表头的宽度
+
       header.totalMinWidth = header.minWidth;
       header.totalWidth = Math.min(
         Math.max(header.minWidth, header.width),
@@ -550,6 +559,8 @@ function calculateHeaderWidths(headers, left = 0) {
       header.totalMaxWidth = header.maxWidth;
       header.totalFlexWidth = header.canResize ? header.totalWidth : 0;
     }
+
+    // 若表头可见，才计入总宽度
     if (header.isVisible) {
       left += header.totalWidth;
       sumTotalMinWidth += header.totalMinWidth;
