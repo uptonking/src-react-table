@@ -42,6 +42,7 @@ const Styles = styled.div`
       border-bottom: 1px solid black;
     }
 
+    /* 设置表头行单元格和数据行单元格的样式 */
     .th,
     .td {
       margin: 0;

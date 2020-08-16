@@ -20,6 +20,7 @@ const Styles = styled.div`
       }
     }
 
+    /* 设置表头行单元格和数据行单元格的样式 */
     .th,
     .td {
       margin: 0;
@@ -39,8 +40,6 @@ const Styles = styled.div`
 `;
 
 function Table({ columns, data }) {
-  // Use the state and functions returned from useTable to build your UI
-
   const defaultColumn = React.useMemo(
     () => ({
       // width: 150,
@@ -63,7 +62,6 @@ function Table({ columns, data }) {
     useBlockLayout,
   );
 
-  // Render the UI for your table
   return (
     <div {...getTableProps()} className='table'>
       <div>

@@ -36,7 +36,7 @@ const Styles = styled.div`
     }
   }
 
-  /* 这里设置表头单元格和数据单元格 */
+  /* 设置表头行单元格和数据行单元格的样式 */
   .cell {
     height: 100%;
     line-height: 30px;
@@ -50,8 +50,6 @@ const Styles = styled.div`
 `;
 
 function Table({ columns, data }) {
-  // Use the state and functions returned from useTable to build your UI
-
   const defaultColumn = React.useMemo(
     () => ({
       width: 150,
@@ -74,7 +72,6 @@ function Table({ columns, data }) {
     useAbsoluteLayout,
   );
 
-  // Render the UI for your table
   return (
     <div {...getTableProps()} className='table'>
       <div>
@@ -85,6 +82,7 @@ function Table({ columns, data }) {
             key={index}
           >
             {headerGroup.headers.map((column, i) => (
+              // 这里表头单元格的class用的也是cell
               <div {...column.getHeaderProps()} className='cell header' key={i}>
                 {column.render('Header')}
               </div>
