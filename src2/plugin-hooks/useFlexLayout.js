@@ -1,3 +1,18 @@
+// 特点是cell会渲染成flex item且自身也是flex container，cell的width由flex-basis/grow控制
+/*
+- useFlexLayout表格实现的ui结构层次
+- div-table
+  - div-thead
+    - row-tr
+    - row-tr
+      - columnheader
+    - row-tr
+  - div-tbody
+    - row-tr
+    - row-tr
+      - cell
+    - row-tr
+*/
 export function useFlexLayout(hooks) {
   hooks.getTableProps.push(getTableProps);
   hooks.getRowProps.push(getRowStyles);

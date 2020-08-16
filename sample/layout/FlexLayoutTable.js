@@ -11,9 +11,9 @@ import makeData from '../simple/makeData';
 
 const Styles = styled.div`
   padding: 1rem;
-  ${'' /* These styles are suggested for the table fill all available space in its containing element */}
+  /* These styles are suggested for the table fill all available space in its containing element */
   display: block;
-  ${'' /* These styles are required for a horizontaly scrollable table overflow */}
+  /* These styles are required for a horizontaly scrollable table overflow */
   overflow: auto;
 
   .table {
@@ -21,13 +21,13 @@ const Styles = styled.div`
     border: 1px solid black;
 
     .thead {
-      ${'' /* These styles are required for a scrollable body to align with the header properly */}
+      /* These styles are required for a scrollable body to align with the header properly */
       overflow-y: auto;
       overflow-x: hidden;
     }
 
     .tbody {
-      ${'' /* These styles are required for a scrollable table body */}
+      /* These styles are required for a scrollable table body */
       overflow-y: scroll;
       overflow-x: hidden;
       height: 250px;
@@ -48,8 +48,7 @@ const Styles = styled.div`
       padding: 0.5rem;
       border-right: 1px solid black;
 
-      ${'' /* In this example we use an absolutely position resizer,
-       so this is required. */}
+      /* In this example we use an absolutely position resizer, so this is required. */
       position: relative;
 
       :last-child {
@@ -64,8 +63,8 @@ const Styles = styled.div`
         position: absolute;
         top: 0;
         z-index: 1;
-        ${'' /* prevents from scrolling while dragging on touch devices */}
-        touch-action :none;
+        /* prevents from scrolling while dragging on touch devices */
+        touch-action: none;
 
         &.isResizing {
           background: red;

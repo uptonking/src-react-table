@@ -31,6 +31,10 @@ const Styles = styled.div`
         border-right: 0;
       }
     }
+
+    .th {
+      font-weight: bold;
+    }
   }
 `;
 
@@ -39,7 +43,7 @@ function Table({ columns, data }) {
 
   const defaultColumn = React.useMemo(
     () => ({
-      width: 150,
+      // width: 150,
     }),
     [],
   );

@@ -231,8 +231,9 @@ export function useAsyncDebounce(defaultFn, defaultWait = 0) {
  */
 export function makeRenderer(instance, column, meta = {}) {
   return (type, userProps = {}) => {
-    // 从column对象中获取要渲染的表头组件
+    // 从column对象中获取要渲染的表头组件，若Comp为代表表头名的string则会直接渲染字符串
     const Comp = typeof type === 'string' ? column[type] : type;
+    // console.log('column[type], ', Comp);
 
     if (typeof Comp === 'undefined') {
       console.info(column);

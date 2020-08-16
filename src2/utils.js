@@ -35,7 +35,9 @@ export function flattenColumns(columns) {
   return flattenBy(columns, 'columns');
 }
 
-/** 给每个表头添加获取该列数据的方法accessor以及id */
+/**
+ * 给每个表头column添加获取该列数据的方法accessor以及id，若为传入id，则id使用accessor或Header
+ */
 export function assignColumnAccessor(column) {
   // First check for string accessor
   let { id, accessor, Header } = column;

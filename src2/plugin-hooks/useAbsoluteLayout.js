@@ -1,3 +1,19 @@
+// 特点是cell会渲染成绝对定位的div，并且必须设置cell的width
+/*
+- useAbsoluteLayout表格实现的ui结构层次
+- div-table
+  - div-thead
+    - row-header-group
+    - row-header-group
+      - columnheader
+    - row/header-group
+  - rowgroup/rows
+    - row-body
+    - row-body
+      - cell
+    - row-body
+*/
+/** 每个单元格都是绝对定位 */
 const cellStyles = {
   position: 'absolute',
   top: 0,

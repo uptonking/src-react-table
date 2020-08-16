@@ -208,11 +208,14 @@ export const useTable = (props, ...plugins) => {
     ],
   );
   getInstance().columns = columns;
-  console.log('instance.columns, ', JSON.parse(JSON.stringify(columns)));
+  console.log(
+    'instance.columns, ',
+    JSON.parse(JSON.stringify(columns, getCircularReplacer())),
+  );
 
   // Get the flat list of all columns
   // and allow hooks to decorate those columns (and trigger this memoization via deps)
-  // 打平所有表头列为一维数组，方便计算
+  // 打平所有表头列为一维数组，方便计算，再设置每列取数的方法，column添加了accessor和id属性
   let allColumns = React.useMemo(
     () =>
       reduceHooks(getHooks().allColumns, flattenColumns(columns), {
@@ -229,11 +232,11 @@ export const useTable = (props, ...plugins) => {
     ],
   );
   getInstance().allColumns = allColumns;
-  console.log('instance.allColumns, ', JSON.parse(JSON.stringify(allColumns)));
+  // console.log('instance.allColumns, ', JSON.parse(JSON.stringify(allColumns)));
 
   // Access the row model using initial columns，
+  // rows会存放所有行的数据，这里的计算将单元格的数据放在row.values，而没有放在row.cells
   const [rows, flatRows, rowsById] = React.useMemo(() => {
-    // 存放所有行的数据，这里的计算将单元格的数据放在row.values，而没有放在row.cells
     const rows = [];
     const flatRows = [];
     const rowsById = {};
@@ -280,13 +283,14 @@ export const useTable = (props, ...plugins) => {
     JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
   );
 
-  console.log(
-    'getHooks().visibleColumns.length, ',
-    getHooks().visibleColumns.length,
-  );
+  // console.log(
+  //   'getHooks.visibleColumns.length, ',
+  //   getHooks().visibleColumns.length,
+  // );
+
   // Get the flat list of all columns AFTER the rows have been access,
   // and allow hooks to decorate those columns (and trigger this memoization via deps)
-  // 从allColumns中，第一次设置可见表头要渲染的默认组件或自定义组件，返回的是扁平化的一维数组
+  // 第一次设置可见表头要渲染的默认组件或自定义组件，给column对象添加了Header,Footer等属性
   let visibleColumns = React.useMemo(
     () =>
       reduceHooks(getHooks().visibleColumns, allColumns, {
@@ -343,10 +347,10 @@ export const useTable = (props, ...plugins) => {
     }
   }
 
-  console.log(
-    'getHooks().headerGroups.length, ',
-    getHooks().headerGroups.length,
-  );
+  // console.log(
+  //   'getHooks().headerGroups.length, ',
+  //   getHooks().headerGroups.length,
+  // );
 
   // Make the headerGroups
   // 第一次计算可见分组表头结构，用二维数组存放所有扁平化的表头，数组每个元素存放表头一行包含的所有列
@@ -371,7 +375,7 @@ export const useTable = (props, ...plugins) => {
   getInstance().headerGroups = headerGroups;
   console.log(
     'instance.headerGroups, ',
-    JSON.parse(JSON.stringify(headerGroups)),
+    JSON.parse(JSON.stringify(headerGroups, getCircularReplacer())),
   );
 
   // Get the first level of headers
@@ -397,6 +401,7 @@ export const useTable = (props, ...plugins) => {
   // );
 
   // Filter columns down to visible ones，计算visibleColumns的id
+  // Columns that are not visible are still used for sorting, filtering, etc.
   // todo Replace .filter().map() with .reduce()
   const visibleColumnsDep = visibleColumns
     .filter(d => d.isVisible)
@@ -502,7 +507,7 @@ export const useTable = (props, ...plugins) => {
 
   // The prepareRow function is absolutely necessary
   // and MUST be called on any rows the user wishes to be displayed.
-  // ==== 调用prepareRow()会获取要行中要显示的单元格数据，再设置单元格要渲染的的组件。
+  // ==== 调用prepareRow()会计算行中要显示的单元格数据，再设置单元格要渲染的的组件。
   // This function is responsible for lazily preparing a row for rendering.
   getInstance().prepareRow = React.useCallback(
     row => {
@@ -513,8 +518,9 @@ export const useTable = (props, ...plugins) => {
       });
 
       // Build the visible cells for each row
-      // 遍历表头，取出各列数据保存到row.allCells
+      // 遍历表头，取出各列数据保存，row.allCells存放的是所有单元格，不一定会显示
       row.allCells = allColumns.map(column => {
+        // row.values存放的是这一行被解析columnId后的数据
         const value = row.values[column.id];
 
         const cell = {
@@ -540,7 +546,7 @@ export const useTable = (props, ...plugins) => {
         return cell;
       });
 
-      // 这里才将单元格的值从row.values填充到row.cells
+      // 这里才将单元格的值从row.values填充到row.cells，row.cells存放的是要显示的单元格
       row.cells = visibleColumns.map(column =>
         row.allCells.find(cell => cell.column.id === column.id),
       );
