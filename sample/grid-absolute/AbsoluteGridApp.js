@@ -9,7 +9,7 @@ import * as data from './sampleData';
 const AbsoluteGrid = createAbsoluteGrid(SampleDisplay);
 
 const Styles = styled.div`
-  width: 100%;
+  /* width: 100%; */
   /* width: 480px; */
 
   .gridItem {
@@ -79,18 +79,22 @@ export default function AbsoluteGridApp() {
   const onMoveDebounced = useMemo(() => _.debounce(onMove, 40), [onMove]);
 
   return (
-    // <Styles>
-    <AbsoluteGrid
-      items={sampleItems}
-      onMove={onMoveDebounced}
-      dragEnabled={true}
-      // zoom={zoom}
-      responsive={true}
-      verticalMargin={42}
-      itemWidth={230}
-      itemHeight={409}
-    />
-    // </Styles>
+    <Styles>
+      {/* <div id='root4absoluteApp' style={{ maxWidth: 960 }}>
+        <div style={{ width: '100%' }}> */}
+      <AbsoluteGrid
+        items={sampleItems}
+        onMove={onMoveDebounced}
+        dragEnabled={true}
+        // zoom={zoom}
+        responsive={true}
+        verticalMargin={42}
+        itemWidth={230}
+        itemHeight={409}
+      />
+      {/* </div>
+      </div> */}
+    </Styles>
   );
 }
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import { App } from './demo';
-import { RTableExampleListApp as App } from './RTableExampleListApp';
+// import { RTableExampleListApp as App } from './RTableExampleListApp';
 // import { default as App } from './list/ScrollUpAbsolutePosition';
+import { default as App } from './grid-absolute/AbsoluteGridApp';
 
 const render = Component => {
   ReactDOM.render(<Component />, document.getElementById('app'));

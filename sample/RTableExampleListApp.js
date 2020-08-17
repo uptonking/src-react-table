@@ -40,7 +40,7 @@ export function RTableExampleListApp() {
         <div
           style={{
             // backgroundColor: 'lightyellow',
-            maxWidth: '1100px',
+            // maxWidth: '1100px',
             margin: '8px',
           }}
           // style={{ float: 'left', margin: '10px', width: 720 }}

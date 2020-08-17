@@ -93,7 +93,7 @@ export default function createDisplayObject(
     }
 
     render() {
-      console.log('==props4BaseDisplayObject', this.state);
+      // console.log('==props4BaseDisplayObject', this.state);
 
       return (
         <div ref={node => (this.domNode = node)} style={this.getStyle()}>

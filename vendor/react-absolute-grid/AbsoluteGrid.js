@@ -3,7 +3,7 @@ import { debounce, sortBy } from 'lodash';
 import createDisplayObject from './BaseDisplayObject';
 import DragManager from './DragManager';
 import LayoutManager from './LayoutManager';
-
+import { getCircularReplacer } from '../../test-utils/logUtils';
 /**
  * 一个高阶组件
  */
@@ -147,9 +147,14 @@ export default function createAbsoluteGrid(
     };
 
     getDOMWidth = () => {
-      console.log('getDOMWidth, ', this.container);
+      console.log(
+        'this.container, ',
+        JSON.stringify(this.container, getCircularReplacer),
+      );
+      console.log('this.container, ', this.container);
+      console.log('containerWidth, ', this.container.clientWidth);
       const width = this.container && this.container.clientWidth;
-      console.log('getDOMWidth, ', width);
+      // console.log('getDOMWidth, ', width);
 
       if (this.state.layoutWidth !== width) {
         this.setState({ layoutWidth: width });
