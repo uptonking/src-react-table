@@ -5,6 +5,7 @@ import GridFooter from './GridFooter';
 import GridRows from './GridRows';
 
 /**
+ * 基于flex实现的表格组件，cell的宽度由flex-basis/grow决定。
  * 受控组件类型的grid，只有form元素才有state
  */
 const SmartGrid = createReactClass({
@@ -51,7 +52,7 @@ const SmartGrid = createReactClass({
     });
     data.sort((a, b) => {
       if (this.props.sortDirection === 'ASC') {
-        let num = a[this.props.sortColumn]
+        const num = a[this.props.sortColumn]
           .toString()
           .localeCompare(b[this.props.sortColumn].toString());
         if (num > 0) return 1;
@@ -59,7 +60,7 @@ const SmartGrid = createReactClass({
         if (a['_index'] > b['_index']) return 1;
         else return -1;
       } else {
-        let num = b[this.props.sortColumn]
+        const num = b[this.props.sortColumn]
           .toString()
           .localeCompare(a[this.props.sortColumn].toString());
         if (num > 0) return 1;
@@ -74,8 +75,8 @@ const SmartGrid = createReactClass({
     return data;
   },
   getResponseData: function () {
-    let startIndex = (this.props.currentPage - 1) * this.props.resultsPerPage;
-    let endIndex = startIndex + this.props.resultsPerPage;
+    const startIndex = (this.props.currentPage - 1) * this.props.resultsPerPage;
+    const endIndex = startIndex + this.props.resultsPerPage;
     let data = this.sortDataOnColumn(this.props.data);
     data = this.patternMatch(this.state.search, data);
     data = data.slice(startIndex, endIndex);
@@ -86,18 +87,18 @@ const SmartGrid = createReactClass({
       return data;
     }
     // eslint-disable-next-line no-unused-vars
-    let that = this;
-    let columnMetadata = this.props.columnMetadata;
+    const that = this;
+    const columnMetadata = this.props.columnMetadata;
 
-    let filteredData = [];
+    const filteredData = [];
     // data.map(row => {
     data.forEach(row => {
       let rowMatched = false;
-      let columns = Object.keys(row);
+      const columns = Object.keys(row);
       for (let i = 0; i < columns.length; i++) {
         if (columns[i] === '_index') continue;
-        let columnValue = row[columns[i]];
-        let formattedValue = columnMetadata[i].formatter
+        const columnValue = row[columns[i]];
+        const formattedValue = columnMetadata[i].formatter
           ? columnMetadata[i].formatter(columnValue).toString()
           : columnValue.toString();
         if (
@@ -119,7 +120,7 @@ const SmartGrid = createReactClass({
   },
 
   render: function () {
-    let data = this.props.data ? this.getResponseData() : null;
+    const data = this.props.data ? this.getResponseData() : null;
     if (
       this.props.data.length < this.props.resultsPerPage &&
       this.props.currentPage > 1
@@ -128,7 +129,7 @@ const SmartGrid = createReactClass({
         currentPage: 1,
       });
     }
-    let resultsOnPage =
+    const resultsOnPage =
       data && data.length <= this.props.resultsPerPage
         ? data.length
         : this.props.resultsPerPage;

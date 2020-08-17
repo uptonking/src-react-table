@@ -7,7 +7,7 @@ const exampleNameArr = Object.keys(examples);
 export function RTableExampleListApp() {
   // const [curName, setCurName] = useState('');
   // const [curName, setCurName] = useState('AbsoluteLayoutTable');
-  const [curName, setCurName] = useState('FlexLayoutTable');
+  const [curName, setCurName] = useState('AbsoluteGridApp');
 
   const handleClick = name => {
     setCurName(name);
@@ -40,6 +40,7 @@ export function RTableExampleListApp() {
         <div
           style={{
             // backgroundColor: 'lightyellow',
+            maxWidth: '1100px',
             margin: '8px',
           }}
           // style={{ float: 'left', margin: '10px', width: 720 }}

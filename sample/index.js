@@ -30,9 +30,10 @@ export { default as ZIndexLastLevel } from './layer/ZIndexLastLevel';
 export { default as ZIndexAllLevels } from './layer/ZIndexAllLevels';
 export { default as ZIndex3Level } from './layer/ZIndex3Level';
 
-// grid-building
+// grid-build-app
 export { default as TabelifyApp } from './grid-tabelify/TabelifyApp';
 export { default as UdemyDataTableApp } from './grid-udemy/UdemyDataTableApp';
+export { default as AbsoluteGridApp } from './grid-absolute/AbsoluteGridApp';
 
 // list
 export { default as ScrollUpAbsolutePosition } from './list/ScrollUpAbsolutePosition';
