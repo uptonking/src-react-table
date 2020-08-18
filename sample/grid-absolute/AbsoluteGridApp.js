@@ -6,35 +6,36 @@ import createAbsoluteGrid from '../../vendor/react-absolute-grid/AbsoluteGrid';
 import SampleDisplay from './SampleDisplay';
 import * as data from './sampleData';
 
-const AbsoluteGrid = createAbsoluteGrid(SampleDisplay);
+const AbsoluteGridContainer = createAbsoluteGrid(SampleDisplay);
 
 const Styles = styled.div`
-  /* width: 100%; */
-  /* width: 480px; */
-
   .gridItem {
-    background-size: 100%;
+    text-align: center;
     box-shadow: 0 0 1.25em 0 rgba(0, 0, 0, 0.2);
-    background-color: #fff;
+    background-color: beige;
+    background-size: 100%;
     cursor: move;
   }
 
   .gridItem .name {
-    display: block;
-    bottom: -22px;
-    width: 100%;
-    font-size: 12px;
     position: absolute;
+    bottom: -22px;
+    display: block;
+    width: 100%;
     color: #555;
     text-transform: capitalize;
   }
 `;
-
+/**
+ * 基于react-absolute-grid的demo实现的例子。
+ * todo1: drag元素交换位置动画不流畅
+ * todo2: requestAnimationFrame' handler took 58ms
+ */
 export default function AbsoluteGridApp() {
   const [sampleItems, setSampleItems] = useState(data.screens);
   // const [zoom, setZoom] = useState(0.7);
 
-  // console.log('==AbsoluteGridApp', AbsoluteGrid);
+  // console.log('==AbsoluteGridApp', sampleItems);
 
   // Change the item's sort order
   const onMove = useCallback(
@@ -79,22 +80,22 @@ export default function AbsoluteGridApp() {
   const onMoveDebounced = useMemo(() => _.debounce(onMove, 40), [onMove]);
 
   return (
-    <Styles>
-      {/* <div id='root4absoluteApp' style={{ maxWidth: 960 }}>
-        <div style={{ width: '100%' }}> */}
-      <AbsoluteGrid
-        items={sampleItems}
-        onMove={onMoveDebounced}
-        dragEnabled={true}
-        // zoom={zoom}
-        responsive={true}
-        verticalMargin={42}
-        itemWidth={230}
-        itemHeight={409}
-      />
-      {/* </div>
-      </div> */}
-    </Styles>
+    // <Styles>
+    //   <div id='root4absoluteApp' style={{ maxWidth: 960 }}>
+    //     <div style={{ width: '100%' }}>
+    <AbsoluteGridContainer
+      items={sampleItems}
+      onMove={onMoveDebounced}
+      dragEnabled={true}
+      // zoom={zoom}
+      responsive={true}
+      verticalMargin={42}
+      itemWidth={144}
+      itemHeight={256}
+    />
+    //   </div>
+    //   </div>
+    // </Styles>
   );
 }
 
@@ -106,7 +107,7 @@ export default function AbsoluteGridApp() {
  * event handlers calling Actions which would update a Store.
  * For the sake of brevity, the "store" is implemented locally and the changes re-rendered manually
  *
- * TODO: implement inside a react component rather than doing this all manually
+ * //TODO: implement inside a react component rather than doing this all manually
  **/
 
 function demo() {

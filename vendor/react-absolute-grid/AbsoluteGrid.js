@@ -5,7 +5,11 @@ import DragManager from './DragManager';
 import LayoutManager from './LayoutManager';
 import { getCircularReplacer } from '../../test-utils/logUtils';
 /**
- * 一个高阶组件
+ * 一个高阶组件。单元格需设置宽高，单元格位置由translate3d(xpx,ypx,0px)确定。
+ * 基于position absolute实现的表格组件，ui结构层次
+ * - div-tbody-position-relative
+ *  - div-cell-position-absolute
+ *    - CustomComponent
  */
 export default function createAbsoluteGrid(
   DisplayObject,
@@ -54,9 +58,10 @@ export default function createAbsoluteGrid(
     }
 
     render() {
-      console.log('==props4AbsoluteGrid', this.state);
+      // console.log('==props4AbsoluteGrid', this.state);
+      // 第一次mount时，layoutWidth为0，会执行showGrid，后面layoutWidth为具体数值后，就不执行if分支了
       const showGrid = !this.state.layoutWidth || !this.props.items.length;
-      console.log('showGrid, ', showGrid);
+      // console.log('showGrid, ', showGrid);
       if (showGrid) {
         return <div ref={node => (this.container = node)} id='showGrid' />;
       }
@@ -147,12 +152,12 @@ export default function createAbsoluteGrid(
     };
 
     getDOMWidth = () => {
-      console.log(
-        'this.container, ',
-        JSON.stringify(this.container, getCircularReplacer),
-      );
-      console.log('this.container, ', this.container);
-      console.log('containerWidth, ', this.container.clientWidth);
+      // console.log(
+      //   'this.container, ',
+      //   JSON.stringify(this.container, getCircularReplacer),
+      // );
+      // console.log('this.container, ', this.container);
+      // console.log('containerWidth, ', this.container.clientWidth);
       const width = this.container && this.container.clientWidth;
       // console.log('getDOMWidth, ', width);
 
