@@ -1,6 +1,9 @@
 import React, { Component, PureComponent } from 'react';
 import LayoutManager from './LayoutManager.js';
-
+/**
+ * 一个高阶组件，会对输入的组件外层包裹一层div作为单元格组件。
+ * 主要添加单元格的absolute定位样式，transform3d控制的位置，还添加拖拽处理事件。
+ */
 export default function createDisplayObject(
   DisplayObject,
   displayProps,
@@ -38,6 +41,7 @@ export default function createDisplayObject(
       }
     };
 
+    /** 计算单元格的样式，主要添加position absolute,以及translate3d */
     getStyle() {
       const options = {
         itemWidth: this.props.itemWidth,
@@ -96,7 +100,11 @@ export default function createDisplayObject(
       // console.log('==props4BaseDisplayObject', this.state);
 
       return (
-        <div ref={node => (this.domNode = node)} style={this.getStyle()}>
+        <div
+          ref={node => (this.domNode = node)}
+          style={this.getStyle()}
+          className='IDCell'
+        >
           <DisplayObject
             {...displayProps}
             item={this.props.item}

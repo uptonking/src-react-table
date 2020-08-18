@@ -5,11 +5,16 @@ import DragManager from './DragManager';
 import LayoutManager from './LayoutManager';
 import { getCircularReplacer } from '../../test-utils/logUtils';
 /**
- * 一个高阶组件。单元格需设置宽高，单元格位置由translate3d(xpx,ypx,0px)确定。
+ * 一个高阶组件，会将输入组件作为单元格要渲染的内容，返回一个grid。
+ * 单元格需设置宽高，单元格位置由translate3d(xpx,ypx,0px)确定。
  * 基于position absolute实现的表格组件，ui结构层次
  * - div-tbody-position-relative
  *  - div-cell-position-absolute
  *    - CustomComponent
+ *
+ * @param {*} DisplayObject 单元格内部要渲染的组件
+ * @param {*} displayProps 传递给DisplayObject的props
+ * @param {*} forceImpure 默认false，默认使用PureComponent
  */
 export default function createAbsoluteGrid(
   DisplayObject,
@@ -17,6 +22,7 @@ export default function createAbsoluteGrid(
   forceImpure = false,
 ) {
   const Comp = forceImpure ? Component : PureComponent;
+  /** 创建单元格组件 */
   const WrappedDisplayObject = createDisplayObject(
     DisplayObject,
     displayProps,
@@ -42,8 +48,8 @@ export default function createAbsoluteGrid(
       onDragEnd: () => {},
     };
 
-    constructor(props, context) {
-      super(props, context);
+    constructor(props) {
+      super(props);
       this.onResize = debounce(this.onResize, 150);
       this.dragManager = new DragManager(
         this.props.onMove,
@@ -84,6 +90,7 @@ export default function createAbsoluteGrid(
       });
 
       const itemsLength = this.props.items.length;
+      // 为输入数组的每个元素创建一个单元格组件
       const gridItems = this.props.items.map(item => {
         const key = item[this.props.keyProp];
         const index = sortedIndex[key];
@@ -114,12 +121,15 @@ export default function createAbsoluteGrid(
         zoom: this.props.zoom,
       };
       const layout = new LayoutManager(options, this.state.layoutWidth);
+
+      // grid容器是relative定位，是所有单元格组件的定位上下文
       const gridStyle = {
         position: 'relative',
         display: 'block',
         height: layout.getTotalHeight(filteredIndex),
       };
 
+      // grid的容器，相当于tbody，但直接子元素就是cell
       return (
         <div
           style={gridStyle}
@@ -151,6 +161,7 @@ export default function createAbsoluteGrid(
       }
     };
 
+    /** 获取grid容器的宽度，用来实现responsive */
     getDOMWidth = () => {
       // console.log(
       //   'this.container, ',

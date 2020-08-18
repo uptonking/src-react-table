@@ -32,6 +32,7 @@ const Styles = styled.div`
  * todo2: requestAnimationFrame' handler took 58ms
  */
 export default function AbsoluteGridApp() {
+  // 测试数据的sort和key都是index数字
   const [sampleItems, setSampleItems] = useState(data.screens);
   // const [zoom, setZoom] = useState(0.7);
 
