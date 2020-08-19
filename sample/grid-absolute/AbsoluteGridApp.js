@@ -32,7 +32,7 @@ const Styles = styled.div`
  * todo2: requestAnimationFrame' handler took 58ms
  */
 export default function AbsoluteGridApp() {
-  // 数据的字段包括url,name,sort,key, 测试数据的sort和key都是index数字
+  // 数据的字段包括url,name,sort,key, 测试数据的sort和key都是index数字，从1开始
   const [sampleItems, setSampleItems] = useState(data.screens);
   // const [zoom, setZoom] = useState(0.7);
 
@@ -40,7 +40,7 @@ export default function AbsoluteGridApp() {
 
   // Change the item's sort order
   /**
-   * 拖动单元格时会更新数据
+   * 拖动单元格时会更新数据，移动时的计算思路主要是交换相邻单元格的数据。
    * @param {*} source  起点数据的key
    * @param {*} target 终点数据的key
    */
@@ -53,33 +53,44 @@ export default function AbsoluteGridApp() {
       const targetSort = target.sort;
 
       // CAREFUL, For maximum performance we must maintain the array's order, but change sort
-      setSampleItems(s =>
-        s.map(function (item) {
-          // Decrement sorts between positions when target is greater
-          if (item.key === source.key) {
-            return {
-              ...item,
-              sort: targetSort,
-            };
-          } else if (
-            target.sort > source.sort &&
-            item.sort <= target.sort &&
-            item.sort > source.sort
-          ) {
-            return {
-              ...item,
-              sort: item.sort - 1,
-            };
-            // Increment sorts between positions when source is greater
-          } else if (item.sort >= target.sort && item.sort < source.sort) {
-            return {
-              ...item,
-              sort: item.sort + 1,
-            };
-          }
-          return item;
-        }),
-      );
+      const newItems = sampleItems.map(function (item) {
+        // Decrement sorts between positions when target is greater
+
+        // /对要移动的起点元素，修改其sort大小
+        if (item.key === source.key) {
+          // console.log('item.key === source.key');
+
+          return {
+            ...item,
+            sort: targetSort,
+          };
+        } else if (
+          target.sort > source.sort &&
+          item.sort <= target.sort &&
+          item.sort > source.sort
+        ) {
+          // /若终点在起点之后，且当前元素在起点后终点前，则当前元素前移一位
+          // console.log(' source.sort < item.sort <= target.sort');
+
+          return {
+            ...item,
+            sort: item.sort - 1,
+          };
+          // Increment sorts between positions when source is greater
+        } else if (item.sort < source.sort && item.sort >= target.sort) {
+          // /若当前项目在起点前且在终点后，则当前元素后移一位 ???
+          // console.log('item.sort < source.sort && >= target.sort');
+
+          return {
+            ...item,
+            sort: item.sort + 1,
+          };
+        }
+
+        // 对其余元素，不做修改
+        return item;
+      });
+      setSampleItems(newItems);
     },
     [sampleItems],
   );

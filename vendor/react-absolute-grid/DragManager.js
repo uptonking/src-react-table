@@ -1,10 +1,10 @@
 /** grid容器的全局拖拽配置，主要处理drag start/move/end事件 */
 export default class DragManager {
   dragItem;
-  /** 拖拽开始时，e.pageX - (rect.left + window.pageXOffset)  */
+  /** 拖拽开始时，拖拽点距单元格左上角的距离 e.pageX - (rect.left + window.pageXOffset)  */
   initialMouseX;
   initialMouseY;
-  /** e.pageX */
+  /** 拖拽开始时，拖拽点距全页面左上角的距离 e.pageX */
   initialEventX;
   initialEventY;
   /** x方向拖动的距离 */
@@ -40,6 +40,7 @@ export default class DragManager {
       const clientX = isTouch ? e.touches[0].clientX : e.clientX;
       const clientY = isTouch ? e.touches[0].clientY : e.clientY;
 
+      // 拖拽时，单元格左边框在视口中的坐标
       this.dragX = clientX - this.initialMouseX;
       this.dragY = clientY - this.initialMouseY;
 
@@ -61,6 +62,7 @@ export default class DragManager {
       console.log('targetElement, ', targetElement);
 
       // 若拖动到的目标位置存在，且与拖拽起点位置不同，则通过传入的moveFn更新拖动后的数据
+      // 拖动的思路是交换相邻单元格的数据，如将2号换到4号，具体实现是2 > 3 > 4
       if (targetKey && targetKey !== this.dragItem[this.keyProp]) {
         this.moveFn(this.dragItem[this.keyProp], targetKey);
       }
