@@ -31,6 +31,7 @@ export default function SampleDisplay(props) {
         className='name'
       >
         {item.name}
+        {item.key}
       </span>
     </div>
   );

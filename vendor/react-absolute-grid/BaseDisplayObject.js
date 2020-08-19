@@ -14,6 +14,7 @@ export default function createDisplayObject(
   return class extends Comp {
     state = {};
 
+    /** 更新拖拽距离x,y的方法 */
     updateDrag(x, y) {
       // Pause Animation lets our item return to a snapped position without being animated
       let pauseAnimation = false;
@@ -41,7 +42,7 @@ export default function createDisplayObject(
       }
     };
 
-    /** 计算单元格的样式，主要添加position absolute,以及translate3d */
+    /** 计算单元格的样式的入口，主要添加position absolute,以及translate3d */
     getStyle() {
       const options = {
         itemWidth: this.props.itemWidth,
@@ -50,17 +51,20 @@ export default function createDisplayObject(
         zoom: this.props.zoom,
       };
       const layout = new LayoutManager(options, this.props.layoutWidth);
+      // 单元格非拖拽时的样式
       const style = layout.getStyle(
         this.props.index,
         this.props.animation,
         this.props.item[this.props.filterProp],
       );
+
       // If this is the object being dragged, return a different style
       if (
         this.props.dragManager.dragItem &&
         this.props.dragManager.dragItem[this.props.keyProp] ===
           this.props.item[this.props.keyProp]
       ) {
+        // 计算拖拽时的样式
         const dragStyle = this.props.dragManager.getStyle(
           this.state.dragX,
           this.state.dragY,
@@ -81,6 +85,8 @@ export default function createDisplayObject(
       if (this.props.dragEnabled) {
         this.domNode.addEventListener('mousedown', this.onDrag);
         this.domNode.addEventListener('touchstart', this.onDrag);
+
+        // 给每个单元格设置data-key属性，用于拖拽时判断目标位置
         this.domNode.setAttribute(
           'data-key',
           this.props.item[this.props.keyProp],

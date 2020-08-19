@@ -12,9 +12,9 @@ module.exports = function (api) {
     ],
     'react-refresh/babel',
     ['@babel/plugin-proposal-decorators', { legacy: true }],
-    '@babel/proposal-class-properties',
+    '@babel/plugin-proposal-class-properties',
     '@babel/plugin-proposal-numeric-separator',
-    '@babel/proposal-object-rest-spread',
+    '@babel/plugin-proposal-object-rest-spread',
   ];
 
   // Preset ordering is reversed (last to first).

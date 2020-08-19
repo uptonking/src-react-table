@@ -1,13 +1,14 @@
 import React, { Component, PureComponent } from 'react';
 import { debounce, sortBy } from 'lodash';
+// import { getCircularReplacer } from '../../test-utils/logUtils';
 import createDisplayObject from './BaseDisplayObject';
 import DragManager from './DragManager';
 import LayoutManager from './LayoutManager';
-import { getCircularReplacer } from '../../test-utils/logUtils';
+
 /**
- * 一个高阶组件，会将输入组件作为单元格要渲染的内容，返回一个grid。
+ * 一个高阶组件，会将输入组件作为单元格要渲染的内容，根据输入的数组数据创建一个grid。
  * 单元格需设置宽高，单元格位置由translate3d(xpx,ypx,0px)确定。
- * 基于position absolute实现的表格组件，ui结构层次
+ * 基于position absolute实现的表格组件，ui结构层次:
  * - div-tbody-position-relative
  *  - div-cell-position-absolute
  *    - CustomComponent
@@ -33,8 +34,8 @@ export default function createAbsoluteGrid(
     static defaultProps = {
       items: [],
       keyProp: 'key',
-      filterProp: 'filtered',
       sortProp: 'sort',
+      filterProp: 'filtered',
       itemWidth: 128,
       itemHeight: 128,
       verticalMargin: -1,
@@ -65,19 +66,22 @@ export default function createAbsoluteGrid(
 
     render() {
       // console.log('==props4AbsoluteGrid', this.state);
-      // 第一次mount时，layoutWidth为0，会执行showGrid，后面layoutWidth为具体数值后，就不执行if分支了
+      // 第一次mount时，layoutWidth为0，才会执行showGrid，后面layoutWidth为具体数值后，就不执行if分支了
       const showGrid = !this.state.layoutWidth || !this.props.items.length;
       // console.log('showGrid, ', showGrid);
       if (showGrid) {
         return <div ref={node => (this.container = node)} id='showGrid' />;
       }
 
+      // 被过滤后剩下的元素索引
       let filteredIndex = 0;
+      // 存放被过滤后剩下的元素的key和对应的filteredIndex
       const sortedIndex = {};
 
       /*
+      数据默认不带有filterProp的属性，对不带有的取出它们的key属性
        If we actually sorted the array, React would re-render the DOM nodes
-       Creating a sort index just tells us where each item should be
+       Creating a sort index just tells us where each item should be.
        This also clears out filtered items from the sort order and
        eliminates gaps and duplicate sorts
        */
@@ -88,6 +92,7 @@ export default function createAbsoluteGrid(
           filteredIndex++;
         }
       });
+      // console.log('sortedIndex, ', sortedIndex);
 
       const itemsLength = this.props.items.length;
       // 为输入数组的每个元素创建一个单元格组件
@@ -120,12 +125,13 @@ export default function createAbsoluteGrid(
         verticalMargin: this.props.verticalMargin,
         zoom: this.props.zoom,
       };
+      // 传入每个元素的宽高，计算grid容器的布局配置
       const layout = new LayoutManager(options, this.state.layoutWidth);
 
       // grid容器是relative定位，是所有单元格组件的定位上下文
       const gridStyle = {
         position: 'relative',
-        display: 'block',
+        // display: 'block',
         height: layout.getTotalHeight(filteredIndex),
       };
 
@@ -133,7 +139,7 @@ export default function createAbsoluteGrid(
       return (
         <div
           style={gridStyle}
-          className='absoluteGrid'
+          className='IDAbsoluteGrid'
           ref={node => (this.container = node)}
         >
           {gridItems}

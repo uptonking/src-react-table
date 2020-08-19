@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import * as _ from 'lodash';
 import createAbsoluteGrid from '../../vendor/react-absolute-grid/AbsoluteGrid';
 import SampleDisplay from './SampleDisplay';
-import * as data from './sampleData';
+import data from './sampleData';
 
 const AbsoluteGridContainer = createAbsoluteGrid(SampleDisplay);
 
@@ -32,17 +32,23 @@ const Styles = styled.div`
  * todo2: requestAnimationFrame' handler took 58ms
  */
 export default function AbsoluteGridApp() {
-  // 测试数据的sort和key都是index数字
+  // 数据的字段包括url,name,sort,key, 测试数据的sort和key都是index数字
   const [sampleItems, setSampleItems] = useState(data.screens);
   // const [zoom, setZoom] = useState(0.7);
 
   // console.log('==AbsoluteGridApp', sampleItems);
 
   // Change the item's sort order
+  /**
+   * 拖动单元格时会更新数据
+   * @param {*} source  起点数据的key
+   * @param {*} target 终点数据的key
+   */
   const onMove = useCallback(
     function (source, target) {
       source = _.find(sampleItems, { key: parseInt(source, 10) });
       target = _.find(sampleItems, { key: parseInt(target, 10) });
+      console.log('==onMove-source-target, ', source, target);
 
       const targetSort = target.sort;
 
@@ -117,6 +123,7 @@ function demo() {
   let render;
 
   // We set a property on each item to let the grid know not to show it
+  // 过滤元素通过添加新的filtered属性来标记
   const onFilter = function (event) {
     const search = new RegExp(event.target.value, 'i');
     sampleItems = sampleItems.map(function (item) {
@@ -132,7 +139,7 @@ function demo() {
     render();
   };
 
-  // Change the item's sort order
+  // Change the item's sort
   const onMove = function (source, target) {
     source = _.find(sampleItems, { key: parseInt(source, 10) });
     target = _.find(sampleItems, { key: parseInt(target, 10) });
