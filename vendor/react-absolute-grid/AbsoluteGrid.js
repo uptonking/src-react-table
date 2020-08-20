@@ -131,7 +131,6 @@ export default function createAbsoluteGrid(
       // grid容器是relative定位，是所有单元格组件的定位上下文
       const gridStyle = {
         position: 'relative',
-        // display: 'block',
         height: layout.getTotalHeight(filteredIndex),
       };
 

@@ -18,12 +18,14 @@ export default function createDisplayObject(
     updateDrag(x, y) {
       // Pause Animation lets our item return to a snapped position without being animated
       let pauseAnimation = false;
+      // 若拖拽结束了，才会暂停动画
       if (!this.props.dragManager.dragItem) {
         pauseAnimation = true;
         setTimeout(() => {
           this.setState({ pauseAnimation: false });
         }, 20);
       }
+      // 更新拖拽距离，计算样式时会读取，此时会触发单元格组件rerender
       this.setState({
         dragX: x,
         dragY: y,
@@ -51,7 +53,7 @@ export default function createDisplayObject(
         zoom: this.props.zoom,
       };
       const layout = new LayoutManager(options, this.props.layoutWidth);
-      // 单元格非拖拽时的样式
+      // 单元格非拖拽时的样式，带有transition属性
       const style = layout.getStyle(
         this.props.index,
         this.props.animation,
@@ -64,7 +66,7 @@ export default function createDisplayObject(
         this.props.dragManager.dragItem[this.props.keyProp] ===
           this.props.item[this.props.keyProp]
       ) {
-        // 计算拖拽时的样式
+        // 计算拖拽时的样式，通过修改transform属性来修改位置
         const dragStyle = this.props.dragManager.getStyle(
           this.state.dragX,
           this.state.dragY,

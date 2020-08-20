@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import * as _ from 'lodash';
 import createAbsoluteGrid from '../../vendor/react-absolute-grid/AbsoluteGrid';
 import SampleDisplay from './SampleDisplay';
+// import data from './sampleData4simple';
 import data from './sampleData';
 
 const AbsoluteGridContainer = createAbsoluteGrid(SampleDisplay);
@@ -28,27 +29,32 @@ const Styles = styled.div`
 `;
 /**
  * 基于react-absolute-grid的demo实现的例子。
- * todo1: drag元素交换位置动画不流畅
- * todo2: requestAnimationFrame' handler took 58ms
+ * 主要功能：展示基于绝对定位实现的grid，拖拽移动单元格。
+ * // drag元素交换位置动画不流畅，重构onMove方法读取最新state
+ * to-later: requestAnimationFrame handler took 201ms
+ * to-later: 参考demo()方法实现filter和zoom
  */
 export default function AbsoluteGridApp() {
   // 数据的字段包括url,name,sort,key, 测试数据的sort和key都是index数字，从1开始
   const [sampleItems, setSampleItems] = useState(data.screens);
   // const [zoom, setZoom] = useState(0.7);
 
-  // console.log('==AbsoluteGridApp', sampleItems);
+  // console.log('==renderAbsoluteGridApp, ');
 
-  // Change the item's sort order
   /**
+   * Change the item's sort order
    * 拖动单元格时会更新数据，移动时的计算思路主要是交换相邻单元格的数据。
+   * 以{key:2,sort:2}换到{key:4,sort:4}为例，
+   * 会多次调用此方法，依次传入([2,2],[2,3]),([2,3],[4,4]),([2,5],[5,4]),这里最后一次是回退
    * @param {*} source  起点数据的key
    * @param {*} target 终点数据的key
    */
-  const onMove = useCallback(
-    function (source, target) {
+  const onMove = useCallback(function (source, target) {
+    setSampleItems(sampleItems => {
+      // console.log('==onMove-sampleItems, ', sampleItems);
       source = _.find(sampleItems, { key: parseInt(source, 10) });
       target = _.find(sampleItems, { key: parseInt(target, 10) });
-      console.log('==onMove-source-target, ', source, target);
+      // console.log('==onMove-source-target, ', source, target);
 
       const targetSort = target.sort;
 
@@ -78,8 +84,10 @@ export default function AbsoluteGridApp() {
           };
           // Increment sorts between positions when source is greater
         } else if (item.sort < source.sort && item.sort >= target.sort) {
-          // /若当前项目在起点前且在终点后，则当前元素后移一位 ???
+          // /若当前项目在起点前且在终点后，则当前元素后移一位
+          // 这里是往前拖动的场景，如传入([2,5],[5,4])，则当前item的sort为4时，变为5
           // console.log('item.sort < source.sort && >= target.sort');
+          // console.log('item-key-sort', item.key, item.sort);
 
           return {
             ...item,
@@ -90,10 +98,11 @@ export default function AbsoluteGridApp() {
         // 对其余元素，不做修改
         return item;
       });
-      setSampleItems(newItems);
-    },
-    [sampleItems],
-  );
+      // console.log('newItems, ', newItems);
+      return newItems;
+    });
+    // setSampleItems(newItems);
+  }, []);
 
   const onMoveDebounced = useMemo(() => _.debounce(onMove, 40), [onMove]);
 
@@ -125,7 +134,7 @@ export default function AbsoluteGridApp() {
  * event handlers calling Actions which would update a Store.
  * For the sake of brevity, the "store" is implemented locally and the changes re-rendered manually
  *
- * //TODO: implement inside a react component rather than doing this all manually
+ * //to-done: implement inside a react component rather than doing this all manually
  **/
 
 function demo() {

@@ -45,7 +45,7 @@ export default class DragManager {
       this.dragY = clientY - this.initialMouseY;
 
       // update方法由BaseDisplayObject传过来，更新拖拽距离，
-      // 会触发BaseDisplayObject重渲染，重新计算拖拽样式
+      // 会触发单元格组件BaseDisplayObject重渲染，重新计算拖拽样式
       this.update(this.dragX, this.dragY);
 
       let targetKey;
@@ -59,7 +59,7 @@ export default class DragManager {
         targetElement = targetElement.parentNode;
       }
 
-      console.log('targetElement, ', targetElement);
+      // console.log('targetElement, ', targetElement);
 
       // 若拖动到的目标位置存在，且与拖拽起点位置不同，则通过传入的moveFn更新拖动后的数据
       // 拖动的思路是交换相邻单元格的数据，如将2号换到4号，具体实现是2 > 3 > 4
@@ -88,11 +88,17 @@ export default class DragManager {
     this.dragEndFn();
   }
 
-  /** 开始拖动时，计算初始位置，这里添加mousemove的监听器 */
+  /**
+   * 开始拖动时，计算初始位置，这里添加mousemove的监听器
+   * @param {*} e  event
+   * @param {*} domNode  单元格组件对应的dom节点
+   * @param {*} item  单元格组件对应的数据
+   * @param {*} fnUpdate  传过来这个方法用来更新单元格state，来触发rerender
+   */
   startDrag(e, domNode, item, fnUpdate) {
-    console.log('startDrag, ', item);
+    console.log('==startDrag, ', item);
     const isTouch = e.targetTouches && e.targetTouches.length === 1;
-    console.log('e.button === 0 || isTouch, ', e.button === 0 || isTouch);
+    // console.log('e.button === 0 || isTouch, ', e.button === 0 || isTouch);
 
     // 若拖拽事件由左键单击或触摸触发
     if (e.button === 0 || isTouch) {
@@ -129,7 +135,7 @@ export default class DragManager {
     this.dragStartFn(e);
   }
 
-  /** 计算单元格拖动时的样式 */
+  /** 计算单元格拖动时的样式，主要是更新transform属性 */
   getStyle(x, y) {
     const dragStyle = {};
     const transform = `translate3d(${x}px, ${y}px, 0)`;

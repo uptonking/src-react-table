@@ -92,6 +92,7 @@ export default class LayoutManager {
       display: isFiltered ? 'none' : 'block',
     };
 
+    // 默认会使用动画，会执行css transition
     if (animation) {
       style.WebkitTransition = '-webkit-' + animation;
       style.MozTransition = '-moz-' + animation;
