@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import * as examples from './index';
-import { Title } from './Title';
 
 const exampleNameArr = Object.keys(examples);
 
-export function RTableExampleListApp() {
+export function ExampleListApp() {
   // const [curName, setCurName] = useState('');
-  // const [curName, setCurName] = useState('AbsoluteLayoutTable');
-  const [curName, setCurName] = useState('AbsoluteGridApp');
+  const [curName, setCurName] = useState('AbsoluteLayoutTable');
+  // const [curName, setCurName] = useState('AbsoluteGridApp');
 
   const handleClick = name => {
     setCurName(name);
@@ -17,7 +16,7 @@ export function RTableExampleListApp() {
 
   return (
     <div>
-      <Title />
+      <h1>examples for react list-grid-table</h1>
       <h2>当前示例: {curName}</h2>
       <div style={{ display: 'flex' }}>
         <div

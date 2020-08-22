@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import { App } from './demo';
-// import { RTableExampleListApp as App } from './RTableExampleListApp';
+import { ExampleListApp as App } from './ExampleListApp';
 // import { default as App } from './list/ScrollUpAbsolutePosition';
-import { default as App } from './grid-absolute/AbsoluteGridApp';
+// import { default as App } from './grid-absolute/AbsoluteGridApp';
 
 const render = Component => {
   ReactDOM.render(<Component />, document.getElementById('app'));
@@ -11,7 +11,7 @@ const render = Component => {
 render(App);
 
 if (module.hot) {
-  module.hot.accept('./RTableExampleListApp.js', () => {
+  module.hot.accept('./ExampleListApp.js', () => {
     render(App);
   });
 }

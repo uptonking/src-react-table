@@ -51,6 +51,8 @@ module.exports = {
     // process: true,
   },
   devtool: 'eval-source-map',
+  // devServer config flags are only read by WDS but not Webpack
+  // 若要使用热加载，还需要在cli上传入 --hot
   devServer: {
     contentBase: path.resolve(__dirname, '../dist'),
     host: '0.0.0.0',

@@ -13,10 +13,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "editor.formatOnSave": true,
-  "javascript.validate.enable": false,
-  "css.validate": false,
-  "scss.validate": false,
-  "html.format.enable": false,
   "eslint.enable": true,
   "eslint.validate": [
     "javascript",
