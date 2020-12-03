@@ -26,6 +26,9 @@
     "README.md",
     "scripts/"
   ],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build": "webpack --config ./webpack/webpack.config.demo.js",
     "build1": "cross-env NODE_ENV=production rollup -c",
@@ -35,7 +38,7 @@
     "docz:dev": "docz dev",
     "docz:serve": "docz build && docz serve",
     "format": "prettier {src,src/**,examples/*/src,examples/*/src/**}/*.{md,js,jsx,tsx} --write",
-    "prepare": "yarn build",
+    "prepare": "",
     "prettier": "prettier --config ./.prettierrc.js --loglevel log --write '**/*.{ts,tsx,js,jsx,json,css}'",
     "release": "yarn publish",
     "releaseNext": "yarn publish --tag next",
