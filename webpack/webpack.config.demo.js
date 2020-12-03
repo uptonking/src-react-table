@@ -7,6 +7,8 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 
 module.exports = {
   mode: 'development',
+  devtool: 'eval-source-map',
+  target: 'web',
   entry: path.resolve(__dirname, '../sample/render.js'),
   output: {
     filename: 'main.js',
@@ -41,16 +43,15 @@ module.exports = {
   resolve: {
     extensions: ['.js', 'jsx'],
     alias: {
-      crypto: 'crypto-browserify',
-      vm: 'vm-browserify',
-      stream: 'stream-browserify',
+      // crypto: 'crypto-browserify',
+      // vm: 'vm-browserify',
+      // stream: 'stream-browserify',
     },
   },
   node: {
     // process: 'mock',
     // process: true,
   },
-  devtool: 'eval-source-map',
   // devServer config flags are only read by WDS but not Webpack
   // 若要使用热加载，还需要在cli上传入 --hot
   devServer: {

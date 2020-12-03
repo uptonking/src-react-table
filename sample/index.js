@@ -1,15 +1,20 @@
-// grid-basic
+// react-table basic
 export { default as A0Simple } from './simple/A0Simple';
 export { default as A1Basic } from './simple/A1Basic';
 export { default as A2Footer } from './simple/A2Footer';
 export { default as A3Sorting } from './simple/A3Sorting';
 
-// grid-layout
+// react-table layout
 export { default as AbsoluteLayoutTable } from './layout/AbsoluteLayoutTable';
 export { default as BlockLayoutTable } from './layout/BlockLayoutTable';
 export { default as FlexLayoutTable } from './layout/FlexLayoutTable';
 
-// table
+// react-table-plugin-system
+export { default as App1CustomHooks } from './plugins/App1CustomHooks';
+export { default as App2DoublePlugin } from './plugins/App2DoublePlugin';
+export { default as App3PluginInstance } from './plugins/App3PluginInstance';
+
+// html-table
 export { default as HtmlTable } from './table/HtmlTable';
 export { default as HtmlTablePlainOld } from './table/HtmlTablePlainOld';
 export { default as CSSOnlyResponsiveTable } from './table/CSSOnlyResponsiveTable';
@@ -25,12 +30,12 @@ export { default as StickyTableAbsolutePosition } from './table/StickyTableAbsol
 export { default as FlexRowSpan } from './table/FlexRowSpan';
 export { default as FlexRowSpan2 } from './table/FlexRowSpan2';
 
-// layer
+// z-index
 export { default as ZIndexLastLevel } from './layer/ZIndexLastLevel';
 export { default as ZIndexAllLevels } from './layer/ZIndexAllLevels';
 export { default as ZIndex3Level } from './layer/ZIndex3Level';
 
-// grid-build-app
+// build-grid-app
 export { default as TabelifyApp } from './grid-tabelify/TabelifyApp';
 export { default as UdemyDataTableApp } from './grid-udemy/UdemyDataTableApp';
 export { default as AbsoluteGridApp } from './grid-absolute/AbsoluteGridApp';
@@ -38,8 +43,3 @@ export { default as AbsoluteGridApp } from './grid-absolute/AbsoluteGridApp';
 // list
 export { default as ScrollUpAbsolutePosition } from './list/ScrollUpAbsolutePosition';
 export { default as ScrollUpRelativePosition } from './list/ScrollUpRelativePosition';
-
-// plugins
-export { default as App1CustomHooks } from './plugins/App1CustomHooks';
-export { default as App2DoublePlugin } from './plugins/App2DoublePlugin';
-export { default as App3PluginInstance } from './plugins/App3PluginInstance';
