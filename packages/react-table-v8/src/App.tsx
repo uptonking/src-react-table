@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckboxWithLabel } from '@examples-hub/sample-components-ts';
+// import { CheckboxWithLabel } from '@examples-hub/sample-components-ts';
 
 import './index.css';
 
@@ -16,7 +16,7 @@ export function App() {
       </div>
       <div>
         <hr />
-        <CheckboxWithLabel labelOn='On' labelOff='Off' />
+        {/* <CheckboxWithLabel labelOn='On' labelOff='Off' /> */}
       </div>
     </div>
   );

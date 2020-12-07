@@ -1,6 +1,6 @@
 const baseConfig = require('../../config/jest.base');
 const pkgConfig = {
-  displayName: 'sample-app-ts',
+  displayName: 'react-table-v8',
   rootDir: '../..',
   setupFilesAfterEnv: ['<rootDir>/config/setupTests.js'],
 };

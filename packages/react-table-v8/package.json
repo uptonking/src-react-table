@@ -1,5 +1,5 @@
 {
-  "name": "@examples-hub/react-table-v8",
+  "name": "react-table-v8",
   "version": "1.0.0",
   "main": "dist/index.ts",
   "module": "src/index.ts",
@@ -12,7 +12,6 @@
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {
-    "@examples-hub/sample-components-ts": "1.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },

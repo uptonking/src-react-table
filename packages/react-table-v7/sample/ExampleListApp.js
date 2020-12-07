@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import * as examples from './index';
+import * as examples from '.';
 
 const exampleNameArr = Object.keys(examples);
 
@@ -8,7 +8,7 @@ export function ExampleListApp() {
   const [curName, setCurName] = useState('AbsoluteLayoutTable');
   // const [curName, setCurName] = useState('AbsoluteGridApp');
 
-  const handleClick = name => {
+  const handleClick = (name) => {
     setCurName(name);
   };
 

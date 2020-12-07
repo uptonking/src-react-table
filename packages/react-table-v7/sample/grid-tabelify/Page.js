@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'underscore';
-import { Tabelify } from '@examples-hub/react-tabelify';
+import { SmartGrid as Tabelify } from '@examples-hub/react-tabelify';
 
 const data = [
   {

@@ -1,6 +1,6 @@
 const baseConfig = require('../../config/jest.base');
 const pkgConfig = {
-  displayName: 'sample-comp',
+  displayName: 'react-tabelify',
   rootDir: '../..',
   setupFilesAfterEnv: ['<rootDir>/config/setupTests.js'],
 };
