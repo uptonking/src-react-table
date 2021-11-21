@@ -19,7 +19,7 @@ import * as filterTypes from '../filterTypes';
 actions.resetGlobalFilter = 'resetGlobalFilter';
 actions.setGlobalFilter = 'setGlobalFilter';
 
-export const useGlobalFilter = hooks => {
+export const useGlobalFilter = (hooks) => {
   hooks.stateReducers.push(reducer);
   hooks.useInstance.push(useInstance);
 };
@@ -76,7 +76,7 @@ function useInstance(instance) {
   } = instance;
 
   const setGlobalFilter = React.useCallback(
-    filterValue => {
+    (filterValue) => {
       dispatch({ type: actions.setGlobalFilter, filterValue });
     },
     [dispatch],
@@ -87,74 +87,71 @@ function useInstance(instance) {
   // cache for each row group (top-level rows, and each row's recursive subrows)
   // This would make multi-filtering a lot faster though. Too far?
 
-  const [
-    globalFilteredRows,
-    globalFilteredFlatRows,
-    globalFilteredRowsById,
-  ] = React.useMemo(() => {
-    if (manualGlobalFilter || typeof globalFilterValue === 'undefined') {
-      return [rows, flatRows, rowsById];
-    }
+  const [globalFilteredRows, globalFilteredFlatRows, globalFilteredRowsById] =
+    React.useMemo(() => {
+      if (manualGlobalFilter || typeof globalFilterValue === 'undefined') {
+        return [rows, flatRows, rowsById];
+      }
 
-    const filteredFlatRows = [];
-    const filteredRowsById = {};
+      const filteredFlatRows = [];
+      const filteredRowsById = {};
 
-    const filterMethod = getFilterMethod(
-      globalFilter,
-      userFilterTypes || {},
-      filterTypes,
-    );
-
-    if (!filterMethod) {
-      console.warn(`Could not find a valid 'globalFilter' option.`);
-      return rows;
-    }
-
-    allColumns.forEach(column => {
-      const { disableGlobalFilter: columnDisableGlobalFilter } = column;
-
-      column.canFilter = getFirstDefined(
-        columnDisableGlobalFilter === true ? false : undefined,
-        disableGlobalFilter === true ? false : undefined,
-        true,
-      );
-    });
-
-    const filterableColumns = allColumns.filter(c => c.canFilter === true);
-
-    // Filters top level and nested rows
-    const filterRows = filteredRows => {
-      filteredRows = filterMethod(
-        filteredRows,
-        filterableColumns.map(d => d.id),
-        globalFilterValue,
+      const filterMethod = getFilterMethod(
+        globalFilter,
+        userFilterTypes || {},
+        filterTypes,
       );
 
-      filteredRows.forEach(row => {
-        filteredFlatRows.push(row);
-        filteredRowsById[row.id] = row;
+      if (!filterMethod) {
+        console.warn(`Could not find a valid 'globalFilter' option.`);
+        return rows;
+      }
 
-        row.subRows =
-          row.subRows && row.subRows.length
-            ? filterRows(row.subRows)
-            : row.subRows;
+      allColumns.forEach((column) => {
+        const { disableGlobalFilter: columnDisableGlobalFilter } = column;
+
+        column.canFilter = getFirstDefined(
+          columnDisableGlobalFilter === true ? false : undefined,
+          disableGlobalFilter === true ? false : undefined,
+          true,
+        );
       });
 
-      return filteredRows;
-    };
+      const filterableColumns = allColumns.filter((c) => c.canFilter === true);
 
-    return [filterRows(rows), filteredFlatRows, filteredRowsById];
-  }, [
-    manualGlobalFilter,
-    globalFilterValue,
-    globalFilter,
-    userFilterTypes,
-    allColumns,
-    rows,
-    flatRows,
-    rowsById,
-    disableGlobalFilter,
-  ]);
+      // Filters top level and nested rows
+      const filterRows = (filteredRows) => {
+        filteredRows = filterMethod(
+          filteredRows,
+          filterableColumns.map((d) => d.id),
+          globalFilterValue,
+        );
+
+        filteredRows.forEach((row) => {
+          filteredFlatRows.push(row);
+          filteredRowsById[row.id] = row;
+
+          row.subRows =
+            row.subRows && row.subRows.length
+              ? filterRows(row.subRows)
+              : row.subRows;
+        });
+
+        return filteredRows;
+      };
+
+      return [filterRows(rows), filteredFlatRows, filteredRowsById];
+    }, [
+      manualGlobalFilter,
+      globalFilterValue,
+      globalFilter,
+      userFilterTypes,
+      allColumns,
+      rows,
+      flatRows,
+      rowsById,
+      disableGlobalFilter,
+    ]);
 
   const getAutoResetGlobalFilter = useGetLatest(autoResetGlobalFilter);
 

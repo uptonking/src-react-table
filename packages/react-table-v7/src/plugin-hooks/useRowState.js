@@ -7,15 +7,15 @@ import {
   useGetLatest,
 } from '../publicUtils';
 
-const defaultInitialRowStateAccessor = originalRow => ({});
-const defaultInitialCellStateAccessor = originalRow => ({});
+const defaultInitialRowStateAccessor = (originalRow) => ({});
+const defaultInitialCellStateAccessor = (originalRow) => ({});
 
 // Actions
 actions.setRowState = 'setRowState';
 actions.setCellState = 'setCellState';
 actions.resetRowState = 'resetRowState';
 
-export const useRowState = hooks => {
+export const useRowState = (hooks) => {
   hooks.stateReducers.push(reducer);
   hooks.useInstance.push(useInstance);
   hooks.prepareRow.push(prepareRow);
@@ -141,11 +141,11 @@ function prepareRow(row, { instance }) {
         ? rowState[row.id]
         : initialRowStateAccessor(row.original);
 
-    row.setState = updater => {
+    row.setState = (updater) => {
       return instance.setRowState(row.id, updater);
     };
 
-    row.cells.forEach(cell => {
+    row.cells.forEach((cell) => {
       if (!row.state.cellState) {
         row.state.cellState = {};
       }
@@ -155,7 +155,7 @@ function prepareRow(row, { instance }) {
           ? row.state.cellState[cell.column.id]
           : initialCellStateAccessor(row.original);
 
-      cell.setState = updater => {
+      cell.setState = (updater) => {
         return instance.setCellState(row.id, cell.column.id, updater);
       };
     });

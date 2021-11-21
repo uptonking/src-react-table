@@ -64,9 +64,9 @@ function Table({ columns, data }) {
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>
                   {column.render('Header')}
                   {column.canFilter ? column.render('Filter') : null}
@@ -80,7 +80,7 @@ function Table({ columns, data }) {
             (row, i) =>
               prepareRow(row) || (
                 <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => {
+                  {row.cells.map((cell) => {
                     return (
                       <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                     );
@@ -110,7 +110,7 @@ const defaultColumn = {
   Filter: ({ column: { filterValue, setFilter } }) => (
     <input
       value={filterValue || ''}
-      onChange={e => {
+      onChange={(e) => {
         setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
       }}
       placeholder='Search...'

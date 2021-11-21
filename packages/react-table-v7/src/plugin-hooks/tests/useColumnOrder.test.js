@@ -72,7 +72,7 @@ function Table({ columns, data }) {
   const testColumnOrder = () => {
     setColumnOrder(
       shuffle(
-        visibleColumns.map(d => d.id),
+        visibleColumns.map((d) => d.id),
         [1, 4, 2, 0, 3, 5],
       ),
     );
@@ -85,7 +85,7 @@ function Table({ columns, data }) {
         <thead>
           {headerGroups.map((headerGroup, i) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
             </tr>
@@ -160,7 +160,7 @@ function App() {
 test('renders a column-orderable table', () => {
   const rtl = render(<App />);
 
-  expect(rtl.getAllByRole('columnheader').map(d => d.textContent)).toEqual([
+  expect(rtl.getAllByRole('columnheader').map((d) => d.textContent)).toEqual([
     'Name',
     'Info',
     'First Name',
@@ -173,7 +173,7 @@ test('renders a column-orderable table', () => {
 
   fireEvent.click(rtl.getByText('Randomize Columns'));
 
-  expect(rtl.getAllByRole('columnheader').map(d => d.textContent)).toEqual([
+  expect(rtl.getAllByRole('columnheader').map((d) => d.textContent)).toEqual([
     'Name',
     'Info',
     'Name',

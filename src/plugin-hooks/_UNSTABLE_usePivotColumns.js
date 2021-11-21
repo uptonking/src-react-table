@@ -6,39 +6,39 @@ import {
   ensurePluginOrder,
   useMountedLayoutEffect,
   useGetLatest,
-} from '../publicUtils'
+} from '../publicUtils';
 
-import { flattenColumns, getFirstDefined } from '../utils'
+import { flattenColumns, getFirstDefined } from '../utils';
 
 // Actions
-actions.resetPivot = 'resetPivot'
-actions.togglePivot = 'togglePivot'
+actions.resetPivot = 'resetPivot';
+actions.togglePivot = 'togglePivot';
 
-export const _UNSTABLE_usePivotColumns = hooks => {
-  hooks.getPivotToggleProps = [defaultGetPivotToggleProps]
-  hooks.stateReducers.push(reducer)
-  hooks.useInstanceAfterData.push(useInstanceAfterData)
-  hooks.allColumns.push(allColumns)
-  hooks.accessValue.push(accessValue)
-  hooks.materializedColumns.push(materializedColumns)
-  hooks.materializedColumnsDeps.push(materializedColumnsDeps)
-  hooks.visibleColumns.push(visibleColumns)
-  hooks.visibleColumnsDeps.push(visibleColumnsDeps)
-  hooks.useInstance.push(useInstance)
-  hooks.prepareRow.push(prepareRow)
-}
+export const _UNSTABLE_usePivotColumns = (hooks) => {
+  hooks.getPivotToggleProps = [defaultGetPivotToggleProps];
+  hooks.stateReducers.push(reducer);
+  hooks.useInstanceAfterData.push(useInstanceAfterData);
+  hooks.allColumns.push(allColumns);
+  hooks.accessValue.push(accessValue);
+  hooks.materializedColumns.push(materializedColumns);
+  hooks.materializedColumnsDeps.push(materializedColumnsDeps);
+  hooks.visibleColumns.push(visibleColumns);
+  hooks.visibleColumnsDeps.push(visibleColumnsDeps);
+  hooks.useInstance.push(useInstance);
+  hooks.prepareRow.push(prepareRow);
+};
 
-_UNSTABLE_usePivotColumns.pluginName = 'usePivotColumns'
+_UNSTABLE_usePivotColumns.pluginName = 'usePivotColumns';
 
-const defaultPivotColumns = []
+const defaultPivotColumns = [];
 
 const defaultGetPivotToggleProps = (props, { header }) => [
   props,
   {
     onClick: header.canPivot
-      ? e => {
-          e.persist()
-          header.togglePivot()
+      ? (e) => {
+          e.persist();
+          header.togglePivot();
         }
       : undefined,
     style: {
@@ -46,7 +46,7 @@ const defaultGetPivotToggleProps = (props, { header }) => [
     },
     title: 'Toggle Pivot',
   },
-]
+];
 
 // Reducer
 function reducer(state, action, previousState, instance) {
@@ -54,82 +54,82 @@ function reducer(state, action, previousState, instance) {
     return {
       pivotColumns: defaultPivotColumns,
       ...state,
-    }
+    };
   }
 
   if (action.type === actions.resetPivot) {
     return {
       ...state,
       pivotColumns: instance.initialState.pivotColumns || defaultPivotColumns,
-    }
+    };
   }
 
   if (action.type === actions.togglePivot) {
-    const { columnId, value: setPivot } = action
+    const { columnId, value: setPivot } = action;
 
     const resolvedPivot =
       typeof setPivot !== 'undefined'
         ? setPivot
-        : !state.pivotColumns.includes(columnId)
+        : !state.pivotColumns.includes(columnId);
 
     if (resolvedPivot) {
       return {
         ...state,
         pivotColumns: [...state.pivotColumns, columnId],
-      }
+      };
     }
 
     return {
       ...state,
-      pivotColumns: state.pivotColumns.filter(d => d !== columnId),
-    }
+      pivotColumns: state.pivotColumns.filter((d) => d !== columnId),
+    };
   }
 }
 
 function useInstanceAfterData(instance) {
-  instance.allColumns.forEach(column => {
-    column.isPivotSource = instance.state.pivotColumns.includes(column.id)
-  })
+  instance.allColumns.forEach((column) => {
+    column.isPivotSource = instance.state.pivotColumns.includes(column.id);
+  });
 }
 
 function allColumns(columns, { instance }) {
-  columns.forEach(column => {
-    column.isPivotSource = instance.state.pivotColumns.includes(column.id)
-    column.uniqueValues = new Set()
-  })
-  return columns
+  columns.forEach((column) => {
+    column.isPivotSource = instance.state.pivotColumns.includes(column.id);
+    column.uniqueValues = new Set();
+  });
+  return columns;
 }
 
 function accessValue(value, { column }) {
   if (column.uniqueValues && typeof value !== 'undefined') {
-    column.uniqueValues.add(value)
+    column.uniqueValues.add(value);
   }
-  return value
+  return value;
 }
 
 function materializedColumns(materialized, { instance }) {
-  const { allColumns, state } = instance
+  const { allColumns, state } = instance;
 
   if (!state.pivotColumns.length || !state.groupBy || !state.groupBy.length) {
-    return materialized
+    return materialized;
   }
 
   const pivotColumns = state.pivotColumns
-    .map(id => allColumns.find(d => d.id === id))
-    .filter(Boolean)
+    .map((id) => allColumns.find((d) => d.id === id))
+    .filter(Boolean);
 
   const sourceColumns = allColumns.filter(
-    d =>
+    (d) =>
       !d.isPivotSource &&
       !state.groupBy.includes(d.id) &&
-      !state.pivotColumns.includes(d.id)
-  )
+      !state.pivotColumns.includes(d.id),
+  );
 
   const buildPivotColumns = (depth = 0, parent, pivotFilters = []) => {
-    const pivotColumn = pivotColumns[depth]
+    const pivotColumn = pivotColumns[depth];
 
     if (!pivotColumn) {
-      return sourceColumns.map(sourceColumn => {
+      return sourceColumns.map((sourceColumn) => {
         // TODO: We could offer support here for renesting pivoted
         // columns inside copies of their header groups. For now,
         // that seems like it would be (1) overkill on nesting, considering
@@ -144,17 +144,17 @@ function materializedColumns(materialized, { instance }) {
           depth: depth,
           id: `${parent ? `${parent.id}.${sourceColumn.id}` : sourceColumn.id}`,
           accessor: (originalRow, i, row) => {
-            if (pivotFilters.every(filter => filter(row))) {
-              return row.values[sourceColumn.id]
+            if (pivotFilters.every((filter) => filter(row))) {
+              return row.values[sourceColumn.id];
             }
           },
-        }
-      })
+        };
+      });
     }
 
-    const uniqueValues = Array.from(pivotColumn.uniqueValues).sort()
+    const uniqueValues = Array.from(pivotColumn.uniqueValues).sort();
 
-    return uniqueValues.map(uniqueValue => {
+    return uniqueValues.map((uniqueValue) => {
       const columnGroup = {
         ...pivotColumn,
         Header:
@@ -168,20 +168,20 @@ function materializedColumns(materialized, { instance }) {
           ? `${parent.id}.${pivotColumn.id}.${uniqueValue}`
           : `${pivotColumn.id}.${uniqueValue}`,
         pivotValue: uniqueValue,
-      }
+      };
 
       columnGroup.columns = buildPivotColumns(depth + 1, columnGroup, [
         ...pivotFilters,
-        row => row.values[pivotColumn.id] === uniqueValue,
-      ])
+        (row) => row.values[pivotColumn.id] === uniqueValue,
+      ]);
 
-      return columnGroup
-    })
-  }
+      return columnGroup;
+    });
+  };
 
-  const newMaterialized = flattenColumns(buildPivotColumns())
+  const newMaterialized = flattenColumns(buildPivotColumns());
 
-  return [...materialized, ...newMaterialized]
+  return [...materialized, ...newMaterialized];
 }
 
 function materializedColumnsDeps(
@@ -190,25 +190,25 @@ function materializedColumnsDeps(
     instance: {
       state: { pivotColumns, groupBy },
     },
-  }
+  },
 ) {
-  return [...deps, pivotColumns, groupBy]
+  return [...deps, pivotColumns, groupBy];
 }
 
 function visibleColumns(visibleColumns, { instance: { state } }) {
-  visibleColumns = visibleColumns.filter(d => !d.isPivotSource)
+  visibleColumns = visibleColumns.filter((d) => !d.isPivotSource);
 
   if (state.pivotColumns.length && state.groupBy && state.groupBy.length) {
     visibleColumns = visibleColumns.filter(
-      column => column.isGrouped || column.isPivoted
-    )
+      (column) => column.isGrouped || column.isPivoted,
+    );
   }
 
-  return visibleColumns
+  return visibleColumns;
 }
 
 function visibleColumnsDeps(deps, { instance }) {
-  return [...deps, instance.state.pivotColumns, instance.state.groupBy]
+  return [...deps, instance.state.pivotColumns, instance.state.groupBy];
 }
 
 function useInstance(instance) {
@@ -225,70 +225,70 @@ function useInstance(instance) {
     manaulPivot,
     disablePivot,
     defaultCanPivot,
-  } = instance
+  } = instance;
 
-  ensurePluginOrder(plugins, ['useGroupBy'], 'usePivotColumns')
+  ensurePluginOrder(plugins, ['useGroupBy'], 'usePivotColumns');
 
-  const getInstance = useGetLatest(instance)
+  const getInstance = useGetLatest(instance);
 
-  allColumns.forEach(column => {
+  allColumns.forEach((column) => {
     const {
       accessor,
       defaultPivot: defaultColumnPivot,
       disablePivot: columnDisablePivot,
-    } = column
+    } = column;
 
     column.canPivot = accessor
       ? getFirstDefined(
           column.canPivot,
           columnDisablePivot === true ? false : undefined,
           disablePivot === true ? false : undefined,
-          true
+          true,
         )
       : getFirstDefined(
           column.canPivot,
           defaultColumnPivot,
           defaultCanPivot,
-          false
-        )
+          false,
+        );
 
     if (column.canPivot) {
-      column.togglePivot = () => instance.togglePivot(column.id)
+      column.togglePivot = () => instance.togglePivot(column.id);
     }
 
-    column.Aggregated = column.Aggregated || column.Cell
-  })
+    column.Aggregated = column.Aggregated || column.Cell;
+  });
 
   const togglePivot = (columnId, value) => {
-    dispatch({ type: actions.togglePivot, columnId, value })
-  }
+    dispatch({ type: actions.togglePivot, columnId, value });
+  };
 
-  flatHeaders.forEach(header => {
+  flatHeaders.forEach((header) => {
     header.getPivotToggleProps = makePropGetter(
       getHooks().getPivotToggleProps,
       {
         instance: getInstance(),
         header,
-      }
-    )
-  })
+      },
+    );
+  });
 
-  const getAutoResetPivot = useGetLatest(autoResetPivot)
+  const getAutoResetPivot = useGetLatest(autoResetPivot);
 
   useMountedLayoutEffect(() => {
     if (getAutoResetPivot()) {
-      dispatch({ type: actions.resetPivot })
+      dispatch({ type: actions.resetPivot });
     }
-  }, [dispatch, manaulPivot ? null : columns])
+  }, [dispatch, manaulPivot ? null : columns]);
 
   Object.assign(instance, {
     togglePivot,
-  })
+  });
 }
 
 function prepareRow(row) {
-  row.allCells.forEach(cell => {
+  row.allCells.forEach((cell) => {
     // Grouped cells are in the pivotColumns and the pivot cell for the row
-    cell.isPivoted = cell.column.isPivoted
-  })
+    cell.isPivoted = cell.column.isPivoted;
+  });
 }

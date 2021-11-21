@@ -6,7 +6,7 @@ import { functionalUpdate, actions } from '../publicUtils';
 actions.resetColumnOrder = 'resetColumnOrder';
 actions.setColumnOrder = 'setColumnOrder';
 
-export const useColumnOrder = hooks => {
+export const useColumnOrder = (hooks) => {
   hooks.stateReducers.push(reducer);
   hooks.visibleColumnsDeps.push((deps, { instance }) => {
     return [...deps, instance.state.columnOrder];
@@ -64,7 +64,7 @@ function visibleColumns(
   // Loop over the columns and place them in order into the new array
   while (columnsCopy.length && columnOrderCopy.length) {
     const targetColumnId = columnOrderCopy.shift();
-    const foundIndex = columnsCopy.findIndex(d => d.id === targetColumnId);
+    const foundIndex = columnsCopy.findIndex((d) => d.id === targetColumnId);
     if (foundIndex > -1) {
       columnsInOrder.push(columnsCopy.splice(foundIndex, 1)[0]);
     }
@@ -78,7 +78,7 @@ function useInstance(instance) {
   const { dispatch } = instance;
 
   instance.setColumnOrder = React.useCallback(
-    columnOrder => {
+    (columnOrder) => {
       return dispatch({ type: actions.setColumnOrder, columnOrder });
     },
     [dispatch],

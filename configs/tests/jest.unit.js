@@ -1,4 +1,4 @@
-const commonConfig = require('./jest.common')
+const commonConfig = require('./jest.common');
 
 module.exports = {
   ...commonConfig,
@@ -9,4 +9,4 @@ module.exports = {
     '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
   },
   setupFilesAfterEnv: ['./configs/tests/setup.common.js'],
-}
+};

@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTable, useBlockLayout, useResizeColumns } from 'react-table'
+import React from 'react';
+import styled from 'styled-components';
+import { useTable, useBlockLayout, useResizeColumns } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -27,8 +27,10 @@ const Styles = styled.div`
       border-bottom: 1px solid black;
       border-right: 1px solid black;
 
-      ${'' /* In this example we use an absolutely position resizer,
-       so this is required. */}
+      ${
+        '' /* In this example we use an absolutely position resizer,
+       so this is required. */
+      }
       position: relative;
 
       :last-child {
@@ -54,7 +56,7 @@ const Styles = styled.div`
       }
     }
   }
-`
+`;
 
 function Table({ columns, data }) {
   const defaultColumn = React.useMemo(
@@ -63,8 +65,8 @@ function Table({ columns, data }) {
       width: 150,
       maxWidth: 400,
     }),
-    []
-  )
+    [],
+  );
 
   const {
     getTableProps,
@@ -81,19 +83,19 @@ function Table({ columns, data }) {
       defaultColumn,
     },
     useBlockLayout,
-    useResizeColumns
-  )
+    useResizeColumns,
+  );
 
   return (
     <>
       <button onClick={resetResizing}>Reset Resizing</button>
       <div>
-        <div {...getTableProps()} className="table">
+        <div {...getTableProps()} className='table'>
           <div>
-            {headerGroups.map(headerGroup => (
-              <div {...headerGroup.getHeaderGroupProps()} className="tr">
-                {headerGroup.headers.map(column => (
-                  <div {...column.getHeaderProps()} className="th">
+            {headerGroups.map((headerGroup) => (
+              <div {...headerGroup.getHeaderGroupProps()} className='tr'>
+                {headerGroup.headers.map((column) => (
+                  <div {...column.getHeaderProps()} className='th'>
                     {column.render('Header')}
                     {/* Use column.getResizerProps to hook up the events correctly */}
                     <div
@@ -110,18 +112,18 @@ function Table({ columns, data }) {
 
           <div {...getTableBodyProps()}>
             {rows.map((row, i) => {
-              prepareRow(row)
+              prepareRow(row);
               return (
-                <div {...row.getRowProps()} className="tr">
-                  {row.cells.map(cell => {
+                <div {...row.getRowProps()} className='tr'>
+                  {row.cells.map((cell) => {
                     return (
-                      <div {...cell.getCellProps()} className="td">
+                      <div {...cell.getCellProps()} className='td'>
                         {cell.render('Cell')}
                       </div>
-                    )
+                    );
                   })}
                 </div>
-              )
+              );
             })}
           </div>
         </div>
@@ -130,7 +132,7 @@ function Table({ columns, data }) {
         <code>{JSON.stringify(state, null, 2)}</code>
       </pre>
     </>
-  )
+  );
 }
 
 function App() {
@@ -173,16 +175,16 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(10), [])
+  const data = React.useMemo(() => makeData(10), []);
 
   return (
     <Styles>
       <Table columns={columns} data={data} />
     </Styles>
-  )
+  );
 }
 
-export default App
+export default App;

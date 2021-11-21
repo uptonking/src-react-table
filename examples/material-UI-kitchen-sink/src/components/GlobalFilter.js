@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-import InputBase from '@material-ui/core/InputBase'
-import { fade, makeStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
-import SearchIcon from '@material-ui/icons/Search'
+import InputBase from '@material-ui/core/InputBase';
+import { fade, makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import SearchIcon from '@material-ui/icons/Search';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -41,15 +41,15 @@ const useStyles = makeStyles(theme => ({
       width: 200,
     },
   },
-}))
+}));
 
 const GlobalFilter = ({
   preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
 }) => {
-  const classes = useStyles()
-  const count = preGlobalFilteredRows.length
+  const classes = useStyles();
+  const count = preGlobalFilteredRows.length;
 
   // Global filter only works with pagination from the first page.
   // This may not be a problem for server side pagination when
@@ -62,8 +62,8 @@ const GlobalFilter = ({
       </div>
       <InputBase
         value={globalFilter || ''}
-        onChange={e => {
-          setGlobalFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+        onChange={(e) => {
+          setGlobalFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
         }}
         placeholder={`${count} records...`}
         classes={{
@@ -73,13 +73,13 @@ const GlobalFilter = ({
         inputProps={{ 'aria-label': 'search' }}
       />
     </div>
-  )
-}
+  );
+};
 
 GlobalFilter.propTypes = {
   preGlobalFilteredRows: PropTypes.array.isRequired,
   globalFilter: PropTypes.string.isRequired,
   setGlobalFilter: PropTypes.func.isRequired,
-}
+};
 
-export default GlobalFilter
+export default GlobalFilter;

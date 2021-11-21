@@ -1,19 +1,23 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 import {
   useTable,
   useResizeColumns,
   useFlexLayout,
   useRowSelect,
-} from 'react-table'
+} from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 const Styles = styled.div`
   padding: 1rem;
-  ${'' /* These styles are suggested for the table fill all available space in its containing element */}
+  ${
+    '' /* These styles are suggested for the table fill all available space in its containing element */
+  }
   display: block;
-  ${'' /* These styles are required for a horizontaly scrollable table overflow */}
+  ${
+    '' /* These styles are required for a horizontaly scrollable table overflow */
+  }
   overflow: auto;
 
   .table {
@@ -21,7 +25,9 @@ const Styles = styled.div`
     border: 1px solid black;
 
     .thead {
-      ${'' /* These styles are required for a scrollable body to align with the header properly */}
+      ${
+        '' /* These styles are required for a scrollable body to align with the header properly */
+      }
       overflow-y: auto;
       overflow-x: hidden;
     }
@@ -48,8 +54,10 @@ const Styles = styled.div`
       padding: 0.5rem;
       border-right: 1px solid black;
 
-      ${'' /* In this example we use an absolutely position resizer,
-       so this is required. */}
+      ${
+        '' /* In this example we use an absolutely position resizer,
+       so this is required. */
+      }
       position: relative;
 
       :last-child {
@@ -73,11 +81,11 @@ const Styles = styled.div`
       }
     }
   }
-`
+`;
 
-const headerProps = (props, { column }) => getStyles(props, column.align)
+const headerProps = (props, { column }) => getStyles(props, column.align);
 
-const cellProps = (props, { cell }) => getStyles(props, cell.column.align)
+const cellProps = (props, { cell }) => getStyles(props, cell.column.align);
 
 const getStyles = (props, align = 'left') => [
   props,
@@ -88,24 +96,24 @@ const getStyles = (props, align = 'left') => [
       display: 'flex',
     },
   },
-]
+];
 
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef()
-    const resolvedRef = ref || defaultRef
+    const defaultRef = React.useRef();
+    const resolvedRef = ref || defaultRef;
 
     React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate
-    }, [resolvedRef, indeterminate])
+      resolvedRef.current.indeterminate = indeterminate;
+    }, [resolvedRef, indeterminate]);
 
     return (
       <>
-        <input type="checkbox" ref={resolvedRef} {...rest} />
+        <input type='checkbox' ref={resolvedRef} {...rest} />
       </>
-    )
-  }
-)
+    );
+  },
+);
 
 function Table({ columns, data }) {
   const defaultColumn = React.useMemo(
@@ -115,8 +123,8 @@ function Table({ columns, data }) {
       width: 150, // width is used for both the flex-basis and flex-grow
       maxWidth: 200, // maxWidth is only used as a limit for resizing
     }),
-    []
-  )
+    [],
+  );
 
   const { getTableProps, headerGroups, rows, prepareRow } = useTable(
     {
@@ -127,8 +135,8 @@ function Table({ columns, data }) {
     useResizeColumns,
     useFlexLayout,
     useRowSelect,
-    hooks => {
-      hooks.allColumns.push(columns => [
+    (hooks) => {
+      hooks.allColumns.push((columns) => [
         // Let's make a column for selection
         {
           id: 'selection',
@@ -152,27 +160,27 @@ function Table({ columns, data }) {
           ),
         },
         ...columns,
-      ])
+      ]);
       hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
         // fix the parent group of the selection button to not be resizable
-        const selectionGroupHeader = headerGroups[0].headers[0]
-        selectionGroupHeader.canResize = false
-      })
-    }
-  )
+        const selectionGroupHeader = headerGroups[0].headers[0];
+        selectionGroupHeader.canResize = false;
+      });
+    },
+  );
 
   return (
-    <div {...getTableProps()} className="table">
+    <div {...getTableProps()} className='table'>
       <div>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup) => (
           <div
             {...headerGroup.getHeaderGroupProps({
               // style: { paddingRight: '15px' },
             })}
-            className="tr"
+            className='tr'
           >
-            {headerGroup.headers.map(column => (
-              <div {...column.getHeaderProps(headerProps)} className="th">
+            {headerGroup.headers.map((column) => (
+              <div {...column.getHeaderProps(headerProps)} className='th'>
                 {column.render('Header')}
                 {/* Use column.getResizerProps to hook up the events correctly */}
                 {column.canResize && (
@@ -188,24 +196,24 @@ function Table({ columns, data }) {
           </div>
         ))}
       </div>
-      <div className="tbody">
-        {rows.map(row => {
-          prepareRow(row)
+      <div className='tbody'>
+        {rows.map((row) => {
+          prepareRow(row);
           return (
-            <div {...row.getRowProps()} className="tr">
-              {row.cells.map(cell => {
+            <div {...row.getRowProps()} className='tr'>
+              {row.cells.map((cell) => {
                 return (
-                  <div {...cell.getCellProps(cellProps)} className="td">
+                  <div {...cell.getCellProps(cellProps)} className='td'>
                     {cell.render('Cell')}
                   </div>
-                )
+                );
               })}
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }
 
 function App() {
@@ -250,16 +258,16 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(20), [])
+  const data = React.useMemo(() => makeData(20), []);
 
   return (
     <Styles>
       <Table columns={columns} data={data} />
     </Styles>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -38,27 +38,22 @@ const defaultColumn = {
 };
 
 function Table({ columns, data }) {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-    },
-    useAbsoluteLayout,
-  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+      },
+      useAbsoluteLayout,
+    );
 
   return (
     <div {...getTableProps()} className='table'>
       <div>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup) => (
           <div {...headerGroup.getHeaderGroupProps()} className='row'>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column) => (
               <div {...column.getHeaderProps()} className='cell header'>
                 {column.render('Header')}
               </div>
@@ -72,7 +67,7 @@ function Table({ columns, data }) {
           (row, i) =>
             prepareRow(row) || (
               <div {...row.getRowProps()} className='row'>
-                {row.cells.map(cell => {
+                {row.cells.map((cell) => {
                   return (
                     <div {...cell.getCellProps()} className='cell'>
                       {cell.render('Cell')}
@@ -141,11 +136,11 @@ test('renders a table', () => {
   expect(
     rtl
       .getAllByRole('columnheader')
-      .every(d => d.style.position === 'absolute'),
+      .every((d) => d.style.position === 'absolute'),
   ).toBe(true);
 
   expect(
-    rtl.getAllByRole('columnheader').map(d => [d.style.left, d.style.width]),
+    rtl.getAllByRole('columnheader').map((d) => [d.style.left, d.style.width]),
   ).toStrictEqual([
     ['0px', '550px'],
     ['550px', '850px'],

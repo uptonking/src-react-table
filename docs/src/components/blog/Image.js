@@ -79,7 +79,7 @@ class Image extends Component {
       <IObserver
         once
         onIntersect={this.handleIntersect}
-        rootMargin="20%"
+        rootMargin='20%'
         disabled={!lazy}
       >
         <figure
@@ -90,11 +90,11 @@ class Image extends Component {
           {...props}
         >
           <main style={{ width }}>
-            <div className="container" style={{ paddingBottom: aspectRatio }}>
+            <div className='container' style={{ paddingBottom: aspectRatio }}>
               {src ? (
                 <img
-                  decoding="async"
-                  loading="lazy"
+                  decoding='async'
+                  loading='lazy'
                   src={src || null}
                   onLoad={this.onLoad}
                   alt={alt}

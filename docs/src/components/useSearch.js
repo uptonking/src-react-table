@@ -1,15 +1,15 @@
-import { createContext, useContext, useState, useCallback } from 'react'
-import { createPortal } from 'react-dom'
-import Router from 'next/router'
-import Head from 'next/head'
-import Link from 'next/link'
-import { useDocSearchKeyboardEvents } from '@docsearch/react'
-import { siteConfig } from 'siteConfig'
+import { createContext, useContext, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import Router from 'next/router';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useDocSearchKeyboardEvents } from '@docsearch/react';
+import { siteConfig } from 'siteConfig';
 
-const SearchContext = createContext()
-let DocSearchModal = null
+const SearchContext = createContext();
+let DocSearchModal = null;
 
-export const useSearch = () => useContext(SearchContext)
+export const useSearch = () => useContext(SearchContext);
 
 export function SearchProvider({
   children,
@@ -17,47 +17,47 @@ export function SearchProvider({
     hitsPerPage: 5,
   },
 }) {
-  const [isShowing, setIsShowing] = useState(false)
+  const [isShowing, setIsShowing] = useState(false);
 
   const onOpen = useCallback(function onOpen() {
     function importDocSearchModalIfNeeded() {
       if (DocSearchModal) {
-        return Promise.resolve()
+        return Promise.resolve();
       }
 
       return import('@docsearch/react/modal').then(
-        ({ DocSearchModal: Modal }) => (DocSearchModal = Modal)
-      )
+        ({ DocSearchModal: Modal }) => (DocSearchModal = Modal),
+      );
     }
 
     importDocSearchModalIfNeeded().then(() => {
-      setIsShowing(true)
-    })
-  }, [])
+      setIsShowing(true);
+    });
+  }, []);
 
-  const onClose = useCallback(() => setIsShowing(false), [])
+  const onClose = useCallback(() => setIsShowing(false), []);
 
   useDocSearchKeyboardEvents({
     isOpen: isShowing,
     onOpen,
     onClose,
-  })
+  });
 
   const options = {
     appId: siteConfig.algolia.appId,
     apiKey: siteConfig.algolia.apiKey,
     indexName: siteConfig.algolia.indexName,
     renderModal: true,
-  }
+  };
 
   return (
     <>
       <Head>
         <link
-          key="algolia"
-          rel="preconnect"
+          key='algolia'
+          rel='preconnect'
           href={`https://${options.appId}-dsn.algolia.net`}
-          crossOrigin="true"
+          crossOrigin='true'
         />
       </Head>
 
@@ -73,27 +73,27 @@ export function SearchProvider({
             onClose={onClose}
             navigator={{
               navigate({ suggestionUrl }) {
-                Router.push(suggestionUrl)
+                Router.push(suggestionUrl);
               },
             }}
-            transformItems={items => {
-              return items.map(item => {
-                const url = new URL(item.url)
+            transformItems={(items) => {
+              return items.map((item) => {
+                const url = new URL(item.url);
                 return {
                   ...item,
                   url: item.url
                     .replace(url.origin, '')
                     .replace('#__next', '')
                     .replace('/docs/#', '/docs/overview#'),
-                }
-              })
+                };
+              });
             }}
             hitComponent={Hit}
           />,
-          document.body
+          document.body,
         )}
     </>
-  )
+  );
 }
 
 function Hit({ hit, children }) {
@@ -101,5 +101,5 @@ function Hit({ hit, children }) {
     <Link href={hit.url.replace()}>
       <a>{children}</a>
     </Link>
-  )
+  );
 }

@@ -1,30 +1,30 @@
-import React from 'react'
+import React from 'react';
 
-import CssBaseline from '@material-ui/core/CssBaseline'
-import MaUTable from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
+import CssBaseline from '@material-ui/core/CssBaseline';
+import MaUTable from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
-import { useTable } from 'react-table'
+import { useTable } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
   const { getTableProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data,
-  })
+  });
 
   // Render the UI for your table
   return (
     <MaUTable {...getTableProps()}>
       <TableHead>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup) => (
           <TableRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column) => (
               <TableCell {...column.getHeaderProps()}>
                 {column.render('Header')}
               </TableCell>
@@ -34,22 +34,22 @@ function Table({ columns, data }) {
       </TableHead>
       <TableBody>
         {rows.map((row, i) => {
-          prepareRow(row)
+          prepareRow(row);
           return (
             <TableRow {...row.getRowProps()}>
-              {row.cells.map(cell => {
+              {row.cells.map((cell) => {
                 return (
                   <TableCell {...cell.getCellProps()}>
                     {cell.render('Cell')}
                   </TableCell>
-                )
+                );
               })}
             </TableRow>
-          )
+          );
         })}
       </TableBody>
     </MaUTable>
-  )
+  );
 }
 
 function App() {
@@ -90,17 +90,17 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(20), [])
+  const data = React.useMemo(() => makeData(20), []);
 
   return (
     <div>
       <CssBaseline />
       <Table columns={columns} data={data} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

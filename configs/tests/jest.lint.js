@@ -1,4 +1,4 @@
-const {rootDir} = require('./jest.common');
+const { rootDir } = require('./jest.common');
 
 module.exports = {
   rootDir,

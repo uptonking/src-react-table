@@ -1,8 +1,8 @@
-import * as React from 'react'
-import cx from 'classnames'
-import { useTocHighlight } from './useTocHighlight'
-import styles from './Toc.module.css'
-const TOP_OFFSET = 100
+import * as React from 'react';
+import cx from 'classnames';
+import { useTocHighlight } from './useTocHighlight';
+import styles from './Toc.module.css';
+const TOP_OFFSET = 100;
 
 function getHeaderAnchors() {
   return Array.prototype.filter.call(
@@ -11,9 +11,9 @@ function getHeaderAnchors() {
       return (
         testElement.parentNode.nodeName === 'H2' ||
         testElement.parentNode.nodeName === 'H3'
-      )
-    }
-  )
+      );
+    },
+  );
 }
 
 function getHeaderDataFromAnchors(el) {
@@ -21,7 +21,7 @@ function getHeaderDataFromAnchors(el) {
     url: el.getAttribute('href'),
     text: el.parentElement?.innerText,
     depth: Number(el.parentElement?.nodeName.replace('H', '')),
-  }
+  };
 }
 
 export const Toc = () => {
@@ -31,11 +31,11 @@ export const Toc = () => {
     TOP_OFFSET,
     getHeaderAnchors,
     getHeaderDataFromAnchors,
-    el => el?.parentElement?.id
-  )
+    (el) => el?.parentElement?.id,
+  );
 
   return (
-    <ul className="space-y-3">
+    <ul className='space-y-3'>
       {headings &&
         headings.length > 0 &&
         headings.map((h, i) =>
@@ -51,8 +51,8 @@ export const Toc = () => {
                 {h.text}
               </a>
             </li>
-          ) : null
+          ) : null,
         )}
     </ul>
-  )
-}
+  );
+};

@@ -1,10 +1,10 @@
-const skewLow = n => (n < 0.9 ? n / 2 : n)
+const skewLow = (n) => (n < 0.9 ? n / 2 : n);
 
-const sample = items => {
-  const length = items.length
-  const rand = Math.floor(skewLow(Math.random() * length))
-  return items[rand]
-}
+const sample = (items) => {
+  const length = items.length;
+  const rand = Math.floor(skewLow(Math.random() * length));
+  return items[rand];
+};
 
 const reps = [
   'Jones',
@@ -18,9 +18,9 @@ const reps = [
   'Howard',
   'Parent',
   'Smith',
-]
+];
 
-const regions = ['East', 'Central', 'West', 'International']
+const regions = ['East', 'Central', 'West', 'International'];
 
 const items = [
   ['Pencil', 1.99, 100],
@@ -28,7 +28,7 @@ const items = [
   ['Pen', 7.99, 1, 100],
   ['Desk', 299.99, 1, 10],
   ['Notebook', 10.99, 1, 30],
-]
+];
 
 const dates = [
   '1/6/2018',
@@ -74,13 +74,13 @@ const dates = [
   '11/17/2019',
   '12/4/2019',
   '12/21/2019',
-]
+];
 
 export default function makeData() {
   return Array.from(new Array(10000)).map(() => {
-    const [item, unitCost, stock] = sample(items)
-    const units = Math.ceil(skewLow(Math.random()) * stock)
-    const total = units * unitCost
+    const [item, unitCost, stock] = sample(items);
+    const units = Math.ceil(skewLow(Math.random()) * stock);
+    const total = units * unitCost;
 
     return {
       date: sample(dates),
@@ -90,6 +90,6 @@ export default function makeData() {
       unitCost,
       units,
       total,
-    }
-  })
+    };
+  });
 }

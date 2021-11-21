@@ -1,17 +1,17 @@
-import React from 'react'
+import React from 'react';
 
-import AddUserDialog from './AddUserDialog'
-import clsx from 'clsx'
-import DeleteIcon from '@material-ui/icons/Delete'
-import GlobalFilter from './GlobalFilter'
-import IconButton from '@material-ui/core/IconButton'
-import { lighten, makeStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import Tooltip from '@material-ui/core/Tooltip'
+import AddUserDialog from './AddUserDialog';
+import clsx from 'clsx';
+import DeleteIcon from '@material-ui/icons/Delete';
+import GlobalFilter from './GlobalFilter';
+import IconButton from '@material-ui/core/IconButton';
+import { lighten, makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 
-const useToolbarStyles = makeStyles(theme => ({
+const useToolbarStyles = makeStyles((theme) => ({
   root: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
@@ -29,10 +29,10 @@ const useToolbarStyles = makeStyles(theme => ({
   title: {
     flex: '1 1 100%',
   },
-}))
+}));
 
-const TableToolbar = props => {
-  const classes = useToolbarStyles()
+const TableToolbar = (props) => {
+  const classes = useToolbarStyles();
   const {
     numSelected,
     addUserHandler,
@@ -40,7 +40,7 @@ const TableToolbar = props => {
     preGlobalFilteredRows,
     setGlobalFilter,
     globalFilter,
-  } = props
+  } = props;
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -51,20 +51,20 @@ const TableToolbar = props => {
       {numSelected > 0 ? (
         <Typography
           className={classes.title}
-          color="inherit"
-          variant="subtitle1"
+          color='inherit'
+          variant='subtitle1'
         >
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle">
+        <Typography className={classes.title} variant='h6' id='tableTitle'>
           Users
         </Typography>
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete" onClick={deleteUserHandler}>
+        <Tooltip title='Delete'>
+          <IconButton aria-label='delete' onClick={deleteUserHandler}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -76,8 +76,8 @@ const TableToolbar = props => {
         />
       )}
     </Toolbar>
-  )
-}
+  );
+};
 
 TableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
@@ -86,6 +86,6 @@ TableToolbar.propTypes = {
   setGlobalFilter: PropTypes.func.isRequired,
   preGlobalFilteredRows: PropTypes.array.isRequired,
   globalFilter: PropTypes.string.isRequired,
-}
+};
 
-export default TableToolbar
+export default TableToolbar;

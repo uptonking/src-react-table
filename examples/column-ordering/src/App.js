@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTable, useColumnOrder } from 'react-table'
+import React from 'react';
+import styled from 'styled-components';
+import { useTable, useColumnOrder } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -32,16 +32,16 @@ const Styles = styled.div`
       }
     }
   }
-`
+`;
 
 function shuffle(arr) {
-  arr = [...arr]
-  const shuffled = []
+  arr = [...arr];
+  const shuffled = [];
   while (arr.length) {
-    const rand = Math.floor(Math.random() * arr.length)
-    shuffled.push(arr.splice(rand, 1)[0])
+    const rand = Math.floor(Math.random() * arr.length);
+    shuffled.push(arr.splice(rand, 1)[0]);
   }
-  return shuffled
+  return shuffled;
 }
 
 function Table({ columns, data }) {
@@ -59,12 +59,12 @@ function Table({ columns, data }) {
       columns,
       data,
     },
-    useColumnOrder
-  )
+    useColumnOrder,
+  );
 
   const randomizeColumns = () => {
-    setColumnOrder(shuffle(visibleColumns.map(d => d.id)))
-  }
+    setColumnOrder(shuffle(visibleColumns.map((d) => d.id)));
+  };
 
   return (
     <>
@@ -73,7 +73,7 @@ function Table({ columns, data }) {
         <thead>
           {headerGroups.map((headerGroup, i) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
             </tr>
@@ -81,14 +81,16 @@ function Table({ columns, data }) {
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.slice(0, 10).map((row, i) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell, i) => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  );
                 })}
               </tr>
-            )
+            );
           })}
         </tbody>
       </table>
@@ -96,7 +98,7 @@ function Table({ columns, data }) {
         <code>{JSON.stringify(state, null, 2)}</code>
       </pre>
     </>
-  )
+  );
 }
 
 function App() {
@@ -137,16 +139,16 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(10), [])
+  const data = React.useMemo(() => makeData(10), []);
 
   return (
     <Styles>
       <Table columns={columns} data={data} />
     </Styles>
-  )
+  );
 }
 
-export default App
+export default App;

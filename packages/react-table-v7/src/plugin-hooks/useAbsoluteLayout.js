@@ -19,7 +19,7 @@ const cellStyles = {
   top: 0,
 };
 
-export const useAbsoluteLayout = hooks => {
+export const useAbsoluteLayout = (hooks) => {
   hooks.getTableBodyProps.push(getRowStyles);
   hooks.getRowProps.push(getRowStyles);
   hooks.getHeaderGroupProps.push(getRowStyles);

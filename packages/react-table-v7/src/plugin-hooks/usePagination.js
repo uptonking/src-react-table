@@ -17,7 +17,7 @@ actions.resetPage = 'resetPage';
 actions.gotoPage = 'gotoPage';
 actions.setPageSize = 'setPageSize';
 
-export const usePagination = hooks => {
+export const usePagination = (hooks) => {
   hooks.stateReducers.push(reducer);
   hooks.useInstance.push(useInstance);
 };
@@ -168,22 +168,22 @@ function useInstance(instance) {
     pageCount === -1 ? page.length >= pageSize : pageIndex < pageCount - 1;
 
   const gotoPage = React.useCallback(
-    pageIndex => {
+    (pageIndex) => {
       dispatch({ type: actions.gotoPage, pageIndex });
     },
     [dispatch],
   );
 
   const previousPage = React.useCallback(() => {
-    return gotoPage(old => old - 1);
+    return gotoPage((old) => old - 1);
   }, [gotoPage]);
 
   const nextPage = React.useCallback(() => {
-    return gotoPage(old => old + 1);
+    return gotoPage((old) => old + 1);
   }, [gotoPage]);
 
   const setPageSize = React.useCallback(
-    pageSize => {
+    (pageSize) => {
       dispatch({ type: actions.setPageSize, pageSize });
     },
     [dispatch],

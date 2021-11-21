@@ -40,28 +40,23 @@ function Table({ columns, data }) {
     [],
   );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-    },
-    useBlockLayout,
-    useResizeColumns,
-  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+      },
+      useBlockLayout,
+      useResizeColumns,
+    );
 
   return (
     <div {...getTableProps()} className='table'>
       <div>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup) => (
           <div {...headerGroup.getHeaderGroupProps()} className='tr'>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column) => (
               <div {...column.getHeaderProps()} className='th'>
                 {column.render('Header')}
                 {/* Use column.getResizerProps to hook up the events correctly */}
@@ -80,7 +75,7 @@ function Table({ columns, data }) {
           prepareRow(row);
           return (
             <div {...row.getRowProps()} className='tr'>
-              {row.cells.map(cell => {
+              {row.cells.map((cell) => {
                 return (
                   <div {...cell.getCellProps()} className='td'>
                     {cell.render('Cell')}
@@ -172,9 +167,9 @@ test('table can be resized by a mouse', () => {
 
   const infoResizer = rtl
     .getAllByRole('separator')
-    .find(d => d.previousSibling.textContent === 'Info');
+    .find((d) => d.previousSibling.textContent === 'Info');
 
-  expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
+  expect(rtl.getAllByRole('columnheader').map((d) => d.style.width)).toEqual(
     sizesBefore,
   );
 
@@ -182,7 +177,7 @@ test('table can be resized by a mouse', () => {
   fireEvent.mouseMove(infoResizer, { clientX: move });
   fireEvent.mouseUp(infoResizer, { clientX: end });
 
-  expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
+  expect(rtl.getAllByRole('columnheader').map((d) => d.style.width)).toEqual(
     sizesAfter,
   );
 });
@@ -192,9 +187,9 @@ test('table can be resized by a touch device', () => {
 
   const infoResizer = rtl
     .getAllByRole('separator')
-    .find(d => d.previousSibling.textContent === 'Info');
+    .find((d) => d.previousSibling.textContent === 'Info');
 
-  expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
+  expect(rtl.getAllByRole('columnheader').map((d) => d.style.width)).toEqual(
     sizesBefore,
   );
 
@@ -202,7 +197,7 @@ test('table can be resized by a touch device', () => {
   fireEvent.touchMove(infoResizer, { touches: [{ clientX: move }] });
   fireEvent.touchEnd(infoResizer, { touches: [{ clientX: end }] });
 
-  expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
+  expect(rtl.getAllByRole('columnheader').map((d) => d.style.width)).toEqual(
     sizesAfter,
   );
 });
@@ -212,9 +207,9 @@ test('table can not be resized with multiple touches', () => {
 
   const infoResizer = rtl
     .getAllByRole('separator')
-    .find(d => d.previousSibling.textContent === 'Info');
+    .find((d) => d.previousSibling.textContent === 'Info');
 
-  expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
+  expect(rtl.getAllByRole('columnheader').map((d) => d.style.width)).toEqual(
     sizesBefore,
   );
 
@@ -228,7 +223,7 @@ test('table can not be resized with multiple touches', () => {
     touches: [{ clientX: end }, { clientX: end }],
   });
 
-  expect(rtl.getAllByRole('columnheader').map(d => d.style.width)).toEqual(
+  expect(rtl.getAllByRole('columnheader').map((d) => d.style.width)).toEqual(
     sizesBefore,
   );
 });

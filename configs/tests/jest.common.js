@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = {
   moduleDirectories: [
@@ -14,4 +14,4 @@ module.exports = {
   roots: ['<rootDir>/src', __dirname],
   transformIgnorePatterns: ['node_modules'],
   collectCoverageFrom: ['src/**/*.js', '!**/*.test.js'],
-}
+};

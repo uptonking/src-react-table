@@ -38,27 +38,22 @@ const defaultColumn = {
 };
 
 function Table({ columns, data }) {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-    },
-    useFlexLayout,
-  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+      },
+      useFlexLayout,
+    );
 
   return (
     <div {...getTableProps()} className='table'>
       <div>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup) => (
           <div {...headerGroup.getHeaderGroupProps()} className='row'>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column) => (
               <div {...column.getHeaderProps()} className='cell header'>
                 {column.render('Header')}
               </div>
@@ -72,7 +67,7 @@ function Table({ columns, data }) {
           (row, i) =>
             prepareRow(row) || (
               <div {...row.getRowProps()} className='row'>
-                {row.cells.map(cell => {
+                {row.cells.map((cell) => {
                   return (
                     <div {...cell.getCellProps()} className='cell'>
                       {cell.render('Cell')}
@@ -145,7 +140,7 @@ test('renders a table', () => {
   );
 
   expect(
-    Array.from(firstRow.children).map(d => d.getAttribute('style')),
+    Array.from(firstRow.children).map((d) => d.getAttribute('style')),
   ).toEqual([
     'box-sizing: border-box; flex: 0 0 auto; min-width: 100px; width: 250px;',
     'box-sizing: border-box; flex: 0 0 auto; min-width: 100px; width: 300px;',

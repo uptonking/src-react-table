@@ -1,4 +1,4 @@
-const range = len => {
+const range = (len) => {
   const arr = [];
   for (let i = 0; i < len; i++) {
     arr.push(i);
@@ -15,13 +15,18 @@ const newPerson = () => {
     age: Math.floor(Math.random() * 30),
     visits: Math.floor(Math.random() * 100),
     progress: Math.floor(Math.random() * 100),
-    status: statusChance > 0.66 ? 'relationship' : statusChance > 0.33 ? 'complicated' : 'single',
+    status:
+      statusChance > 0.66
+        ? 'relationship'
+        : statusChance > 0.33
+        ? 'complicated'
+        : 'single',
   };
 };
 
 export function makeData(len = 5553) {
   // eslint-disable-next-line no-unused-vars
-  return range(len).map(d => ({
+  return range(len).map((d) => ({
     ...newPerson(),
     children: range(2).map(newPerson),
   }));

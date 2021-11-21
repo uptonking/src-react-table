@@ -43,7 +43,9 @@ const defaultColumn = {
     <div>
       Row {row.id} Cell {column.id} Count {cell.state.count}{' '}
       <button
-        onClick={() => cell.setState(old => ({ ...old, count: old.count + 1 }))}
+        onClick={() =>
+          cell.setState((old) => ({ ...old, count: old.count + 1 }))
+        }
       >
         Row {row.id} Cell {column.id} Toggle
       </button>
@@ -52,29 +54,24 @@ const defaultColumn = {
 };
 
 function Table({ columns, data }) {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-      initialRowStateAccessor: () => ({ count: 0 }),
-      initialCellStateAccessor: () => ({ count: 0 }),
-    },
-    useRowState,
-  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+        initialRowStateAccessor: () => ({ count: 0 }),
+        initialCellStateAccessor: () => ({ count: 0 }),
+      },
+      useRowState,
+    );
 
   return (
     <table {...getTableProps()}>
       <thead>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column) => (
               <th {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
@@ -89,7 +86,7 @@ function Table({ columns, data }) {
                   <pre>Row Count {row.state.count}</pre>
                   <button
                     onClick={() =>
-                      row.setState(old => ({
+                      row.setState((old) => ({
                         ...old,
                         count: old.count + 1,
                       }))
@@ -98,7 +95,7 @@ function Table({ columns, data }) {
                     Row {row.id} Toggle
                   </button>
                 </td>
-                {row.cells.map(cell => (
+                {row.cells.map((cell) => (
                   <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 ))}
               </tr>

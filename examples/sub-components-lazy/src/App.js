@@ -38,10 +38,8 @@ function SubRows({ row, rowProps, visibleColumns, data, loading }) {
   if (loading) {
     return (
       <tr>
-        <td/>
-        <td colSpan={visibleColumns.length - 1}>
-          Loading...
-        </td>
+        <td />
+        <td colSpan={visibleColumns.length - 1}>Loading...</td>
       </tr>
     );
   }
@@ -52,20 +50,13 @@ function SubRows({ row, rowProps, visibleColumns, data, loading }) {
     <>
       {data.map((x, i) => {
         return (
-          <tr
-            {...rowProps}
-            key={`${rowProps.key}-expanded-${i}`}
-          >
+          <tr {...rowProps} key={`${rowProps.key}-expanded-${i}`}>
             {row.cells.map((cell) => {
               return (
-                <td
-                  {...cell.getCellProps()}
-                >
+                <td {...cell.getCellProps()}>
                   {cell.render(cell.column.SubCell ? 'SubCell' : 'Cell', {
-                    value:
-                      cell.column.accessor &&
-                      cell.column.accessor(x, i),
-                    row: { ...row, original: x }
+                    value: cell.column.accessor && cell.column.accessor(x, i),
+                    row: { ...row, original: x },
                   })}
                 </td>
               );
@@ -114,13 +105,13 @@ function Table({ columns: userColumns, data, renderRowSubComponent }) {
     rows,
     prepareRow,
     visibleColumns,
-    state: { expanded }
+    state: { expanded },
   } = useTable(
     {
       columns: userColumns,
-      data
+      data,
     },
-    useExpanded // We can useExpanded to track the expanded state
+    useExpanded, // We can useExpanded to track the expanded state
     // for sub components too!
   );
 
@@ -131,37 +122,37 @@ function Table({ columns: userColumns, data, renderRowSubComponent }) {
       </pre>
       <table {...getTableProps()}>
         <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-            ))}
-          </tr>
-        ))}
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              ))}
+            </tr>
+          ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-        {rows.map((row, i) => {
-          prepareRow(row);
-          const rowProps = row.getRowProps();
-          return (
-            // Use a React.Fragment here so the table markup is still valid
-            <React.Fragment key={rowProps.key}>
-              <tr {...rowProps}>
-                {row.cells.map(cell => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                  );
-                })}
-              </tr>
-              {/* We could pass anything into this */}
-              {row.isExpanded &&
-                renderRowSubComponent({ row, rowProps, visibleColumns })}
-            </React.Fragment>
-          );
-        })}
+          {rows.map((row, i) => {
+            prepareRow(row);
+            const rowProps = row.getRowProps();
+            return (
+              // Use a React.Fragment here so the table markup is still valid
+              <React.Fragment key={rowProps.key}>
+                <tr {...rowProps}>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    );
+                  })}
+                </tr>
+                {/* We could pass anything into this */}
+                {row.isExpanded &&
+                  renderRowSubComponent({ row, rowProps, visibleColumns })}
+              </React.Fragment>
+            );
+          })}
         </tbody>
       </table>
-      <br/>
+      <br />
       <div>Showing the first 20 results of {rows.length} rows</div>
     </>
   );
@@ -183,7 +174,7 @@ function App() {
           </span>
         ),
         // We can override the cell renderer with a SubCell to be used with an expanded row
-        SubCell: () => null // No expander on an expanded row
+        SubCell: () => null, // No expander on an expanded row
       },
       {
         Header: 'Name',
@@ -193,39 +184,37 @@ function App() {
             // We re-map data using accessor functions for subRows
             accessor: (d) => d.firstName,
             // We can render something different for subRows
-            SubCell: (cellProps) => (
-              <>🥳 {cellProps.value} 🎉</>
-            )
+            SubCell: (cellProps) => <>🥳 {cellProps.value} 🎉</>,
           },
           {
             Header: 'Last Name',
-            accessor: (d) => d.lastName
-          }
-        ]
+            accessor: (d) => d.lastName,
+          },
+        ],
       },
       {
         Header: 'Info',
         columns: [
           {
             Header: 'Age',
-            accessor: (d) => d.age
+            accessor: (d) => d.age,
           },
           {
             Header: 'Visits',
-            accessor: (d) => d.visits
+            accessor: (d) => d.visits,
           },
           {
             Header: 'Status',
-            accessor: (d) => d.status
+            accessor: (d) => d.status,
           },
           {
             Header: 'Profile Progress',
-            accessor: (d) => d.progress
-          }
-        ]
-      }
+            accessor: (d) => d.progress,
+          },
+        ],
+      },
     ],
-    []
+    [],
   );
 
   const data = React.useMemo(() => makeData(10), []);
@@ -239,7 +228,7 @@ function App() {
         visibleColumns={visibleColumns}
       />
     ),
-    []
+    [],
   );
 
   return (

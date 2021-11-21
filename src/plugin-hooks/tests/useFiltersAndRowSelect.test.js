@@ -1,8 +1,8 @@
-import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
-import { useTable } from '../../hooks/useTable'
-import { useRowSelect } from '../useRowSelect'
-import { useFilters } from '../useFilters'
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import { useTable } from '../../hooks/useTable';
+import { useRowSelect } from '../useRowSelect';
+import { useFilters } from '../useFilters';
 
 const dataPiece = [
   {
@@ -29,7 +29,7 @@ const dataPiece = [
     status: 'In Relationship',
     progress: 70,
   },
-]
+];
 
 const data = [
   ...dataPiece,
@@ -38,7 +38,7 @@ const data = [
   ...dataPiece,
   ...dataPiece,
   ...dataPiece,
-]
+];
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -56,17 +56,17 @@ function Table({ columns, data }) {
       defaultColumn,
     },
     useFilters,
-    useRowSelect
-  )
+    useRowSelect,
+  );
 
   // Render the UI for your table
   return (
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>
                   {column.render('Header')}
                   {column.canFilter ? column.render('Filter') : null}
@@ -80,19 +80,19 @@ function Table({ columns, data }) {
             (row, i) =>
               prepareRow(row) || (
                 <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => {
+                  {row.cells.map((cell) => {
                     return (
                       <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    )
+                    );
                   })}
                 </tr>
-              )
+              ),
           )}
         </tbody>
       </table>
       <p>
         Selected Rows:{' '}
-        <span data-testid="selected-count">
+        <span data-testid='selected-count'>
           {Object.keys(state.selectedRowIds).length}
         </span>
       </p>
@@ -102,7 +102,7 @@ function Table({ columns, data }) {
         </code>
       </pre>
     </>
-  )
+  );
 }
 
 const defaultColumn = {
@@ -110,26 +110,26 @@ const defaultColumn = {
   Filter: ({ column: { filterValue, setFilter } }) => (
     <input
       value={filterValue || ''}
-      onChange={e => {
-        setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+      onChange={(e) => {
+        setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
       }}
-      placeholder="Search..."
+      placeholder='Search...'
     />
   ),
-}
+};
 
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef()
-    const resolvedRef = ref || defaultRef
+    const defaultRef = React.useRef();
+    const resolvedRef = ref || defaultRef;
 
     React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate
-    }, [resolvedRef, indeterminate])
+      resolvedRef.current.indeterminate = indeterminate;
+    }, [resolvedRef, indeterminate]);
 
-    return <input type="checkbox" ref={resolvedRef} {...rest} />
-  }
-)
+    return <input type='checkbox' ref={resolvedRef} {...rest} />;
+  },
+);
 
 function App() {
   const columns = React.useMemo(
@@ -202,57 +202,57 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={data} />;
 }
 
 test('Select/Clear All while filtered only affects visible rows', () => {
   const { getAllByPlaceholderText, getByLabelText, getByTestId } = render(
-    <App />
-  )
-  const selectedCount = getByTestId('selected-count')
-  const selectAllCheckbox = getByLabelText('Select All')
-  const fe = fireEvent
-  const filterInputs = getAllByPlaceholderText('Search...')
+    <App />,
+  );
+  const selectedCount = getByTestId('selected-count');
+  const selectAllCheckbox = getByLabelText('Select All');
+  const fe = fireEvent;
+  const filterInputs = getAllByPlaceholderText('Search...');
 
-  fireEvent.change(filterInputs[3], { target: { value: '40' } })
-  expect(selectedCount.textContent).toBe('0') // No selection has been made
+  fireEvent.change(filterInputs[3], { target: { value: '40' } });
+  expect(selectedCount.textContent).toBe('0'); // No selection has been made
 
-  expect(selectAllCheckbox.checked).toBe(false)
-  fireEvent.click(selectAllCheckbox)
-  expect(selectAllCheckbox.checked).toBe(true)
-  expect(selectedCount.textContent).toBe('6') // "Select All" has happened
+  expect(selectAllCheckbox.checked).toBe(false);
+  fireEvent.click(selectAllCheckbox);
+  expect(selectAllCheckbox.checked).toBe(true);
+  expect(selectedCount.textContent).toBe('6'); // "Select All" has happened
 
   // This filter hides all the rows (nothing matches it)
-  fireEvent.change(filterInputs[3], { target: { value: '10' } })
-  expect(selectedCount.textContent).toBe('6') // Filtering does not alter the selection
+  fireEvent.change(filterInputs[3], { target: { value: '10' } });
+  expect(selectedCount.textContent).toBe('6'); // Filtering does not alter the selection
 
-  expect(selectAllCheckbox.checked).toBe(false) // None of the selected items are visible, this should be false
-  fireEvent.click(selectAllCheckbox) // The selection is is for no rows
-  expect(selectAllCheckbox.checked).toBe(false) // So clicking this checkbox does nothing
-  expect(selectedCount.textContent).toBe('6') // And does not affect the existing selection
+  expect(selectAllCheckbox.checked).toBe(false); // None of the selected items are visible, this should be false
+  fireEvent.click(selectAllCheckbox); // The selection is is for no rows
+  expect(selectAllCheckbox.checked).toBe(false); // So clicking this checkbox does nothing
+  expect(selectedCount.textContent).toBe('6'); // And does not affect the existing selection
 
-  fireEvent.change(filterInputs[3], { target: { value: '100' } })
-  expect(selectAllCheckbox.checked).toBe(false) // None of the selected items are visible, this should be false
-  fireEvent.click(selectAllCheckbox)
-  expect(selectAllCheckbox.checked).toBe(true) // Now all of the visible rows are ALSO selected
-  expect(selectedCount.textContent).toBe('12') // Clearing all should leave the original 6 selected
+  fireEvent.change(filterInputs[3], { target: { value: '100' } });
+  expect(selectAllCheckbox.checked).toBe(false); // None of the selected items are visible, this should be false
+  fireEvent.click(selectAllCheckbox);
+  expect(selectAllCheckbox.checked).toBe(true); // Now all of the visible rows are ALSO selected
+  expect(selectedCount.textContent).toBe('12'); // Clearing all should leave the original 6 selected
 
   // Now deselect all the rows that match the filter
-  fireEvent.click(selectAllCheckbox)
-  expect(selectAllCheckbox.checked).toBe(false) // Now all of the visible rows are ALSO selected
-  expect(selectedCount.textContent).toBe('6') // Clearing all should leave the original 6 selected
+  fireEvent.click(selectAllCheckbox);
+  expect(selectAllCheckbox.checked).toBe(false); // Now all of the visible rows are ALSO selected
+  expect(selectedCount.textContent).toBe('6'); // Clearing all should leave the original 6 selected
 
-  fireEvent.change(filterInputs[3], { target: { value: '' } })
-  expect(selectedCount.textContent).toBe('6') // Clearing the Filter does not alter the selection
+  fireEvent.change(filterInputs[3], { target: { value: '' } });
+  expect(selectedCount.textContent).toBe('6'); // Clearing the Filter does not alter the selection
 
-  expect(selectAllCheckbox.checked).toBe(false) // Only a subset are selected so this button should show indeterminant
-  fireEvent.click(selectAllCheckbox)
-  expect(selectAllCheckbox.checked).toBe(true) // Now all of the visible rows are ALSO selected
-  expect(selectedCount.textContent).toBe(data.length.toString()) // Select All should select ALL of the rows
+  expect(selectAllCheckbox.checked).toBe(false); // Only a subset are selected so this button should show indeterminant
+  fireEvent.click(selectAllCheckbox);
+  expect(selectAllCheckbox.checked).toBe(true); // Now all of the visible rows are ALSO selected
+  expect(selectedCount.textContent).toBe(data.length.toString()); // Select All should select ALL of the rows
 
-  fireEvent.click(selectAllCheckbox)
-  expect(selectedCount.textContent).toBe('0') // Select All should now clear ALL of the rows
-})
+  fireEvent.click(selectAllCheckbox);
+  expect(selectedCount.textContent).toBe('0'); // Select All should now clear ALL of the rows
+});

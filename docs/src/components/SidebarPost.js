@@ -21,8 +21,15 @@ export const SidebarPost = ({
       }
     }
   }, [ref, isMobile]);
-  return <div ref={ref} className={cn('link', `level-${level}`)}>
-      <SidebarNavLink route={route} scrollSelectedIntoView={props.scrollSelectedIntoView} categorySelected={props.categorySelected} level={level} onClick={onClick} />
+  return (
+    <div ref={ref} className={cn('link', `level-${level}`)}>
+      <SidebarNavLink
+        route={route}
+        scrollSelectedIntoView={props.scrollSelectedIntoView}
+        categorySelected={props.categorySelected}
+        level={level}
+        onClick={onClick}
+      />
       <style jsx>{`
         .link {
           margin: 12px 0;
@@ -42,5 +49,6 @@ export const SidebarPost = ({
           }
         }
       `}</style>
-    </div>;
+    </div>
+  );
 };

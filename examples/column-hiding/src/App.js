@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTable } from 'react-table'
+import React from 'react';
+import styled from 'styled-components';
+import { useTable } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -31,19 +31,19 @@ const Styles = styled.div`
       }
     }
   }
-`
+`;
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef()
-    const resolvedRef = ref || defaultRef
+    const defaultRef = React.useRef();
+    const resolvedRef = ref || defaultRef;
 
     React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate
-    }, [resolvedRef, indeterminate])
+      resolvedRef.current.indeterminate = indeterminate;
+    }, [resolvedRef, indeterminate]);
 
-    return <input type="checkbox" ref={resolvedRef} {...rest} />
-  }
-)
+    return <input type='checkbox' ref={resolvedRef} {...rest} />;
+  },
+);
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -59,7 +59,7 @@ function Table({ columns, data }) {
   } = useTable({
     columns,
     data,
-  })
+  });
 
   // Render the UI for your table
   return (
@@ -69,10 +69,10 @@ function Table({ columns, data }) {
           <IndeterminateCheckbox {...getToggleHideAllColumnsProps()} /> Toggle
           All
         </div>
-        {allColumns.map(column => (
+        {allColumns.map((column) => (
           <div key={column.id}>
             <label>
-              <input type="checkbox" {...column.getToggleHiddenProps()} />{' '}
+              <input type='checkbox' {...column.getToggleHiddenProps()} />{' '}
               {column.id}
             </label>
           </div>
@@ -81,9 +81,9 @@ function Table({ columns, data }) {
       </div>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
             </tr>
@@ -91,20 +91,22 @@ function Table({ columns, data }) {
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.map((row, i) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  );
                 })}
               </tr>
-            )
+            );
           })}
         </tbody>
       </table>
       <pre>{JSON.stringify(state, null, 2)}</pre>
     </>
-  )
+  );
 }
 
 function App() {
@@ -145,16 +147,16 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(20), [])
+  const data = React.useMemo(() => makeData(20), []);
 
   return (
     <Styles>
       <Table columns={columns} data={data} />
     </Styles>
-  )
+  );
 }
 
-export default App
+export default App;

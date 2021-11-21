@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTable } from 'react-table'
+import React from 'react';
+import styled from 'styled-components';
+import { useTable } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -12,11 +12,13 @@ const Styles = styled.div`
     border: 1px solid black;
 
     tr {
-      ${'' /* :first-child {
+      ${
+        '' /* :first-child {
         td {
           border-top: 1px solid black;
         }
-      } */}
+      } */
+      }
 
       :last-child {
         td {
@@ -46,7 +48,7 @@ const Styles = styled.div`
       font-weight: bolder;
     }
   }
-`
+`;
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -60,15 +62,15 @@ function Table({ columns, data }) {
   } = useTable({
     columns,
     data,
-  })
+  });
 
   // Render the UI for your table
   return (
     <table {...getTableProps()}>
       <thead>
-        {headerGroups.map(group => (
+        {headerGroups.map((group) => (
           <tr {...group.getHeaderGroupProps()}>
-            {group.headers.map(column => (
+            {group.headers.map((column) => (
               <th {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
@@ -76,27 +78,27 @@ function Table({ columns, data }) {
       </thead>
       <tbody {...getTableBodyProps()}>
         {rows.map((row, i) => {
-          prepareRow(row)
+          prepareRow(row);
           return (
             <tr {...row.getRowProps()}>
-              {row.cells.map(cell => {
-                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+              {row.cells.map((cell) => {
+                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
               })}
             </tr>
-          )
+          );
         })}
       </tbody>
       <tfoot>
-        {footerGroups.map(group => (
+        {footerGroups.map((group) => (
           <tr {...group.getFooterGroupProps()}>
-            {group.headers.map(column => (
+            {group.headers.map((column) => (
               <td {...column.getFooterProps()}>{column.render('Footer')}</td>
             ))}
           </tr>
         ))}
       </tfoot>
     </table>
-  )
+  );
 }
 
 function App() {
@@ -130,15 +132,15 @@ function App() {
           {
             Header: 'Visits',
             accessor: 'visits',
-            Footer: info => {
+            Footer: (info) => {
               // Only calculate total visits if rows change
               const total = React.useMemo(
                 () =>
                   info.rows.reduce((sum, row) => row.values.visits + sum, 0),
-                [info.rows]
-              )
+                [info.rows],
+              );
 
-              return <>Total: {total}</>
+              return <>Total: {total}</>;
             },
           },
           {
@@ -154,16 +156,16 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(20), [])
+  const data = React.useMemo(() => makeData(20), []);
 
   return (
     <Styles>
       <Table columns={columns} data={data} />
     </Styles>
-  )
+  );
 }
 
-export default App
+export default App;

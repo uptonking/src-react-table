@@ -26,9 +26,9 @@ function Table({ columns: userColumns, data, SubComponent }) {
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
             </tr>
@@ -41,7 +41,7 @@ function Table({ columns: userColumns, data, SubComponent }) {
             return (
               <React.Fragment key={key}>
                 <tr {...rowProps}>
-                  {row.cells.map(cell => {
+                  {row.cells.map((cell) => {
                     return (
                       <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                     );

@@ -17,7 +17,6 @@ module.exports = {
   //   filename: 'main.js',
   //   path: path.resolve(__dirname, '../dist'),
   // },
-
   module: {
     rules: [
       {
@@ -37,8 +36,35 @@ module.exports = {
         use: [
           isProd ? MiniCssExtractPlugin.loader : 'style-loader',
           'css-loader',
-          'sass-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              // when node-sass and sass were installed，by default sass-loader prefers sass.
+              implementation: require('sass'),
+              sassOptions: {
+                // fiber: require('fibers'),
+              },
+            },
+          },
         ],
+      },
+      // Fonts
+      {
+        test: /\.(ttf|eot|woff|woff2)$/,
+        // loader: 'file-loader',
+        type: 'asset/resource',
+        // generator: {
+        //   filename: 'fonts/[hash].[ext]',
+        // },
+      },
+      // Files
+      {
+        test: /\.(jpg|jpeg|png|gif|svg|ico)$/,
+        // loader: 'file-loader',
+        type: 'asset/resource',
+        // generator: {
+        //   filename: 'static/[hash].[ext]',
+        // },
       },
       {
         test: /\.js$/,
@@ -49,14 +75,18 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      // template: path.resolve(process.cwd(), 'public/index.html'),
-      // template: './public/demo.html',
-      // filename: 'index.html',
-    }),
+    // new HtmlWebpackPlugin({
+    // template: path.resolve(process.cwd(), 'public/index.html'),
+    // template: './public/demo.html',
+    // filename: 'index.html',
+    // }),
   ],
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', 'jsx'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
     alias: {},
   },
+  experiments: {
+    topLevelAwait: true,
+  },
+  // ignoreWarnings: [/Failed to parse source map/],
 };

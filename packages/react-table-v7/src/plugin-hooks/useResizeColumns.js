@@ -20,7 +20,7 @@ actions.columnResizing = 'columnResizing';
 actions.columnDoneResizing = 'columnDoneResizing';
 actions.resetResize = 'resetResize';
 
-export const useResizeColumns = hooks => {
+export const useResizeColumns = (hooks) => {
   hooks.getResizerProps = [defaultGetResizerProps];
   hooks.getHeaderProps.push({
     style: {
@@ -45,11 +45,11 @@ const defaultGetResizerProps = (props, { instance, header }) => {
       isTouchEvent = true;
     }
     const headersToResize = getLeafHeaders(header);
-    const headerIdWidths = headersToResize.map(d => [d.id, d.totalWidth]);
+    const headerIdWidths = headersToResize.map((d) => [d.id, d.totalWidth]);
 
     const clientX = isTouchEvent ? Math.round(e.touches[0].clientX) : e.clientX;
 
-    const dispatchMove = clientXPos => {
+    const dispatchMove = (clientXPos) => {
       dispatch({ type: actions.columnResizing, clientX: clientXPos });
     };
     const dispatchEnd = () => dispatch({ type: actions.columnDoneResizing });
@@ -57,9 +57,9 @@ const defaultGetResizerProps = (props, { instance, header }) => {
     const handlersAndEvents = {
       mouse: {
         moveEvent: 'mousemove',
-        moveHandler: e => dispatchMove(e.clientX),
+        moveHandler: (e) => dispatchMove(e.clientX),
         upEvent: 'mouseup',
-        upHandler: e => {
+        upHandler: (e) => {
           document.removeEventListener(
             'mousemove',
             handlersAndEvents.mouse.moveHandler,
@@ -73,7 +73,7 @@ const defaultGetResizerProps = (props, { instance, header }) => {
       },
       touch: {
         moveEvent: 'touchmove',
-        moveHandler: e => {
+        moveHandler: (e) => {
           if (e.cancelable) {
             e.preventDefault();
             e.stopPropagation();
@@ -82,7 +82,7 @@ const defaultGetResizerProps = (props, { instance, header }) => {
           return false;
         },
         upEvent: 'touchend',
-        upHandler: e => {
+        upHandler: (e) => {
           document.removeEventListener(
             handlersAndEvents.touch.moveEvent,
             handlersAndEvents.touch.moveHandler,
@@ -125,8 +125,8 @@ const defaultGetResizerProps = (props, { instance, header }) => {
   return [
     props,
     {
-      onMouseDown: e => e.persist() || onResizeStart(e, header),
-      onTouchStart: e => e.persist() || onResizeStart(e, header),
+      onMouseDown: (e) => e.persist() || onResizeStart(e, header),
+      onTouchStart: (e) => e.persist() || onResizeStart(e, header),
       style: {
         cursor: 'ew-resize',
       },
@@ -212,7 +212,7 @@ function reducer(state, action) {
   }
 }
 
-const useInstanceBeforeDimensions = instance => {
+const useInstanceBeforeDimensions = (instance) => {
   const {
     flatHeaders,
     disableResizing,
@@ -222,7 +222,7 @@ const useInstanceBeforeDimensions = instance => {
 
   const getInstance = useGetLatest(instance);
 
-  flatHeaders.forEach(header => {
+  flatHeaders.forEach((header) => {
     const canResize = getFirstDefined(
       header.disableResizing === true ? false : undefined,
       disableResizing === true ? false : undefined,
@@ -269,7 +269,7 @@ function useInstance(instance) {
 
 function getLeafHeaders(header) {
   const leafHeaders = [];
-  const recurseHeader = header => {
+  const recurseHeader = (header) => {
     if (header.columns && header.columns.length) {
       header.columns.map(recurseHeader);
     }

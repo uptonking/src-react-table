@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import {
   DataTable,
@@ -8,30 +8,30 @@ import {
   DataTableBody,
   DataTableContent,
   DataTableHead,
-} from '@rmwc/data-table'
+} from '@rmwc/data-table';
 
-import { useTable } from 'react-table'
+import { useTable } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
-import '@material/data-table/dist/mdc.data-table.css'
-import '@rmwc/data-table/data-table.css'
-import '@rmwc/icon/icon.css'
+import '@material/data-table/dist/mdc.data-table.css';
+import '@rmwc/data-table/data-table.css';
+import '@rmwc/icon/icon.css';
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
   const { getTableProps, headerGroups, rows, prepareRow } = useTable({
     columns,
     data,
-  })
+  });
 
   // Render the UI for your table
   return (
     <DataTable {...getTableProps()}>
       <DataTableHead>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup) => (
           <DataTableRow {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column) => (
               <DataTableHeadCell {...column.getHeaderProps()}>
                 {column.render('Header')}
               </DataTableHeadCell>
@@ -42,23 +42,23 @@ function Table({ columns, data }) {
       <DataTableBody>
         <DataTableContent>
           {rows.map((row, i) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <DataTableRow {...row.getRowProps()}>
-                {row.cells.map(cell => {
+                {row.cells.map((cell) => {
                   return (
                     <DataTableCell {...cell.getCellProps()}>
                       {cell.render('Cell')}
                     </DataTableCell>
-                  )
+                  );
                 })}
               </DataTableRow>
-            )
+            );
           })}
         </DataTableContent>
       </DataTableBody>
     </DataTable>
-  )
+  );
 }
 
 function App() {
@@ -99,16 +99,16 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(20), [])
+  const data = React.useMemo(() => makeData(20), []);
 
   return (
     <div>
       <Table columns={columns} data={data} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

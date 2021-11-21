@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTable, usePagination } from 'react-table'
+import React from 'react';
+import styled from 'styled-components';
+import { useTable, usePagination } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 const Styles = styled.div`
   /* This is required to make the table full-width */
@@ -55,7 +55,7 @@ const Styles = styled.div`
   .pagination {
     padding: 0.5rem;
   }
-`
+`;
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -83,18 +83,18 @@ function Table({ columns, data }) {
       data,
       initialState: { pageIndex: 2 },
     },
-    usePagination
-  )
+    usePagination,
+  );
 
   // Render the UI for your table
   return (
     <Styles>
-      <div className="tableWrap">
+      <div className='tableWrap'>
         <table {...getTableProps()}>
           <thead>
-            {headerGroups.map(headerGroup => (
+            {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map(column => (
+                {headerGroup.headers.map((column) => (
                   <th
                     {...column.getHeaderProps({
                       className: column.collapse ? 'collapse' : '',
@@ -108,10 +108,10 @@ function Table({ columns, data }) {
           </thead>
           <tbody {...getTableBodyProps()}>
             {page.map((row, i) => {
-              prepareRow(row)
+              prepareRow(row);
               return (
                 <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => {
+                  {row.cells.map((cell) => {
                     return (
                       <td
                         {...cell.getCellProps({
@@ -120,10 +120,10 @@ function Table({ columns, data }) {
                       >
                         {cell.render('Cell')}
                       </td>
-                    )
+                    );
                   })}
                 </tr>
-              )
+              );
             })}
           </tbody>
         </table>
@@ -132,7 +132,7 @@ function Table({ columns, data }) {
         This is just a very basic UI implementation:
       */}
       </div>
-      <div className="pagination">
+      <div className='pagination'>
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {'<<'}
         </button>{' '}
@@ -154,22 +154,22 @@ function Table({ columns, data }) {
         <span>
           | Go to page:{' '}
           <input
-            type="number"
+            type='number'
             defaultValue={pageIndex + 1}
-            onChange={e => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(page)
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              gotoPage(page);
             }}
             style={{ width: '100px' }}
           />
         </span>{' '}
         <select
           value={pageSize}
-          onChange={e => {
-            setPageSize(Number(e.target.value))
+          onChange={(e) => {
+            setPageSize(Number(e.target.value));
           }}
         >
-          {[10, 20, 30, 40, 50].map(pageSize => (
+          {[10, 20, 30, 40, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>
@@ -177,7 +177,7 @@ function Table({ columns, data }) {
         </select>
       </div>
     </Styles>
-  )
+  );
 }
 
 function App() {
@@ -221,12 +221,12 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(100000), [])
+  const data = React.useMemo(() => makeData(100000), []);
 
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={data} />;
 }
 
-export default App
+export default App;

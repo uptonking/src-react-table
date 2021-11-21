@@ -15,7 +15,7 @@ actions.resetExpanded = 'resetExpanded';
 actions.toggleRowExpanded = 'toggleRowExpanded';
 actions.toggleAllRowsExpanded = 'toggleAllRowsExpanded';
 
-export const useExpanded = hooks => {
+export const useExpanded = (hooks) => {
   hooks.getToggleAllRowsExpandedProps = [defaultGetToggleAllRowsExpandedProps];
   hooks.getToggleRowExpandedProps = [defaultGetToggleRowExpandedProps];
   hooks.stateReducers.push(reducer);
@@ -28,7 +28,7 @@ useExpanded.pluginName = 'useExpanded';
 const defaultGetToggleAllRowsExpandedProps = (props, { instance }) => [
   props,
   {
-    onClick: e => {
+    onClick: (e) => {
       instance.toggleAllRowsExpanded();
     },
     style: {
@@ -76,7 +76,7 @@ function reducer(state, action, previousState, instance) {
     if (expandAll) {
       const expanded = {};
 
-      Object.keys(rowsById).forEach(rowId => {
+      Object.keys(rowsById).forEach((rowId) => {
         expanded[rowId] = true;
       });
 
@@ -147,7 +147,7 @@ function useInstance(instance) {
   );
 
   if (isAllRowsExpanded) {
-    if (Object.keys(rowsById).some(id => !expanded[id])) {
+    if (Object.keys(rowsById).some((id) => !expanded[id])) {
       isAllRowsExpanded = false;
     }
   }
@@ -167,7 +167,7 @@ function useInstance(instance) {
   );
 
   const toggleAllRowsExpanded = React.useCallback(
-    value => dispatch({ type: actions.toggleAllRowsExpanded, value }),
+    (value) => dispatch({ type: actions.toggleAllRowsExpanded, value }),
     [dispatch],
   );
 
@@ -179,9 +179,10 @@ function useInstance(instance) {
     return rows;
   }, [paginateExpandedRows, rows, manualExpandedKey, expanded, expandSubRows]);
 
-  const expandedDepth = React.useMemo(() => findExpandedDepth(expanded), [
-    expanded,
-  ]);
+  const expandedDepth = React.useMemo(
+    () => findExpandedDepth(expanded),
+    [expanded],
+  );
 
   const getInstance = useGetLatest(instance);
 
@@ -203,7 +204,7 @@ function useInstance(instance) {
 }
 
 function prepareRow(row, { instance: { getHooks }, instance }) {
-  row.toggleRowExpanded = set => instance.toggleRowExpanded(row.id, set);
+  row.toggleRowExpanded = (set) => instance.toggleRowExpanded(row.id, set);
 
   row.getToggleRowExpandedProps = makePropGetter(
     getHooks().getToggleRowExpandedProps,
@@ -217,7 +218,7 @@ function prepareRow(row, { instance: { getHooks }, instance }) {
 function findExpandedDepth(expanded) {
   let maxDepth = 0;
 
-  Object.keys(expanded).forEach(id => {
+  Object.keys(expanded).forEach((id) => {
     const splitId = id.split('.');
     maxDepth = Math.max(maxDepth, splitId.length);
   });

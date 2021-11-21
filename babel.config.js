@@ -1,5 +1,5 @@
 module.exports = function (api) {
-  // 若build依赖于env，就不要再指定api.cache为forever或never了,NODE_ENV
+  // 若build依赖于env，就不要再指定api.cache为forever或never了
   // api.cache(true);
 
   const env = api.env();
@@ -13,24 +13,36 @@ module.exports = function (api) {
   }
 
   // 用在react应用开发调试阶段，会启用@babel/preset-react、react-refresh/babel
-  const isEnvReactFresh = checkAppEnv('reactfresh');
+  const isEnvReactHotReload = checkAppEnv('reacthot');
   // 用在react项目打包阶段，会启用@babel/preset-react，不会启用react-refresh/babel
-  const isEnvReact = checkAppEnv('react');
+  const isEnvReact = checkAppEnv('react') || checkAppEnv('reactlike');
+  const isEnvReactLike = checkAppEnv('reactlike');
 
-  console.log('====process.env.APP_ENV, ', process.env.APP_ENV);
+  console.log(';;process.env.APP_ENV, ', process.env.APP_ENV);
+  console.log(';;isEnvReact, ', isEnvReact);
+
+  let babelPresetReactConfig = {};
+  if (isEnvReactLike) {
+    babelPresetReactConfig = {
+      runtime: 'classic',
+      pragma: 'Didact.createElement',
+      // pragmaFrag: 'Reacting.Fragment',
+      throwIfNamespace: false,
+    };
+  }
 
   // Plugins run before Presets. Plugin ordering is first to last.
   const plugins = [
-    [
-      'babel-plugin-styled-components',
-      {
-        displayName: true,
-        fileName: true,
-      },
-    ],
+    // [
+    //   'babel-plugin-styled-components',
+    //   {
+    //     displayName: true,
+    //     fileName: true,
+    //   },
+    // ],
     ['@babel/plugin-proposal-class-properties', { loose: false }],
     '@babel/proposal-object-rest-spread',
-    isEnvReactFresh && 'react-refresh/babel',
+    isEnvReactHotReload && 'react-refresh/babel',
   ].filter(Boolean);
 
   function configModule() {
@@ -68,9 +80,14 @@ module.exports = function (api) {
     ],
     isEnvReact && [
       '@babel/preset-react',
-      { development: env !== 'production' },
+      {
+        development: env !== 'production',
+        ...babelPresetReactConfig,
+      },
     ],
   ].filter(Boolean);
+
+  // console.log('babel-presets, ', JSON.stringify(presets));
 
   const ignore = ['node_modules'];
 

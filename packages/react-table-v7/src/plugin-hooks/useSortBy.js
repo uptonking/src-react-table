@@ -22,7 +22,7 @@ actions.clearSortBy = 'clearSortBy';
 defaultColumn.sortType = 'alphanumeric';
 defaultColumn.sortDescFirst = false;
 
-export const useSortBy = hooks => {
+export const useSortBy = (hooks) => {
   hooks.getSortByToggleProps = [defaultGetSortByToggleProps];
   hooks.stateReducers.push(reducer);
   hooks.useInstance.push(useInstance);
@@ -31,13 +31,13 @@ export const useSortBy = hooks => {
 useSortBy.pluginName = 'useSortBy';
 
 const defaultGetSortByToggleProps = (props, { instance, column }) => {
-  const { isMultiSortEvent = e => e.shiftKey } = instance;
+  const { isMultiSortEvent = (e) => e.shiftKey } = instance;
 
   return [
     props,
     {
       onClick: column.canSort
-        ? e => {
+        ? (e) => {
             e.persist();
             column.toggleSortBy(
               undefined,
@@ -71,7 +71,7 @@ function reducer(state, action, previousState, instance) {
 
   if (action.type === actions.clearSortBy) {
     const { sortBy } = state;
-    const newSortBy = sortBy.filter(d => d.id !== action.columnId);
+    const newSortBy = sortBy.filter((d) => d.id !== action.columnId);
 
     return {
       ...state,
@@ -101,12 +101,12 @@ function reducer(state, action, previousState, instance) {
     const { sortBy } = state;
 
     // Find the column for this columnId
-    const column = allColumns.find(d => d.id === columnId);
+    const column = allColumns.find((d) => d.id === columnId);
     const { sortDescFirst } = column;
 
     // Find any existing sortBy for this column
-    const existingSortBy = sortBy.find(d => d.id === columnId);
-    const existingIndex = sortBy.findIndex(d => d.id === columnId);
+    const existingSortBy = sortBy.find((d) => d.id === columnId);
+    const existingIndex = sortBy.findIndex((d) => d.id === columnId);
     const hasDescDefined = typeof desc !== 'undefined' && desc !== null;
 
     let newSortBy = [];
@@ -164,7 +164,7 @@ function reducer(state, action, previousState, instance) {
       newSortBy.splice(0, newSortBy.length - maxMultiSortColCount);
     } else if (sortAction === 'toggle') {
       // This flips (or sets) the
-      newSortBy = sortBy.map(d => {
+      newSortBy = sortBy.map((d) => {
         if (d.id === columnId) {
           return {
             ...d,
@@ -174,7 +174,7 @@ function reducer(state, action, previousState, instance) {
         return d;
       });
     } else if (sortAction === 'remove') {
-      newSortBy = sortBy.filter(d => d.id !== columnId);
+      newSortBy = sortBy.filter((d) => d.id !== columnId);
     }
 
     return {
@@ -210,7 +210,7 @@ function useInstance(instance) {
   );
 
   const setSortBy = React.useCallback(
-    sortBy => {
+    (sortBy) => {
       dispatch({ type: actions.setSortBy, sortBy });
     },
     [dispatch],
@@ -228,7 +228,7 @@ function useInstance(instance) {
   const getInstance = useGetLatest(instance);
 
   // Add the getSortByToggleProps method to columns and headers
-  flatHeaders.forEach(column => {
+  flatHeaders.forEach((column) => {
     const {
       accessor,
       canSort: defaultColumnCanSort,
@@ -263,9 +263,9 @@ function useInstance(instance) {
       },
     );
 
-    const columnSort = sortBy.find(d => d.id === id);
+    const columnSort = sortBy.find((d) => d.id === id);
     column.isSorted = !!columnSort;
-    column.sortedIndex = sortBy.findIndex(d => d.id === id);
+    column.sortedIndex = sortBy.findIndex((d) => d.id === id);
     column.isSortedDesc = column.isSorted ? columnSort.desc : undefined;
   });
 
@@ -277,19 +277,19 @@ function useInstance(instance) {
     const sortedFlatRows = [];
 
     // Filter out sortBys that correspond to non existing columns
-    const availableSortBy = sortBy.filter(sort =>
-      allColumns.find(col => col.id === sort.id),
+    const availableSortBy = sortBy.filter((sort) =>
+      allColumns.find((col) => col.id === sort.id),
     );
 
-    const sortData = rows => {
+    const sortData = (rows) => {
       // Use the orderByFn to compose multiple sortBy's together.
       // This will also perform a stable sorting using the row index
       // if needed.
       const sortedData = orderByFn(
         rows,
-        availableSortBy.map(sort => {
+        availableSortBy.map((sort) => {
           // Support custom sorting methods for each column
-          const column = allColumns.find(d => d.id === sort.id);
+          const column = allColumns.find((d) => d.id === sort.id);
 
           if (!column) {
             throw new Error(
@@ -322,9 +322,9 @@ function useInstance(instance) {
           return (a, b) => sortMethod(a, b, sort.id, sort.desc);
         }),
         // Map the directions
-        availableSortBy.map(sort => {
+        availableSortBy.map((sort) => {
           // Detect and use the sortInverted option
-          const column = allColumns.find(d => d.id === sort.id);
+          const column = allColumns.find((d) => d.id === sort.id);
 
           if (column && column.sortInverted) {
             return sort.desc;
@@ -335,7 +335,7 @@ function useInstance(instance) {
       );
 
       // If there are sub-rows, sort them
-      sortedData.forEach(row => {
+      sortedData.forEach((row) => {
         sortedFlatRows.push(row);
         if (!row.subRows) {
           return;

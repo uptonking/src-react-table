@@ -1,7 +1,7 @@
 const cellStyles = {
   display: 'inline-block',
   boxSizing: 'border-box',
-}
+};
 
 const getRowStyles = (props, { instance }) => [
   props,
@@ -11,12 +11,12 @@ const getRowStyles = (props, { instance }) => [
       width: `${instance.totalColumnsWidth}px`,
     },
   },
-]
+];
 
-export const useBlockLayout = hooks => {
-  hooks.getRowProps.push(getRowStyles)
-  hooks.getHeaderGroupProps.push(getRowStyles)
-  hooks.getFooterGroupProps.push(getRowStyles)
+export const useBlockLayout = (hooks) => {
+  hooks.getRowProps.push(getRowStyles);
+  hooks.getHeaderGroupProps.push(getRowStyles);
+  hooks.getFooterGroupProps.push(getRowStyles);
 
   hooks.getHeaderProps.push((props, { column }) => [
     props,
@@ -26,7 +26,7 @@ export const useBlockLayout = hooks => {
         width: `${column.totalWidth}px`,
       },
     },
-  ])
+  ]);
 
   hooks.getCellProps.push((props, { cell }) => [
     props,
@@ -36,7 +36,7 @@ export const useBlockLayout = hooks => {
         width: `${cell.column.totalWidth}px`,
       },
     },
-  ])
+  ]);
 
   hooks.getFooterProps.push((props, { column }) => [
     props,
@@ -46,7 +46,7 @@ export const useBlockLayout = hooks => {
         width: `${column.totalWidth}px`,
       },
     },
-  ])
-}
+  ]);
+};
 
-useBlockLayout.pluginName = 'useBlockLayout'
+useBlockLayout.pluginName = 'useBlockLayout';

@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
-import CssBaseline from '@material-ui/core/CssBaseline'
-import EnhancedTable from './components/EnhancedTable'
-import makeData from './makeData'
+import CssBaseline from '@material-ui/core/CssBaseline';
+import EnhancedTable from './components/EnhancedTable';
+import makeData from './makeData';
 
 const App = () => {
   const columns = React.useMemo(
@@ -32,11 +32,11 @@ const App = () => {
         accessor: 'progress',
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const [data, setData] = React.useState(React.useMemo(() => makeData(20), []))
-  const [skipPageReset, setSkipPageReset] = React.useState(false)
+  const [data, setData] = React.useState(React.useMemo(() => makeData(20), []));
+  const [skipPageReset, setSkipPageReset] = React.useState(false);
 
   // We need to keep the table from resetting the pageIndex when we
   // Update data. So we can keep track of that flag with a ref.
@@ -46,19 +46,19 @@ const App = () => {
   // original data
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
-    setSkipPageReset(true)
-    setData(old =>
+    setSkipPageReset(true);
+    setData((old) =>
       old.map((row, index) => {
         if (index === rowIndex) {
           return {
             ...old[rowIndex],
             [columnId]: value,
-          }
+          };
         }
-        return row
-      })
-    )
-  }
+        return row;
+      }),
+    );
+  };
 
   return (
     <div>
@@ -71,7 +71,7 @@ const App = () => {
         skipPageReset={skipPageReset}
       />
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

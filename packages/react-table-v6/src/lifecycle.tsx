@@ -38,9 +38,12 @@ export default (Base: React.ComponentClass<any, any>) =>
       // Do a deep compare of new and old `defaultOption` and
       // if they are different reset `option = defaultOption`
       const defaultableOptions = ['sorted', 'filtered', 'resized', 'expanded'];
-      defaultableOptions.forEach(x => {
+      defaultableOptions.forEach((x) => {
         const defaultName = `default${x.charAt(0).toUpperCase() + x.slice(1)}`;
-        if (JSON.stringify(oldState[defaultName]) !== JSON.stringify(newState[defaultName])) {
+        if (
+          JSON.stringify(oldState[defaultName]) !==
+          JSON.stringify(newState[defaultName])
+        ) {
           newState[x] = newState[defaultName];
         }
       });
@@ -50,11 +53,13 @@ export default (Base: React.ComponentClass<any, any>) =>
       // and then disabled the ability to change it back.
       // e.g. If `filterable` has changed, set `filtered = defaultFiltered`
       const resettableOptions = ['sortable', 'filterable', 'resizable'];
-      resettableOptions.forEach(x => {
+      resettableOptions.forEach((x) => {
         if (oldState[x] !== newState[x]) {
           const baseName = x.replace('able', '');
           const optionName = `${baseName}ed`;
-          const defaultName = `default${optionName.charAt(0).toUpperCase() + optionName.slice(1)}`;
+          const defaultName = `default${
+            optionName.charAt(0).toUpperCase() + optionName.slice(1)
+          }`;
           newState[optionName] = newState[defaultName];
         }
       });
@@ -67,7 +72,10 @@ export default (Base: React.ComponentClass<any, any>) =>
         oldState.sorted !== newState.sorted ||
         oldState.filtered !== newState.filtered
       ) {
-        this.setStateWithData(this.getDataModel(newState, oldState.data !== newState.data), undefined);
+        this.setStateWithData(
+          this.getDataModel(newState, oldState.data !== newState.data),
+          undefined,
+        );
       }
     }
 
@@ -114,11 +122,13 @@ export default (Base: React.ComponentClass<any, any>) =>
         oldState.sorted !== newResolvedState.sorted ||
         oldState.filtered !== newResolvedState.filtered ||
         oldState.showFilters !== newResolvedState.showFilters ||
-        (!newResolvedState.frozen && oldState.resolvedData !== newResolvedState.resolvedData)
+        (!newResolvedState.frozen &&
+          oldState.resolvedData !== newResolvedState.resolvedData)
       ) {
         // Handle collapseOnsortedChange & collapseOnDataChange
         if (
-          (oldState.sorted !== newResolvedState.sorted && this.props.collapseOnSortingChange) ||
+          (oldState.sorted !== newResolvedState.sorted &&
+            this.props.collapseOnSortingChange) ||
           oldState.filtered !== newResolvedState.filtered ||
           oldState.showFilters !== newResolvedState.showFilters ||
           (oldState.sortedData &&
@@ -141,11 +151,15 @@ export default (Base: React.ComponentClass<any, any>) =>
       if (newResolvedState.sortedData) {
         newResolvedState.pages = newResolvedState.manual
           ? newResolvedState.pages
-          : Math.ceil(newResolvedState.sortedData.length / newResolvedState.pageSize);
+          : Math.ceil(
+              newResolvedState.sortedData.length / newResolvedState.pageSize,
+            );
         newResolvedState.page = newResolvedState.manual
           ? newResolvedState.page
           : Math.max(
-              newResolvedState.page >= newResolvedState.pages ? newResolvedState.pages - 1 : newResolvedState.page,
+              newResolvedState.page >= newResolvedState.pages
+                ? newResolvedState.pages - 1
+                : newResolvedState.page,
               0,
             );
       }

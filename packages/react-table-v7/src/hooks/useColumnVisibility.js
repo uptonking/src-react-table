@@ -15,7 +15,7 @@ actions.toggleHideAllColumns = 'toggleHideAllColumns';
  * 作为一个plugin，会修改传入的hooks配置对象，处理隐藏列相关的计算
  * @param {*} hooks 配置对象
  */
-export const useColumnVisibility = hooks => {
+export const useColumnVisibility = (hooks) => {
   hooks.getToggleHiddenProps = [defaultGetToggleHiddenProps];
   hooks.getToggleHideAllColumnsProps = [defaultGetToggleHideAllColumnsProps];
 
@@ -33,7 +33,7 @@ useColumnVisibility.pluginName = 'useColumnVisibility';
 const defaultGetToggleHiddenProps = (props, { column }) => [
   props,
   {
-    onChange: e => {
+    onChange: (e) => {
       column.toggleHidden(!e.target.checked);
     },
     style: {
@@ -47,7 +47,7 @@ const defaultGetToggleHiddenProps = (props, { column }) => [
 const defaultGetToggleHideAllColumnsProps = (props, { instance }) => [
   props,
   {
-    onChange: e => {
+    onChange: (e) => {
       instance.toggleHideAllColumns(!e.target.checked);
     },
     style: {
@@ -84,7 +84,7 @@ function reducer(state, action, previousState, instance) {
 
     const hiddenColumns = should
       ? [...state.hiddenColumns, action.columnId]
-      : state.hiddenColumns.filter(d => d !== action.columnId);
+      : state.hiddenColumns.filter((d) => d !== action.columnId);
 
     return {
       ...state,
@@ -107,7 +107,7 @@ function reducer(state, action, previousState, instance) {
 
     return {
       ...state,
-      hiddenColumns: shouldAll ? instance.allColumns.map(d => d.id) : [],
+      hiddenColumns: shouldAll ? instance.allColumns.map((d) => d.id) : [],
     };
   }
 }
@@ -130,7 +130,7 @@ function useInstanceBeforeDimensions(instance) {
 
     if (column.headers && column.headers.length) {
       column.headers.forEach(
-        subColumn =>
+        (subColumn) =>
           (totalVisibleHeaderCount += handleColumn(
             subColumn,
             column.isVisible,
@@ -148,7 +148,7 @@ function useInstanceBeforeDimensions(instance) {
   let totalVisibleHeaderCount = 0;
 
   headers.forEach(
-    subHeader => (totalVisibleHeaderCount += handleColumn(subHeader, true)),
+    (subHeader) => (totalVisibleHeaderCount += handleColumn(subHeader, true)),
   );
 }
 
@@ -175,12 +175,12 @@ function useInstance(instance) {
   );
 
   const setHiddenColumns = React.useCallback(
-    value => dispatch({ type: actions.setHiddenColumns, value }),
+    (value) => dispatch({ type: actions.setHiddenColumns, value }),
     [dispatch],
   );
 
   const toggleHideAllColumns = React.useCallback(
-    value => dispatch({ type: actions.toggleHideAllColumns, value }),
+    (value) => dispatch({ type: actions.toggleHideAllColumns, value }),
     [dispatch],
   );
 
@@ -189,8 +189,8 @@ function useInstance(instance) {
     { instance: getInstance() },
   );
 
-  flatHeaders.forEach(column => {
-    column.toggleHidden = value => {
+  flatHeaders.forEach((column) => {
+    column.toggleHidden = (value) => {
       dispatch({
         type: actions.toggleHideColumn,
         columnId: column.id,

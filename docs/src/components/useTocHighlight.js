@@ -3,7 +3,14 @@ import React from 'react';
 /**
  * Sets up Table of Contents highlighting. It requires that
  */
-export function useTocHighlight(linkClassName, linkActiveClassName, topOffset, getHeaderAnchors, getHeaderDataFromAnchor, getAnchorHeaderIdentifier) {
+export function useTocHighlight(
+  linkClassName,
+  linkActiveClassName,
+  topOffset,
+  getHeaderAnchors,
+  getHeaderDataFromAnchor,
+  getAnchorHeaderIdentifier,
+) {
   const [lastActiveLink, setLastActiveLink] = React.useState(undefined);
   const [headings, setHeadings] = React.useState([]);
   React.useEffect(() => {
@@ -21,9 +28,7 @@ export function useTocHighlight(linkClassName, linkActiveClassName, topOffset, g
 
         while (index < headersAnchors.length && !activeHeaderAnchor) {
           const headerAnchor = headersAnchors[index];
-          const {
-            top
-          } = headerAnchor.getBoundingClientRect();
+          const { top } = headerAnchor.getBoundingClientRect();
 
           if (top >= 0 && top <= topOffset) {
             activeHeaderAnchor = headerAnchor;
@@ -44,10 +49,10 @@ export function useTocHighlight(linkClassName, linkActiveClassName, topOffset, g
 
         while (index < links.length && !itemHighlighted) {
           const link = links[index];
-          const {
-            href
-          } = link;
-          const anchorValue = decodeURIComponent(href.substring(href.indexOf('#') + 1));
+          const { href } = link;
+          const anchorValue = decodeURIComponent(
+            href.substring(href.indexOf('#') + 1),
+          );
 
           if (getAnchorHeaderIdentifier(activeHeaderAnchor) === anchorValue) {
             if (lastActiveLink) {

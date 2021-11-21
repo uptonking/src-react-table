@@ -14,14 +14,14 @@ export const useTokenPagination = () => {
   // Since we're using pagination tokens intead of index, we need
   // to be a bit clever with page-like navigation here.
   const nextPage = () => {
-    setPageIndex(old => old + 1);
-    setPreviousPageTokens(old => [...old, pageToken]);
+    setPageIndex((old) => old + 1);
+    setPreviousPageTokens((old) => [...old, pageToken]);
     setPageToken(nextPageToken);
   };
 
   const previousPage = () => {
-    setPageIndex(old => old - 1);
-    setPreviousPageTokens(old => [...old].reverse().slice(1).reverse());
+    setPageIndex((old) => old - 1);
+    setPreviousPageTokens((old) => [...old].reverse().slice(1).reverse());
     setPageToken(previousPageTokens[previousPageTokens.length - 1]);
   };
 

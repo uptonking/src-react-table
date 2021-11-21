@@ -7,20 +7,17 @@ export function SidebarCategory({
   title,
   selected,
   opened,
-  children
+  children,
 }) {
   const ref = useRef(null);
-  const [{
-    toggle,
-    shouldScroll = false
-  }, setToggle] = useState({
-    toggle: selected || opened
+  const [{ toggle, shouldScroll = false }, setToggle] = useState({
+    toggle: selected || opened,
   });
 
   const toggleCategory = () => {
     setToggle({
       toggle: !toggle,
-      shouldScroll: true
+      shouldScroll: true,
     });
   };
 
@@ -29,34 +26,41 @@ export function SidebarCategory({
   useEffect(() => {
     if (selected) {
       setToggle({
-        toggle: true
+        toggle: true,
       });
     }
   }, [selected]); // Navigate to the start of the category when manually opened
 
   useEffect(() => {
     if (toggle && shouldScroll && ref.current != null) {
-      const content = document.querySelector(isMobile ? '.docs-dropdown' : '.sidebar-content');
+      const content = document.querySelector(
+        isMobile ? '.docs-dropdown' : '.sidebar-content',
+      );
 
       if (content) {
         // 10 is added for better margin
-        const height = ref.current.offsetTop - (isMobile ? 10 : content.offsetTop);
+        const height =
+          ref.current.offsetTop - (isMobile ? 10 : content.offsetTop);
         content.scrollTop = height;
         setToggle({
-          toggle
+          toggle,
         });
       }
     }
   }, [toggle, shouldScroll, isMobile]);
-  return <div ref={ref} className={cn('category', levelClass, {
-    open: toggle,
-    selected
-  })}>
-      <a className="label" onClick={toggleCategory}>
+  return (
+    <div
+      ref={ref}
+      className={cn('category', levelClass, {
+        open: toggle,
+        selected,
+      })}
+    >
+      <a className='label' onClick={toggleCategory}>
         {title}
-        <FiChevronDown className="text-gray-600" />
+        <FiChevronDown className='text-gray-600' />
       </a>
-      <div className="posts">{children}</div>
+      <div className='posts'>{children}</div>
       <style jsx>{`
         .category {
           margin: 12px 0;
@@ -122,5 +126,6 @@ export function SidebarCategory({
           }
         }
       `}</style>
-    </div>;
+    </div>
+  );
 }

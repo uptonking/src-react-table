@@ -1,13 +1,13 @@
 const cellStyles = {
   position: 'absolute',
   top: 0,
-}
+};
 
-export const useAbsoluteLayout = hooks => {
-  hooks.getTableBodyProps.push(getRowStyles)
-  hooks.getRowProps.push(getRowStyles)
-  hooks.getHeaderGroupProps.push(getRowStyles)
-  hooks.getFooterGroupProps.push(getRowStyles)
+export const useAbsoluteLayout = (hooks) => {
+  hooks.getTableBodyProps.push(getRowStyles);
+  hooks.getRowProps.push(getRowStyles);
+  hooks.getHeaderGroupProps.push(getRowStyles);
+  hooks.getFooterGroupProps.push(getRowStyles);
 
   hooks.getHeaderProps.push((props, { column }) => [
     props,
@@ -18,7 +18,7 @@ export const useAbsoluteLayout = hooks => {
         width: `${column.totalWidth}px`,
       },
     },
-  ])
+  ]);
 
   hooks.getCellProps.push((props, { cell }) => [
     props,
@@ -29,7 +29,7 @@ export const useAbsoluteLayout = hooks => {
         width: `${cell.column.totalWidth}px`,
       },
     },
-  ])
+  ]);
 
   hooks.getFooterProps.push((props, { column }) => [
     props,
@@ -40,10 +40,10 @@ export const useAbsoluteLayout = hooks => {
         width: `${column.totalWidth}px`,
       },
     },
-  ])
-}
+  ]);
+};
 
-useAbsoluteLayout.pluginName = 'useAbsoluteLayout'
+useAbsoluteLayout.pluginName = 'useAbsoluteLayout';
 
 const getRowStyles = (props, { instance }) => [
   props,
@@ -53,4 +53,4 @@ const getRowStyles = (props, { instance }) => [
       width: `${instance.totalColumnsWidth}px`,
     },
   },
-]
+];

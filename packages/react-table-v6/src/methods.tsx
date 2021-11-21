@@ -53,7 +53,7 @@ export default (Base: React.ComponentClass<any, any>) =>
 
       // Determine if there are Header Groups，若columns属性值中也存在columns属性，则使用分组合并列
       let hasHeaderGroups = false;
-      columns.forEach(column => {
+      columns.forEach((column) => {
         if (column.columns) {
           hasHeaderGroups = true;
         }
@@ -64,10 +64,12 @@ export default (Base: React.ComponentClass<any, any>) =>
 
       // 若设置了expander属性，则获取第一个可展开的列
       let expanderColumn = columns.find(
-        col => col.expander || (col.columns && col.columns.some(col2 => col2.expander)),
+        (col) =>
+          col.expander ||
+          (col.columns && col.columns.some((col2) => col2.expander)),
       );
       if (expanderColumn && !expanderColumn.expander) {
-        expanderColumn = expanderColumn.columns.find(col => col.expander);
+        expanderColumn = expanderColumn.columns.find((col) => col.expander);
       }
       // If we have SubComponent's we need to make sure we have an expander column
       if (SubComponent && !expanderColumn) {
@@ -112,14 +114,16 @@ export default (Base: React.ComponentClass<any, any>) =>
           dcol.id = dcol.id || dcol.accessor;
           const accessorString = dcol.accessor;
           // dcol.accessor = row => _.get(row, accessorString)
-          dcol.accessor = row => _.get(row, accessorString, undefined);
+          dcol.accessor = (row) => _.get(row, accessorString, undefined);
           return dcol;
         }
 
         // Fall back to functional accessor (but require an ID)
         if (dcol.accessor && !dcol.id) {
           console.warn(dcol);
-          throw new Error('A column id is required if using a non-string accessor for column above.');
+          throw new Error(
+            'A column id is required if using a non-string accessor for column above.',
+          );
         }
 
         // Fall back to an undefined accessor
@@ -140,12 +144,12 @@ export default (Base: React.ComponentClass<any, any>) =>
       };
 
       // 遍历columns属性值数组，给各项column补充额外操作信息
-      const decoratedColumns = columnsWithExpander.map(column => {
+      const decoratedColumns = columnsWithExpander.map((column) => {
         // 若该列是分组合并列，
         if (column.columns) {
           return {
             ...column,
-            columns: column.columns.map(d => decorateAndAddToAll(d, column)),
+            columns: column.columns.map((d) => decorateAndAddToAll(d, column)),
           };
         }
 
@@ -158,11 +162,13 @@ export default (Base: React.ComponentClass<any, any>) =>
       let visibleColumns = decoratedColumns.slice();
       let allVisibleColumns = [];
 
-      visibleColumns = visibleColumns.map(column => {
+      visibleColumns = visibleColumns.map((column) => {
         if (column.columns) {
-          const visibleSubColumns = column.columns.filter(d =>
+          const visibleSubColumns = column.columns.filter((d) =>
             // 若pivotBy中不存在id，则过滤掉此列
-            pivotBy.indexOf(d.id) > -1 ? false : _.getFirstDefined(d.show, true),
+            pivotBy.indexOf(d.id) > -1
+              ? false
+              : _.getFirstDefined(d.show, true),
           );
           return {
             ...column,
@@ -173,7 +179,7 @@ export default (Base: React.ComponentClass<any, any>) =>
         return column;
       });
 
-      visibleColumns = visibleColumns.filter(column =>
+      visibleColumns = visibleColumns.filter((column) =>
         column.columns
           ? column.columns.length
           : pivotBy.indexOf(column.id) > -1
@@ -183,21 +189,22 @@ export default (Base: React.ComponentClass<any, any>) =>
       // console.log('visibleColumns-before-pivotIndex, ', visibleColumns);
 
       // Find any custom pivot location
-      const pivotIndex = visibleColumns.findIndex(col => col.pivot);
+      const pivotIndex = visibleColumns.findIndex((col) => col.pivot);
 
       // Handle Pivot Columns
       if (pivotBy.length) {
         // Retrieve the pivot columns in the correct pivot order
         const pivotColumns = [];
-        pivotBy.forEach(pivotID => {
-          const found = allDecoratedColumns.find(d => d.id === pivotID);
+        pivotBy.forEach((pivotID) => {
+          const found = allDecoratedColumns.find((d) => d.id === pivotID);
           if (found) {
             pivotColumns.push(found);
           }
         });
 
         const PivotParentColumn = pivotColumns.reduce(
-          (prev, current) => prev && prev === current.parentColumn && current.parentColumn,
+          (prev, current) =>
+            prev && prev === current.parentColumn && current.parentColumn,
           pivotColumns[0].parentColumn,
         );
 
@@ -206,7 +213,7 @@ export default (Base: React.ComponentClass<any, any>) =>
 
         let pivotColumnGroup = {
           Header: PivotGroupHeader,
-          columns: pivotColumns.map(col => ({
+          columns: pivotColumns.map((col) => ({
             ...this.props.pivotDefaults,
             ...col,
             pivoted: true,
@@ -243,7 +250,7 @@ export default (Base: React.ComponentClass<any, any>) =>
 
       // 遍历可见列，将可见列加入headerGroups
       // Build flat list of allVisibleColumns and HeaderGroups
-      visibleColumns.forEach(column => {
+      visibleColumns.forEach((column) => {
         if (column.columns) {
           allVisibleColumns = allVisibleColumns.concat(column.columns);
           if (currentSpan.length > 0) {
@@ -274,13 +281,15 @@ export default (Base: React.ComponentClass<any, any>) =>
         };
 
         // 遍历所有列，将列数据添加到行
-        allDecoratedColumns.forEach(column => {
+        allDecoratedColumns.forEach((column) => {
           if (column.expander) return;
           row[column.id] = column.accessor(d);
         });
 
         if (row[subRowsKey]) {
-          row[subRowsKey] = row[subRowsKey].map((d, i) => accessRow(d, i, level + 1));
+          row[subRowsKey] = row[subRowsKey].map((d, i) =>
+            accessRow(d, i, level + 1),
+          );
         }
         return row;
       };
@@ -303,14 +312,16 @@ export default (Base: React.ComponentClass<any, any>) =>
 
       // 在没有分组聚合的情况下，aggregatingColumns为[]
       // TODO: Make it possible to fabricate nested rows without pivoting
-      const aggregatingColumns = allVisibleColumns.filter(d => !d.expander && d.aggregate);
+      const aggregatingColumns = allVisibleColumns.filter(
+        (d) => !d.expander && d.aggregate,
+      );
       // console.log('aggregatingColumns, ', aggregatingColumns);
 
       // If pivoting, recursively group the data
-      const aggregate = rows => {
+      const aggregate = (rows) => {
         const aggregationValues = {};
-        aggregatingColumns.forEach(column => {
-          const values = rows.map(d => d[column.id]);
+        aggregatingColumns.forEach((column) => {
+          const values = rows.map((d) => d[column.id]);
           aggregationValues[column.id] = column.aggregate(values, rows);
         });
         return aggregationValues;
@@ -326,16 +337,18 @@ export default (Base: React.ComponentClass<any, any>) =>
             return rows;
           }
           // Group the rows together for this level
-          let groupedRows = Object.entries(_.groupBy(rows, keys[i])).map(([key, value]) => ({
-            [pivotIDKey]: keys[i],
-            [pivotValKey]: key,
-            [keys[i]]: key,
-            [subRowsKey]: value,
-            [nestingLevelKey]: i,
-            [groupedByPivotKey]: true,
-          }));
+          let groupedRows = Object.entries(_.groupBy(rows, keys[i])).map(
+            ([key, value]) => ({
+              [pivotIDKey]: keys[i],
+              [pivotValKey]: key,
+              [keys[i]]: key,
+              [subRowsKey]: value,
+              [nestingLevelKey]: i,
+              [groupedByPivotKey]: true,
+            }),
+          );
           // Recurse into the subRows
-          groupedRows = groupedRows.map(rowGroup => {
+          groupedRows = groupedRows.map((rowGroup) => {
             const subRows = groupRecursively(rowGroup[subRowsKey], keys, i + 1);
             return {
               ...rowGroup,
@@ -374,8 +387,8 @@ export default (Base: React.ComponentClass<any, any>) =>
       const sortMethodsByColumnID = {};
 
       allDecoratedColumns
-        .filter(col => col.sortMethod)
-        .forEach(col => {
+        .filter((col) => col.sortMethod)
+        .forEach((col) => {
           sortMethodsByColumnID[col.id] = col.sortMethod;
         });
 
@@ -384,7 +397,12 @@ export default (Base: React.ComponentClass<any, any>) =>
         sortedData: manual
           ? resolvedData
           : this.sortData(
-              this.filterData(resolvedData, filtered, defaultFilterMethod, allVisibleColumns),
+              this.filterData(
+                resolvedData,
+                filtered,
+                defaultFilterMethod,
+                allVisibleColumns,
+              ),
               sorted,
               sortMethodsByColumnID,
             ),
@@ -422,7 +440,7 @@ export default (Base: React.ComponentClass<any, any>) =>
 
       if (filtered.length) {
         filteredData = filtered.reduce((filteredSoFar, nextFilter) => {
-          const column = allVisibleColumns.find(x => x.id === nextFilter.id);
+          const column = allVisibleColumns.find((x) => x.id === nextFilter.id);
 
           // Don't filter hidden columns or columns that have had their filters disabled
           if (!column || column.filterable === false) {
@@ -435,13 +453,15 @@ export default (Base: React.ComponentClass<any, any>) =>
           if (column.filterAll) {
             return filterMethod(nextFilter, filteredSoFar, column);
           }
-          return filteredSoFar.filter(row => filterMethod(nextFilter, row, column));
+          return filteredSoFar.filter((row) =>
+            filterMethod(nextFilter, row, column),
+          );
         }, filteredData);
 
         // Apply the filter to the subrows if we are pivoting, and then
         // filter any rows without subcolumns because it would be strange to show
         filteredData = filteredData
-          .map(row => {
+          .map((row) => {
             if (!row[this.props.subRowsKey]) {
               return row;
             }
@@ -455,7 +475,7 @@ export default (Base: React.ComponentClass<any, any>) =>
               ),
             };
           })
-          .filter(row => {
+          .filter((row) => {
             if (!row[this.props.subRowsKey]) {
               return true;
             }
@@ -473,29 +493,38 @@ export default (Base: React.ComponentClass<any, any>) =>
 
       const sortedData = (this.props.orderByMethod || _.orderBy)(
         data,
-        sorted.map(sort => {
+        sorted.map((sort) => {
           // Support custom sorting methods for each column
           if (sortMethodsByColumnID[sort.id]) {
-            return (a, b) => sortMethodsByColumnID[sort.id](a[sort.id], b[sort.id], sort.desc);
+            return (a, b) =>
+              sortMethodsByColumnID[sort.id](a[sort.id], b[sort.id], sort.desc);
           }
-          return (a, b) => this.props.defaultSortMethod(a[sort.id], b[sort.id], sort.desc);
+          return (a, b) =>
+            this.props.defaultSortMethod(a[sort.id], b[sort.id], sort.desc);
         }),
-        sorted.map(d => !d.desc),
+        sorted.map((d) => !d.desc),
         this.props.indexKey,
       );
 
-      sortedData.forEach(row => {
+      sortedData.forEach((row) => {
         if (!row[this.props.subRowsKey]) {
           return;
         }
-        row[this.props.subRowsKey] = this.sortData(row[this.props.subRowsKey], sorted, sortMethodsByColumnID);
+        row[this.props.subRowsKey] = this.sortData(
+          row[this.props.subRowsKey],
+          sorted,
+          sortMethodsByColumnID,
+        );
       });
 
       return sortedData;
     }
 
     getMinRows() {
-      return _.getFirstDefined(this.props.minRows, this.getStateOrProp('pageSize'));
+      return _.getFirstDefined(
+        this.props.minRows,
+        this.getStateOrProp('pageSize'),
+      );
     }
 
     // User actions
@@ -529,9 +558,15 @@ export default (Base: React.ComponentClass<any, any>) =>
 
     sortColumn(column, additive) {
       // const { sorted, skipNextSort, defaultSortDesc } = this.getResolvedState();
-      const { sorted, skipNextSort, defaultSortDesc } = this.getResolvedState(undefined, undefined);
+      const { sorted, skipNextSort, defaultSortDesc } = this.getResolvedState(
+        undefined,
+        undefined,
+      );
 
-      const firstSortDirection = Object.prototype.hasOwnProperty.call(column, 'defaultSortDesc')
+      const firstSortDirection = Object.prototype.hasOwnProperty.call(
+        column,
+        'defaultSortDesc',
+      )
         ? column.defaultSortDesc
         : defaultSortDesc;
       const secondSortDirection = !firstSortDirection;
@@ -552,13 +587,13 @@ export default (Base: React.ComponentClass<any, any>) =>
 
       const { onSortedChange } = this.props;
 
-      let newSorted = _.clone(sorted || []).map(d => {
+      let newSorted = _.clone(sorted || []).map((d) => {
         d.desc = _.isSortingDesc(d);
         return d;
       });
       if (!_.isArray(column)) {
         // Single-Sort
-        const existingIndex = newSorted.findIndex(d => d.id === column.id);
+        const existingIndex = newSorted.findIndex((d) => d.id === column.id);
         if (existingIndex > -1) {
           const existing = newSorted[existingIndex];
           if (existing.desc === secondSortDirection) {
@@ -589,7 +624,7 @@ export default (Base: React.ComponentClass<any, any>) =>
         }
       } else {
         // Multi-Sort
-        const existingIndex = newSorted.findIndex(d => d.id === column[0].id);
+        const existingIndex = newSorted.findIndex((d) => d.id === column[0].id);
         // Existing Sorted Column
         if (existingIndex > -1) {
           const existing = newSorted[existingIndex];
@@ -612,13 +647,13 @@ export default (Base: React.ComponentClass<any, any>) =>
           // New Sort Column
         } else if (additive) {
           newSorted = newSorted.concat(
-            column.map(d => ({
+            column.map((d) => ({
               id: d.id,
               desc: firstSortDirection,
             })),
           );
         } else {
-          newSorted = column.map(d => ({
+          newSorted = column.map((d) => ({
             id: d.id,
             desc: firstSortDirection,
           }));
@@ -627,7 +662,10 @@ export default (Base: React.ComponentClass<any, any>) =>
 
       this.setStateWithData(
         {
-          page: (!sorted.length && newSorted.length) || !additive ? 0 : this.state.page,
+          page:
+            (!sorted.length && newSorted.length) || !additive
+              ? 0
+              : this.state.page,
           sorted: newSorted,
         },
         () => onSortedChange && onSortedChange(newSorted, column, additive),
@@ -640,7 +678,7 @@ export default (Base: React.ComponentClass<any, any>) =>
       const { onFilteredChange } = this.props;
 
       // Remove old filter first if it exists
-      const newFiltering = (filtered || []).filter(x => x.id !== column.id);
+      const newFiltering = (filtered || []).filter((x) => x.id !== column.id);
 
       if (value !== '') {
         newFiltering.push({
@@ -659,7 +697,8 @@ export default (Base: React.ComponentClass<any, any>) =>
 
     resizeColumnStart(event, column, isTouch) {
       event.stopPropagation();
-      const parentWidth = event.target.parentElement.getBoundingClientRect().width;
+      const parentWidth =
+        event.target.parentElement.getBoundingClientRect().width;
 
       let pageX;
       if (isTouch) {
@@ -695,12 +734,19 @@ export default (Base: React.ComponentClass<any, any>) =>
       event.stopPropagation();
       const { onResizedChange, column } = this.props;
       // const { resized, currentlyResizing, columns } = this.getResolvedState();
-      const { resized, currentlyResizing, columns } = this.getResolvedState(undefined, undefined);
-      const currentColumn = columns.find(c => c.accessor === currentlyResizing.id);
-      const minResizeWidth = currentColumn ? currentColumn.minResizeWidth : column.minResizeWidth;
+      const { resized, currentlyResizing, columns } = this.getResolvedState(
+        undefined,
+        undefined,
+      );
+      const currentColumn = columns.find(
+        (c) => c.accessor === currentlyResizing.id,
+      );
+      const minResizeWidth = currentColumn
+        ? currentColumn.minResizeWidth
+        : column.minResizeWidth;
 
       // Delete old value
-      const newResized = resized.filter(x => x.id !== currentlyResizing.id);
+      const newResized = resized.filter((x) => x.id !== currentlyResizing.id);
 
       let pageX;
 
@@ -710,7 +756,10 @@ export default (Base: React.ComponentClass<any, any>) =>
         pageX = event.pageX;
       }
 
-      const newWidth = Math.max(currentlyResizing.parentWidth + pageX - currentlyResizing.startX, minResizeWidth);
+      const newWidth = Math.max(
+        currentlyResizing.parentWidth + pageX - currentlyResizing.startX,
+        minResizeWidth,
+      );
 
       newResized.push({
         id: currentlyResizing.id,

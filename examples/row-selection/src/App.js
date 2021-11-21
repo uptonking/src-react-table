@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTable, useRowSelect } from 'react-table'
+import React from 'react';
+import styled from 'styled-components';
+import { useTable, useRowSelect } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -31,24 +31,24 @@ const Styles = styled.div`
       }
     }
   }
-`
+`;
 
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef()
-    const resolvedRef = ref || defaultRef
+    const defaultRef = React.useRef();
+    const resolvedRef = ref || defaultRef;
 
     React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate
-    }, [resolvedRef, indeterminate])
+      resolvedRef.current.indeterminate = indeterminate;
+    }, [resolvedRef, indeterminate]);
 
     return (
       <>
-        <input type="checkbox" ref={resolvedRef} {...rest} />
+        <input type='checkbox' ref={resolvedRef} {...rest} />
       </>
-    )
-  }
-)
+    );
+  },
+);
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -66,8 +66,8 @@ function Table({ columns, data }) {
       data,
     },
     useRowSelect,
-    hooks => {
-      hooks.visibleColumns.push(columns => [
+    (hooks) => {
+      hooks.visibleColumns.push((columns) => [
         // Let's make a column for selection
         {
           id: 'selection',
@@ -87,18 +87,18 @@ function Table({ columns, data }) {
           ),
         },
         ...columns,
-      ])
-    }
-  )
+      ]);
+    },
+  );
 
   // Render the UI for your table
   return (
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
             </tr>
@@ -106,14 +106,16 @@ function Table({ columns, data }) {
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.slice(0, 10).map((row, i) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  );
                 })}
               </tr>
-            )
+            );
           })}
         </tbody>
       </table>
@@ -124,16 +126,16 @@ function Table({ columns, data }) {
             {
               selectedRowIds: selectedRowIds,
               'selectedFlatRows[].original': selectedFlatRows.map(
-                d => d.original
+                (d) => d.original,
               ),
             },
             null,
-            2
+            2,
           )}
         </code>
       </pre>
     </>
-  )
+  );
 }
 
 function App() {
@@ -174,16 +176,16 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(10, 3), [])
+  const data = React.useMemo(() => makeData(10, 3), []);
 
   return (
     <Styles>
       <Table columns={columns} data={data} />
     </Styles>
-  )
+  );
 }
 
-export default App
+export default App;

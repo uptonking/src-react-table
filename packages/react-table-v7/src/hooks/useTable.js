@@ -29,7 +29,7 @@ const defaultReducer = (state, action, prevState) => state;
 const defaultGetSubRows = (row, index) => row.subRows || [];
 const defaultGetRowId = (row, index, parent) =>
   `${parent ? [parent.id, index].join('.') : index}`;
-const defaultUseControlledState = d => d;
+const defaultUseControlledState = (d) => d;
 
 /**
  * 声明并设置一些重要props的默认值
@@ -99,7 +99,7 @@ export const useTable = (props, ...plugins) => {
 
   // Allow plugins to register hooks as early as possible，
   // 给每个plugin都传入hooks配置对象，每个plugin都可以修改配置对象
-  plugins.filter(Boolean).forEach(plugin => {
+  plugins.filter(Boolean).forEach((plugin) => {
     plugin(getInstance().hooks);
   });
   console.log(
@@ -295,7 +295,7 @@ export const useTable = (props, ...plugins) => {
     () =>
       reduceHooks(getHooks().visibleColumns, allColumns, {
         instance: getInstance(),
-      }).map(d => decorateColumn(d, defaultColumn)),
+      }).map((d) => decorateColumn(d, defaultColumn)),
     [
       getHooks,
       allColumns,
@@ -317,8 +317,8 @@ export const useTable = (props, ...plugins) => {
   allColumns = React.useMemo(() => {
     const columns = [...visibleColumns];
 
-    allColumns.forEach(column => {
-      if (!columns.find(d => d.id === column.id)) {
+    allColumns.forEach((column) => {
+      if (!columns.find((d) => d.id === column.id)) {
         columns.push(column);
       }
     });
@@ -334,14 +334,14 @@ export const useTable = (props, ...plugins) => {
   // 开发环境下会提示表头id重复的列
   if (process.env.NODE_ENV !== 'production') {
     const duplicateColumns = allColumns.filter((column, i) => {
-      return allColumns.findIndex(d => d.id === column.id) !== i;
+      return allColumns.findIndex((d) => d.id === column.id) !== i;
     });
 
     if (duplicateColumns.length) {
       console.info(allColumns);
       throw new Error(
         `Duplicate columns were found with ids: "${duplicateColumns
-          .map(d => d.id)
+          .map((d) => d.id)
           .join(', ')}" in the columns array above`,
       );
     }
@@ -404,14 +404,14 @@ export const useTable = (props, ...plugins) => {
   // Columns that are not visible are still used for sorting, filtering, etc.
   // todo Replace .filter().map() with .reduce()
   const visibleColumnsDep = visibleColumns
-    .filter(d => d.isVisible)
-    .map(d => d.id)
+    .filter((d) => d.isVisible)
+    .map((d) => d.id)
     .sort()
     .join('_');
 
   // 计算最终显示的可见表头
   visibleColumns = React.useMemo(
-    () => visibleColumns.filter(d => d.isVisible),
+    () => visibleColumns.filter((d) => d.isVisible),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [visibleColumns, visibleColumnsDep],
   );
@@ -439,7 +439,7 @@ export const useTable = (props, ...plugins) => {
   // Each materialized header needs to be assigned a render function and other prop getter properties here.
   // 设置要每个表头列要渲染的组件
   [...getInstance().flatHeaders, ...getInstance().allColumns].forEach(
-    column => {
+    (column) => {
       // Give columns/headers rendering power
       // render属性值是个方法，可创建表头列组件
       column.render = makeRenderer(getInstance(), column);
@@ -463,9 +463,9 @@ export const useTable = (props, ...plugins) => {
     () =>
       headerGroups.filter((headerGroup, i) => {
         // Filter out any headers and headerGroups that don't have visible columns
-        headerGroup.headers = headerGroup.headers.filter(column => {
-          const recurse = headers =>
-            headers.filter(column => {
+        headerGroup.headers = headerGroup.headers.filter((column) => {
+          const recurse = (headers) =>
+            headers.filter((column) => {
               if (column.headers) {
                 return recurse(column.headers);
               }
@@ -510,7 +510,7 @@ export const useTable = (props, ...plugins) => {
   // ==== 调用prepareRow()会计算行中要显示的单元格数据，再设置单元格要渲染的的组件。
   // This function is responsible for lazily preparing a row for rendering.
   getInstance().prepareRow = React.useCallback(
-    row => {
+    (row) => {
       // 合并rowProps
       row.getRowProps = makePropGetter(getHooks().getRowProps, {
         instance: getInstance(),
@@ -519,7 +519,7 @@ export const useTable = (props, ...plugins) => {
 
       // Build the visible cells for each row
       // 遍历表头，取出各列数据保存，row.allCells存放的是所有单元格，不一定会显示
-      row.allCells = allColumns.map(column => {
+      row.allCells = allColumns.map((column) => {
         // row.values存放的是这一行被解析columnId后的数据
         const value = row.values[column.id];
 
@@ -547,8 +547,8 @@ export const useTable = (props, ...plugins) => {
       });
 
       // 这里才将单元格的值从row.values填充到row.cells，row.cells存放的是要显示的单元格
-      row.cells = visibleColumns.map(column =>
-        row.allCells.find(cell => cell.column.id === column.id),
+      row.cells = visibleColumns.map((column) =>
+        row.allCells.find((cell) => cell.column.id === column.id),
       );
 
       // need to apply any row specific hooks (useExpanded requires this)
@@ -595,19 +595,15 @@ function calculateHeaderWidths(headers, left = 0) {
   let sumTotalFlexWidth = 0;
 
   // 遍历表头各列，递归计算子表头各列宽度
-  headers.forEach(header => {
+  headers.forEach((header) => {
     const { headers: subHeaders } = header;
 
     header.totalLeft = left;
 
     // / 若子表头存在且数量大于0，则递归计算
     if (subHeaders && subHeaders.length) {
-      const [
-        totalMinWidth,
-        totalWidth,
-        totalMaxWidth,
-        totalFlexWidth,
-      ] = calculateHeaderWidths(subHeaders, left);
+      const [totalMinWidth, totalWidth, totalMaxWidth, totalFlexWidth] =
+        calculateHeaderWidths(subHeaders, left);
       header.totalMinWidth = totalMinWidth;
       header.totalWidth = totalWidth;
       header.totalMaxWidth = totalMaxWidth;

@@ -1,12 +1,14 @@
-[
-	{
-		"path": "$ROOTPATH$/src2/hooks/useTable.js",
-		"bookmarks": [
-			{
-				"line": 65,
-				"column": 13,
-				"label": ""
-			}
-		]
-	}
-]
+{
+  "files": [
+    {
+      "path": "src2/hooks/useTable.js",
+      "bookmarks": [
+        {
+          "line": 65,
+          "column": 13,
+          "label": ""
+        }
+      ]
+    }
+  ]
+}

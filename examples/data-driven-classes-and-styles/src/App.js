@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTable } from 'react-table'
+import React from 'react';
+import styled from 'styled-components';
+import { useTable } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -36,10 +36,10 @@ const Styles = styled.div`
       }
     }
   }
-`
+`;
 
 // Create a default prop getter
-const defaultPropGetter = () => ({})
+const defaultPropGetter = () => ({});
 
 // Expose some prop getters for headers, rows and cells, or more if you want!
 function Table({
@@ -50,23 +50,18 @@ function Table({
   getRowProps = defaultPropGetter,
   getCellProps = defaultPropGetter,
 }) {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    columns,
-    data,
-  })
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({
+      columns,
+      data,
+    });
 
   return (
     <table {...getTableProps()}>
       <thead>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column) => (
               <th
                 // Return an array of prop objects and react-table will merge them appropriately
                 {...column.getHeaderProps([
@@ -86,11 +81,11 @@ function Table({
       </thead>
       <tbody {...getTableBodyProps()}>
         {rows.map((row, i) => {
-          prepareRow(row)
+          prepareRow(row);
           return (
             // Merge user row props in
             <tr {...row.getRowProps(getRowProps(row))}>
-              {row.cells.map(cell => {
+              {row.cells.map((cell) => {
                 return (
                   <td
                     // Return an array of prop objects and react-table will merge them appropriately
@@ -105,14 +100,14 @@ function Table({
                   >
                     {cell.render('Cell')}
                   </td>
-                )
+                );
               })}
             </tr>
-          )
+          );
         })}
       </tbody>
     </table>
-  )
+  );
 }
 
 function App() {
@@ -165,36 +160,37 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(20), [])
+  const data = React.useMemo(() => makeData(20), []);
 
   return (
     <Styles>
       <Table
         columns={columns}
         data={data}
-        getHeaderProps={column => ({
+        getHeaderProps={(column) => ({
           onClick: () => alert('Header!'),
         })}
-        getColumnProps={column => ({
+        getColumnProps={(column) => ({
           onClick: () => alert('Column!'),
         })}
-        getRowProps={row => ({
+        getRowProps={(row) => ({
           style: {
             background: row.index % 2 === 0 ? 'rgba(0,0,0,.1)' : 'white',
           },
         })}
-        getCellProps={cellInfo => ({
+        getCellProps={(cellInfo) => ({
           style: {
-            backgroundColor: `hsl(${120 * ((120 - cellInfo.value) / 120) * -1 +
-              120}, 100%, 67%)`,
+            backgroundColor: `hsl(${
+              120 * ((120 - cellInfo.value) / 120) * -1 + 120
+            }, 100%, 67%)`,
           },
         })}
       />
     </Styles>
-  )
+  );
 }
 
-export default App
+export default App;

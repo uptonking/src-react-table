@@ -69,58 +69,53 @@ const data = [
 
 function SelectAllTable({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-      initialState: { expanded: { '2': true } },
-    },
-    useExpanded,
-    useRowSelect,
-    hooks => {
-      hooks.visibleColumns.push(columns => [
-        // Let's make a column for selection
-        {
-          id: 'selection',
-          // The header can use the table's getToggleAllRowsSelectedProps method
-          // to render a checkbox
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <label>
-                <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />{' '}
-                Select All
-              </label>
-            </div>
-          ),
-          // The cell can use the individual row's getToggleRowSelectedProps method
-          // to the render a checkbox
-          Cell: ({ row }) => (
-            <div>
-              <label>
-                <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />{' '}
-                Select Row
-              </label>
-            </div>
-          ),
-        },
-        ...columns,
-      ]);
-    },
-  );
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        initialState: { expanded: { 2: true } },
+      },
+      useExpanded,
+      useRowSelect,
+      (hooks) => {
+        hooks.visibleColumns.push((columns) => [
+          // Let's make a column for selection
+          {
+            id: 'selection',
+            // The header can use the table's getToggleAllRowsSelectedProps method
+            // to render a checkbox
+            Header: ({ getToggleAllRowsSelectedProps }) => (
+              <div>
+                <label>
+                  <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />{' '}
+                  Select All
+                </label>
+              </div>
+            ),
+            // The cell can use the individual row's getToggleRowSelectedProps method
+            // to the render a checkbox
+            Cell: ({ row }) => (
+              <div>
+                <label>
+                  <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />{' '}
+                  Select Row
+                </label>
+              </div>
+            ),
+          },
+          ...columns,
+        ]);
+      },
+    );
 
   // Render the UI for your table
   return (
     <table {...getTableProps()}>
       <thead>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column) => (
               <th {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
@@ -131,7 +126,7 @@ function SelectAllTable({ columns, data }) {
           (row, i) =>
             prepareRow(row) || (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
+                {row.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                   );
@@ -162,8 +157,8 @@ function SelectAllPaginatedTable({ columns, data }) {
     useExpanded,
     usePagination,
     useRowSelect,
-    hooks => {
-      hooks.visibleColumns.push(columns => [
+    (hooks) => {
+      hooks.visibleColumns.push((columns) => [
         // Let's make a column for selection
         {
           id: 'selection',
@@ -199,9 +194,9 @@ function SelectAllPaginatedTable({ columns, data }) {
       <button onClick={toggleAllRowsExpanded}>Toggle Rows Expanded</button>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
             </tr>
@@ -212,7 +207,7 @@ function SelectAllPaginatedTable({ columns, data }) {
             (row, i) =>
               prepareRow(row) || (
                 <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => {
+                  {row.cells.map((cell) => {
                     return (
                       <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                     );

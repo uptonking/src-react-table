@@ -1,8 +1,8 @@
-import React from 'react'
-import { render, fireEvent } from '../../../test-utils/react-testing'
-import { useTable } from '../../hooks/useTable'
-import { useGroupBy } from '../useGroupBy'
-import { useExpanded } from '../useExpanded'
+import React from 'react';
+import { render, fireEvent } from '../../../test-utils/react-testing';
+import { useTable } from '../../hooks/useTable';
+import { useGroupBy } from '../useGroupBy';
+import { useExpanded } from '../useExpanded';
 
 const data = [
   {
@@ -45,47 +45,42 @@ const data = [
     status: 'In Relationship',
     progress: 70,
   },
-]
+];
 
 const defaultColumn = {
   Cell: ({ value, column: { id } }) => `${id}: ${value}`,
   Filter: ({ filterValue, setFilter }) => (
     <input
       value={filterValue || ''}
-      onChange={e => {
-        setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+      onChange={(e) => {
+        setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
       }}
-      placeholder="Search..."
+      placeholder='Search...'
     />
   ),
-}
+};
 
 function Table({ columns, data }) {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-      initialState: {
-        groupBy: ["Column Doesn't Exist"],
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+        initialState: {
+          groupBy: ["Column Doesn't Exist"],
+        },
       },
-    },
-    useGroupBy,
-    useExpanded
-  )
+      useGroupBy,
+      useExpanded,
+    );
 
   return (
     <table {...getTableProps()}>
       <thead>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column) => (
               <th {...column.getHeaderProps()}>
                 {column.canGroupBy ? (
                   // If the column can be grouped, let's add a toggle
@@ -104,7 +99,7 @@ function Table({ columns, data }) {
           (row, i) =>
             prepareRow(row) || (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
+                {row.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>
                       {cell.isGrouped ? (
@@ -125,29 +120,29 @@ function Table({ columns, data }) {
                         cell.render('Cell')
                       )}
                     </td>
-                  )
+                  );
                 })}
               </tr>
-            )
+            ),
         )}
       </tbody>
     </table>
-  )
+  );
 }
 
 // This is a custom aggregator that
 // takes in an array of leaf values and
 // returns the rounded median
 function roundedMedian(leafValues) {
-  let min = leafValues[0] || 0
-  let max = leafValues[0] || 0
+  let min = leafValues[0] || 0;
+  let max = leafValues[0] || 0;
 
-  leafValues.forEach(value => {
-    min = Math.min(min, value)
-    max = Math.max(max, value)
-  })
+  leafValues.forEach((value) => {
+    min = Math.min(min, value);
+    max = Math.max(max, value);
+  });
 
-  return Math.round((min + max) / 2)
+  return Math.round((min + max) / 2);
 }
 
 function App() {
@@ -160,8 +155,7 @@ function App() {
             Header: 'First Name',
             accessor: 'firstName',
             aggregate: 'count',
-            Aggregated: ({ value }) =>
-              `First Name Aggregated: ${value} Names`,
+            Aggregated: ({ value }) => `First Name Aggregated: ${value} Names`,
           },
           {
             Header: 'Last Name',
@@ -179,39 +173,34 @@ function App() {
             Header: 'Age',
             accessor: 'age',
             aggregate: 'average',
-            Aggregated: ({ value }) =>
-              `Age Aggregated: ${value} (avg)`,
+            Aggregated: ({ value }) => `Age Aggregated: ${value} (avg)`,
           },
           {
             Header: 'Visits',
             accessor: 'visits',
             aggregate: 'sum',
-            Aggregated: ({ value }) =>
-              `Visits Aggregated: ${value} (total)`,
+            Aggregated: ({ value }) => `Visits Aggregated: ${value} (total)`,
           },
           {
             Header: 'Min Visits',
             id: 'minVisits',
             accessor: 'visits',
             aggregate: 'min',
-            Aggregated: ({ value }) =>
-              `Visits Aggregated: ${value} (min)`,
+            Aggregated: ({ value }) => `Visits Aggregated: ${value} (min)`,
           },
           {
             Header: 'Max Visits',
             id: 'maxVisits',
             accessor: 'visits',
             aggregate: 'max',
-            Aggregated: ({ value }) =>
-              `Visits Aggregated: ${value} (max)`,
+            Aggregated: ({ value }) => `Visits Aggregated: ${value} (max)`,
           },
           {
             Header: 'Min/Max Visits',
             id: 'minMaxVisits',
             accessor: 'visits',
             aggregate: 'minMax',
-            Aggregated: ({ value }) =>
-              `Visits Aggregated: ${value} (minMax)`,
+            Aggregated: ({ value }) => `Visits Aggregated: ${value} (minMax)`,
           },
           {
             Header: 'Status',
@@ -225,8 +214,7 @@ function App() {
             accessor: 'progress',
             id: 'progress',
             aggregate: 'median',
-            Aggregated: ({ value }) =>
-              `Process Aggregated: ${value} (median)`,
+            Aggregated: ({ value }) => `Process Aggregated: ${value} (median)`,
           },
           {
             Header: 'Profile Progress (Rounded Median)',
@@ -239,33 +227,33 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={data} />;
 }
 
 test('renders a groupable table', () => {
-  const rendered = render(<App />)
+  const rendered = render(<App />);
 
-  fireEvent.click(rendered.getByText('Group lastName'))
+  fireEvent.click(rendered.getByText('Group lastName'));
 
-  rendered.getByText('lastName: linsley (2)')
+  rendered.getByText('lastName: linsley (2)');
 
-  fireEvent.click(rendered.getByText('Group visits'))
+  fireEvent.click(rendered.getByText('Group visits'));
 
-  fireEvent.click(rendered.getByText('Ungroup lastName'))
+  fireEvent.click(rendered.getByText('Ungroup lastName'));
 
-  rendered.getByText('visits: 100 (1)')
+  rendered.getByText('visits: 100 (1)');
 
-  fireEvent.click(rendered.getByText('Ungroup visits'))
+  fireEvent.click(rendered.getByText('Ungroup visits'));
 
-  fireEvent.click(rendered.getByText('Group firstName'))
+  fireEvent.click(rendered.getByText('Group firstName'));
 
-  rendered.getByText('firstName: tanner (1)')
+  rendered.getByText('firstName: tanner (1)');
 
-  rendered.debugDiff(false)
-  fireEvent.click(rendered.getByText('Group age'))
+  rendered.debugDiff(false);
+  fireEvent.click(rendered.getByText('Group age'));
 
-  rendered.getByText('Last Name Aggregated: 2 Unique Names')
-})
+  rendered.getByText('Last Name Aggregated: 2 Unique Names');
+});

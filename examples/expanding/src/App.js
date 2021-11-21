@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTable, useExpanded } from 'react-table'
+import React from 'react';
+import styled from 'styled-components';
+import { useTable, useExpanded } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -31,7 +31,7 @@ const Styles = styled.div`
       }
     }
   }
-`
+`;
 
 function Table({ columns: userColumns, data }) {
   const {
@@ -46,16 +46,16 @@ function Table({ columns: userColumns, data }) {
       columns: userColumns,
       data,
     },
-    useExpanded // Use the useExpanded plugin hook
-  )
+    useExpanded, // Use the useExpanded plugin hook
+  );
 
   return (
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
             </tr>
@@ -63,14 +63,16 @@ function Table({ columns: userColumns, data }) {
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.map((row, i) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  );
                 })}
               </tr>
-            )
+            );
           })}
         </tbody>
       </table>
@@ -80,7 +82,7 @@ function Table({ columns: userColumns, data }) {
         <code>{JSON.stringify({ expanded: expanded }, null, 2)}</code>
       </pre>
     </>
-  )
+  );
 }
 
 function App() {
@@ -147,16 +149,16 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(5, 5, 5), [])
+  const data = React.useMemo(() => makeData(5, 5, 5), []);
 
   return (
     <Styles>
       <Table columns={columns} data={data} />
     </Styles>
-  )
+  );
 }
 
-export default App
+export default App;

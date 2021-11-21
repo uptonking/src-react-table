@@ -14,7 +14,7 @@ import { flattenColumns, getFirstDefined } from '../utils';
 actions.resetPivot = 'resetPivot';
 actions.togglePivot = 'togglePivot';
 
-export const _UNSTABLE_usePivotColumns = hooks => {
+export const _UNSTABLE_usePivotColumns = (hooks) => {
   hooks.getPivotToggleProps = [defaultGetPivotToggleProps];
   hooks.stateReducers.push(reducer);
   hooks.useInstanceAfterData.push(useInstanceAfterData);
@@ -36,7 +36,7 @@ const defaultGetPivotToggleProps = (props, { header }) => [
   props,
   {
     onClick: header.canPivot
-      ? e => {
+      ? (e) => {
           e.persist();
           header.togglePivot();
         }
@@ -81,19 +81,19 @@ function reducer(state, action, previousState, instance) {
 
     return {
       ...state,
-      pivotColumns: state.pivotColumns.filter(d => d !== columnId),
+      pivotColumns: state.pivotColumns.filter((d) => d !== columnId),
     };
   }
 }
 
 function useInstanceAfterData(instance) {
-  instance.allColumns.forEach(column => {
+  instance.allColumns.forEach((column) => {
     column.isPivotSource = instance.state.pivotColumns.includes(column.id);
   });
 }
 
 function allColumns(columns, { instance }) {
-  columns.forEach(column => {
+  columns.forEach((column) => {
     column.isPivotSource = instance.state.pivotColumns.includes(column.id);
     column.uniqueValues = new Set();
   });
@@ -115,11 +115,11 @@ function materializedColumns(materialized, { instance }) {
   }
 
   const pivotColumns = state.pivotColumns
-    .map(id => allColumns.find(d => d.id === id))
+    .map((id) => allColumns.find((d) => d.id === id))
     .filter(Boolean);
 
   const sourceColumns = allColumns.filter(
-    d =>
+    (d) =>
       !d.isPivotSource &&
       !state.groupBy.includes(d.id) &&
       !state.pivotColumns.includes(d.id),
@@ -129,7 +129,7 @@ function materializedColumns(materialized, { instance }) {
     const pivotColumn = pivotColumns[depth];
 
     if (!pivotColumn) {
-      return sourceColumns.map(sourceColumn => {
+      return sourceColumns.map((sourceColumn) => {
         // TODO: We could offer support here for renesting pivoted
         // columns inside copies of their header groups. For now,
         // that seems like it would be (1) overkill on nesting, considering
@@ -144,7 +144,7 @@ function materializedColumns(materialized, { instance }) {
           depth: depth,
           id: `${parent ? `${parent.id}.${sourceColumn.id}` : sourceColumn.id}`,
           accessor: (originalRow, i, row) => {
-            if (pivotFilters.every(filter => filter(row))) {
+            if (pivotFilters.every((filter) => filter(row))) {
               return row.values[sourceColumn.id];
             }
           },
@@ -154,7 +154,7 @@ function materializedColumns(materialized, { instance }) {
 
     const uniqueValues = Array.from(pivotColumn.uniqueValues).sort();
 
-    return uniqueValues.map(uniqueValue => {
+    return uniqueValues.map((uniqueValue) => {
       const columnGroup = {
         ...pivotColumn,
         Header:
@@ -172,7 +172,7 @@ function materializedColumns(materialized, { instance }) {
 
       columnGroup.columns = buildPivotColumns(depth + 1, columnGroup, [
         ...pivotFilters,
-        row => row.values[pivotColumn.id] === uniqueValue,
+        (row) => row.values[pivotColumn.id] === uniqueValue,
       ]);
 
       return columnGroup;
@@ -196,11 +196,11 @@ function materializedColumnsDeps(
 }
 
 function visibleColumns(visibleColumns, { instance: { state } }) {
-  visibleColumns = visibleColumns.filter(d => !d.isPivotSource);
+  visibleColumns = visibleColumns.filter((d) => !d.isPivotSource);
 
   if (state.pivotColumns.length && state.groupBy && state.groupBy.length) {
     visibleColumns = visibleColumns.filter(
-      column => column.isGrouped || column.isPivoted,
+      (column) => column.isGrouped || column.isPivoted,
     );
   }
 
@@ -231,7 +231,7 @@ function useInstance(instance) {
 
   const getInstance = useGetLatest(instance);
 
-  allColumns.forEach(column => {
+  allColumns.forEach((column) => {
     const {
       accessor,
       defaultPivot: defaultColumnPivot,
@@ -263,7 +263,7 @@ function useInstance(instance) {
     dispatch({ type: actions.togglePivot, columnId, value });
   };
 
-  flatHeaders.forEach(header => {
+  flatHeaders.forEach((header) => {
     header.getPivotToggleProps = makePropGetter(
       getHooks().getPivotToggleProps,
       {
@@ -287,7 +287,7 @@ function useInstance(instance) {
 }
 
 function prepareRow(row) {
-  row.allCells.forEach(cell => {
+  row.allCells.forEach((cell) => {
     // Grouped cells are in the pivotColumns and the pivot cell for the row
     cell.isPivoted = cell.column.isPivoted;
   });

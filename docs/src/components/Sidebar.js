@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import cn from 'classnames'
-import { Search } from './Search'
+import { useState } from 'react';
+import cn from 'classnames';
+import { Search } from './Search';
 export const Sidebar = ({ active, children, fixed }) => {
-  const [searching, setSearching] = useState(false)
+  const [searching, setSearching] = useState(false);
   return (
     <aside
       className={cn('sidebar bg-white top-24 flex-shrink-0 pr-2', {
@@ -12,10 +12,10 @@ export const Sidebar = ({ active, children, fixed }) => {
         searching,
       })}
     >
-      <div className="sidebar-search my-2 lg:hidden">
+      <div className='sidebar-search my-2 lg:hidden'>
         <Search />
       </div>
-      <div className="sidebar-content overflow-y-auto pb-4">{children}</div>
+      <div className='sidebar-content overflow-y-auto pb-4'>{children}</div>
       <style jsx>{`
         .sidebar {
           -webkit-overflow-scrolling: touch;
@@ -44,5 +44,5 @@ export const Sidebar = ({ active, children, fixed }) => {
         }
       `}</style>
     </aside>
-  )
-}
+  );
+};

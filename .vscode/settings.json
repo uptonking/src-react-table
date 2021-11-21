@@ -1,40 +1,23 @@
 {
-  "workbench.colorCustomizations": {
-    "titleBar.inactiveBackground": "#ff4154", // change this color!
-    "titleBar.activeBackground": "#ff4154", // change this color!
-    "titleBar.inactiveForeground": "#ffffff", // change this color!
-    "titleBar.activeForeground": "#ffffff" // change this color!
-  },
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "editor.formatOnSave": true,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
-  "eslint.options": {
-    "extensions": [".js", ".jsx", ".ts", ".tsx"]
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.updateImportsOnFileMove.enabled": "always",
   "markdownFormatter.enable": true,
   "markdownFormatter.fullWidthTurnHalfWidth": "auto",
   "markdownFormatter.codeAreaToBlock": "",
-  "markdownFormatter.formatCodes": false,
+  "markdownFormatter.formatCodes": true,
   "markdownFormatter.formatULSymbol": false,
   "markdownFormatter.formatOpt": {
     "indent_size": 2,
+    "e4x": true,
+    "brace_style": "collapse,preserve-inline",
     "indent_with_tabs": false,
     "space_after_anon_function": false,
-    "space_after_named_function": false,
-    "e4x": true
+    "space_after_named_function": false
   },
   "[markdown]": {
     "editor.formatOnSave": false,
@@ -49,5 +32,70 @@
     "editor.acceptSuggestionOnEnter": "on",
     "editor.defaultFormatter": "mervin.markdown-formatter"
   },
-  "bookmarks.saveBookmarksInProject": true
+  "bookmarks.saveBookmarksInProject": true,
+  "editor.formatOnSaveMode": "modifications",
+  "maptz.regionfolder": {
+    "[markdown]": {
+      "defaultFoldStartRegex": "\\<!--[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldStart": "<!-- #region [NAME]",
+      "foldStartRegex": "\\<!--[\\s]*#region[\\s]*(.*)",
+      "foldEnd": "<!-- #endregion",
+      "foldEndRegex": "\\<!--[\\s]*#endregion"
+    },
+    "[html]": {
+      "defaultFoldStartRegex": "\\<!--[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldStart": "<!-- #region [NAME]",
+      "foldStartRegex": "\\<!--[\\s]*#region[\\s]*(.*)",
+      "foldEnd": "<!-- #endregion",
+      "foldEndRegex": "\\<!--[\\s]*#endregion"
+    },
+    "[css]": {
+      "defaultFoldStartRegex": "/\\*[\\s]*#region[\\s]+/folded(.*)",
+      "foldStart": "/* #region [NAME]",
+      "foldStartRegex": "/\\*[\\s]*#region[\\s]+(.*)",
+      "foldEnd": "/* #endregion",
+      "foldEndRegex": "/\\*[\\s]*#endregion(.*)"
+    },
+    "[scss]": {
+      "defaultFoldStartRegex": "/\\*[\\s]*#region[\\s]+/folded(.*)",
+      "foldStart": "/* #region [NAME]",
+      "foldStartRegex": "/\\*[\\s]*#region[\\s]+(.*)",
+      "foldEnd": "/* #endregion",
+      "foldEndRegex": "/\\*[\\s]*#endregion(.*)"
+    },
+    "[javascript]": {
+      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldStart": "// #region [NAME]",
+      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)",
+      "foldEnd": "// #endregion",
+      "foldEndRegex": "//[\\s]*#endregion(.*)"
+    },
+    "[typescript]": {
+      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldStart": "// #region [NAME]",
+      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)",
+      "foldEnd": "// #endregion",
+      "foldEndRegex": "//[\\s]*#endregion(.*)"
+    },
+    "[javascriptreact]": {
+      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldStart": "// #region [NAME]",
+      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)",
+      "foldEnd": "// #endregion",
+      "foldEndRegex": "//[\\s]*#endregion(.*)"
+    },
+    "[typescriptreact]": {
+      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldStart": "// #region [NAME]",
+      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)",
+      "foldEnd": "// #endregion",
+      "foldEndRegex": "//[\\s]*#endregion(.*)"
+    }
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "sort-imports.default-sort-style": "module-scoped",
+  "sort-imports.on-save": true,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

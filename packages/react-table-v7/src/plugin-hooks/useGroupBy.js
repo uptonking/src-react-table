@@ -20,7 +20,7 @@ actions.resetGroupBy = 'resetGroupBy';
 actions.setGroupBy = 'setGroupBy';
 actions.toggleGroupBy = 'toggleGroupBy';
 
-export const useGroupBy = hooks => {
+export const useGroupBy = (hooks) => {
   hooks.getGroupByToggleProps = [defaultGetGroupByToggleProps];
   hooks.stateReducers.push(reducer);
   hooks.visibleColumnsDeps.push((deps, { instance }) => [
@@ -38,7 +38,7 @@ const defaultGetGroupByToggleProps = (props, { header }) => [
   props,
   {
     onClick: header.canGroupBy
-      ? e => {
+      ? (e) => {
           e.persist();
           header.toggleGroupBy();
         }
@@ -91,7 +91,7 @@ function reducer(state, action, previousState, instance) {
 
     return {
       ...state,
-      groupBy: state.groupBy.filter(d => d !== columnId),
+      groupBy: state.groupBy.filter((d) => d !== columnId),
     };
   }
 }
@@ -108,14 +108,14 @@ function visibleColumns(
   // before the headers are built
 
   const groupByColumns = groupBy
-    .map(g => columns.find(col => col.id === g))
+    .map((g) => columns.find((col) => col.id === g))
     .filter(Boolean);
 
-  const nonGroupByColumns = columns.filter(col => !groupBy.includes(col.id));
+  const nonGroupByColumns = columns.filter((col) => !groupBy.includes(col.id));
 
   columns = [...groupByColumns, ...nonGroupByColumns];
 
-  columns.forEach(column => {
+  columns.forEach((column) => {
     column.isGrouped = groupBy.includes(column.id);
     column.groupedIndex = groupBy.indexOf(column.id);
   });
@@ -149,7 +149,7 @@ function useInstance(instance) {
 
   const getInstance = useGetLatest(instance);
 
-  allColumns.forEach(column => {
+  allColumns.forEach((column) => {
     const {
       accessor,
       defaultGroupBy: defaultColumnGroupBy,
@@ -185,13 +185,13 @@ function useInstance(instance) {
   );
 
   const setGroupBy = React.useCallback(
-    value => {
+    (value) => {
       dispatch({ type: actions.setGroupBy, value });
     },
     [dispatch],
   );
 
-  flatHeaders.forEach(header => {
+  flatHeaders.forEach((header) => {
     header.getGroupByToggleProps = makePropGetter(
       getHooks().getGroupByToggleProps,
       { instance: getInstance(), header },
@@ -220,8 +220,8 @@ function useInstance(instance) {
     }
 
     // Ensure that the list of filtered columns exist
-    const existingGroupBy = groupBy.filter(g =>
-      allColumns.find(col => col.id === g),
+    const existingGroupBy = groupBy.filter((g) =>
+      allColumns.find((col) => col.id === g),
     );
 
     // Find the columns that can or are aggregating
@@ -229,7 +229,7 @@ function useInstance(instance) {
     const aggregateRowsToValues = (leafRows, groupedRows, depth) => {
       const values = {};
 
-      allColumns.forEach(column => {
+      allColumns.forEach((column) => {
         // Don't aggregate columns that are in the groupBy
         if (existingGroupBy.includes(column.id)) {
           values[column.id] = groupedRows[0]
@@ -239,10 +239,10 @@ function useInstance(instance) {
         }
 
         // Get the columnValues to aggregate
-        const groupedValues = groupedRows.map(row => row.values[column.id]);
+        const groupedValues = groupedRows.map((row) => row.values[column.id]);
 
         // Get the columnValues to aggregate
-        const leafValues = leafRows.map(row => {
+        const leafValues = leafRows.map((row) => {
           let columnValue = row.values[column.id];
 
           if (!depth && column.aggregateValue) {
@@ -333,7 +333,7 @@ function useInstance(instance) {
             index,
           };
 
-          subRows.forEach(subRow => {
+          subRows.forEach((subRow) => {
             groupedFlatRows.push(subRow);
             groupedRowsById[subRow.id] = subRow;
             if (subRow.isGrouped) {
@@ -354,7 +354,7 @@ function useInstance(instance) {
 
     const groupedRows = groupUpRecursively(rows);
 
-    groupedRows.forEach(subRow => {
+    groupedRows.forEach((subRow) => {
       groupedFlatRows.push(subRow);
       groupedRowsById[subRow.id] = subRow;
       if (subRow.isGrouped) {
@@ -415,7 +415,7 @@ function useInstance(instance) {
 }
 
 function prepareRow(row) {
-  row.allCells.forEach(cell => {
+  row.allCells.forEach((cell) => {
     // Grouped cells are in the groupBy and the pivot cell for the row
     cell.isGrouped = cell.column.isGrouped && cell.column.id === row.groupByID;
     // Placeholder cells are any columns in the groupBy that are not grouped

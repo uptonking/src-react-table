@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTable, useGroupBy, useExpanded } from 'react-table'
+import React from 'react';
+import styled from 'styled-components';
+import { useTable, useGroupBy, useExpanded } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -31,7 +31,7 @@ const Styles = styled.div`
       }
     }
   }
-`
+`;
 
 function useControlledState(state, { instance }) {
   return React.useMemo(() => {
@@ -39,12 +39,12 @@ function useControlledState(state, { instance }) {
       return {
         ...state,
         hiddenColumns: [...state.hiddenColumns, ...state.groupBy].filter(
-          (d, i, all) => all.indexOf(d) === i
+          (d, i, all) => all.indexOf(d) === i,
         ),
-      }
+      };
     }
-    return state
-  }, [state])
+    return state;
+  }, [state]);
 }
 
 function Table({ columns, data }) {
@@ -63,11 +63,11 @@ function Table({ columns, data }) {
     useGroupBy,
     useExpanded,
     // Our custom plugin to add the expander column
-    hooks => {
-      hooks.useControlledState.push(useControlledState)
+    (hooks) => {
+      hooks.useControlledState.push(useControlledState);
       hooks.visibleColumns.push((columns, { instance }) => {
         if (!instance.state.groupBy.length) {
-          return columns
+          return columns;
         }
 
         return [
@@ -75,8 +75,8 @@ function Table({ columns, data }) {
             id: 'expander', // Make sure it has an ID
             // Build our expander column
             Header: ({ allColumns, state: { groupBy } }) => {
-              return groupBy.map(columnId => {
-                const column = allColumns.find(d => d.id === columnId)
+              return groupBy.map((columnId) => {
+                const column = allColumns.find((d) => d.id === columnId);
 
                 return (
                   <span {...column.getHeaderProps()}>
@@ -88,12 +88,12 @@ function Table({ columns, data }) {
                     ) : null}
                     {column.render('Header')}{' '}
                   </span>
-                )
-              })
+                );
+              });
             },
             Cell: ({ row }) => {
               if (row.canExpand) {
-                const groupedCell = row.allCells.find(d => d.isGrouped)
+                const groupedCell = row.allCells.find((d) => d.isGrouped);
 
                 return (
                   <span
@@ -109,21 +109,21 @@ function Table({ columns, data }) {
                     {row.isExpanded ? '👇' : '👉'} {groupedCell.render('Cell')}{' '}
                     ({row.subRows.length})
                   </span>
-                )
+                );
               }
 
-              return null
+              return null;
             },
           },
           ...columns,
-        ]
-      })
-    }
-  )
+        ];
+      });
+    },
+  );
 
   // We don't want to render all of the rows for this example, so cap
   // it at 100 for this use case
-  const firstPageRows = rows.slice(0, 100)
+  const firstPageRows = rows.slice(0, 100);
 
   return (
     <>
@@ -133,9 +133,9 @@ function Table({ columns, data }) {
       <Legend />
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>
                   {column.canGroupBy ? (
                     // If the column can be grouped, let's add a toggle
@@ -151,10 +151,10 @@ function Table({ columns, data }) {
         </thead>
         <tbody {...getTableBodyProps()}>
           {firstPageRows.map((row, i) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
+                {row.cells.map((cell) => {
                   return (
                     <td
                       // For educational purposes, let's color the
@@ -180,17 +180,17 @@ function Table({ columns, data }) {
                         : // Otherwise, just render the regular cell
                           cell.render('Cell')}
                     </td>
-                  )
+                  );
                 })}
               </tr>
-            )
+            );
           })}
         </tbody>
       </table>
       <br />
       <div>Showing the first 100 results of {rows.length} rows</div>
     </>
-  )
+  );
 }
 
 function Legend() {
@@ -228,22 +228,22 @@ function Legend() {
         Placeholder
       </span>
     </div>
-  )
+  );
 }
 
 // This is a custom aggregator that
 // takes in an array of leaf values and
 // returns the rounded median
 function roundedMedian(leafValues) {
-  let min = leafValues[0] || 0
-  let max = leafValues[0] || 0
+  let min = leafValues[0] || 0;
+  let max = leafValues[0] || 0;
 
-  leafValues.forEach(value => {
-    min = Math.min(min, value)
-    max = Math.max(max, value)
-  })
+  leafValues.forEach((value) => {
+    min = Math.min(min, value);
+    max = Math.max(max, value);
+  });
 
-  return Math.round((min + max) / 2)
+  return Math.round((min + max) / 2);
 }
 
 function App() {
@@ -305,16 +305,16 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(100000), [])
+  const data = React.useMemo(() => makeData(100000), []);
 
   return (
     <Styles>
       <Table columns={columns} data={data} />
     </Styles>
-  )
+  );
 }
 
-export default App
+export default App;

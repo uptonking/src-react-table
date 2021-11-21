@@ -63,13 +63,8 @@ function Table({ columns, data, useTableRef, initialState }) {
     useSortBy,
   );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = instance;
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    instance;
 
   if (useTableRef) {
     useTableRef.current = instance;
@@ -78,9 +73,9 @@ function Table({ columns, data, useTableRef, initialState }) {
   return (
     <table {...getTableProps()}>
       <thead>
-        {headerGroups.map(headerGroup => (
+        {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
+            {headerGroup.headers.map((column) => (
               // Add the sorting props to control sorting. For this example
               // we can add them into the header props
               <th {...column.getHeaderProps(column.getSortByToggleProps())}>
@@ -99,7 +94,7 @@ function Table({ columns, data, useTableRef, initialState }) {
           (row, i) =>
             prepareRow(row) || (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
+                {row.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                   );
@@ -172,7 +167,7 @@ test('renders a sortable table', () => {
     rendered
       .queryAllByRole('row')
       .slice(2)
-      .map(d => d.children[0].textContent),
+      .map((d) => d.children[0].textContent),
   ).toEqual([
     'firstName: derek',
     'firstName: joe',
@@ -186,7 +181,7 @@ test('renders a sortable table', () => {
     rendered
       .queryAllByRole('row')
       .slice(2)
-      .map(d => d.children[0].textContent),
+      .map((d) => d.children[0].textContent),
   ).toEqual([
     'firstName: tanner',
     'firstName: john',
@@ -200,7 +195,7 @@ test('renders a sortable table', () => {
     rendered
       .queryAllByRole('row')
       .slice(2)
-      .map(d => d.children[0].textContent),
+      .map((d) => d.children[0].textContent),
   ).toEqual([
     'firstName: joe',
     'firstName: john',
@@ -215,7 +210,7 @@ test('renders a sortable table', () => {
     rendered
       .queryAllByRole('row')
       .slice(2)
-      .map(d => d.children[0].textContent),
+      .map((d) => d.children[0].textContent),
   ).toEqual([
     'firstName: joe',
     'firstName: john',
@@ -232,7 +227,7 @@ test('maintains the integrity of instance.flatRows', () => {
   const flatRows = useTableRef.current.flatRows;
   expect(flatRows.length).toBe(5);
   expect(
-    flatRows.find(r => r.values.firstName === 'winston'),
+    flatRows.find((r) => r.values.firstName === 'winston'),
   ).not.toBeUndefined();
 });
 
@@ -251,7 +246,7 @@ test('Test initialState.sortBy: When clicking the last sortBy column, the sorted
     rendered
       .queryAllByRole('row')
       .slice(2)
-      .map(d => d.children[0].textContent),
+      .map((d) => d.children[0].textContent),
   ).toEqual([
     'firstName: tanner',
     'firstName: derek',
@@ -265,7 +260,7 @@ test('Test initialState.sortBy: When clicking the last sortBy column, the sorted
     rendered
       .queryAllByRole('row')
       .slice(2)
-      .map(d => d.children[0].textContent),
+      .map((d) => d.children[0].textContent),
   ).toEqual([
     'firstName: john',
     'firstName: joe',

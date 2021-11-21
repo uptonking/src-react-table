@@ -10,14 +10,14 @@ module.exports = merge(devConfig, {
   // 若要使用热加载，还需要在cli上传入 --hot
   devServer: {
     // contentBase: path.resolve(__dirname, '../dist'),
+    // open: true,
     host: '0.0.0.0',
     port: 8999,
-    // open: true,
-    compress: true,
-    inline: true,
     hot: true,
+    compress: true,
     historyApiFallback: true,
+    // inline: true,
     // clientLogLevel: 'silent',
-    clientLogLevel: 'debug',
+    // clientLogLevel: 'debug',
   },
 });

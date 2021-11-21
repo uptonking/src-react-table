@@ -235,4 +235,4 @@ export const users = [
   //     maxWidth: 100,
   //   },
   // },
-]
+];

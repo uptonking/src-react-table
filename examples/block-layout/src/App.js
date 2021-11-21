@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTable, useBlockLayout } from 'react-table'
+import React from 'react';
+import styled from 'styled-components';
+import { useTable, useBlockLayout } from 'react-table';
 
-import makeData from './makeData'
+import makeData from './makeData';
 
 const Styles = styled.div`
   padding: 1rem;
@@ -32,7 +32,7 @@ const Styles = styled.div`
       }
     }
   }
-`
+`;
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -41,32 +41,27 @@ function Table({ columns, data }) {
     () => ({
       width: 150,
     }),
-    []
-  )
+    [],
+  );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-    },
-    useBlockLayout
-  )
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+      },
+      useBlockLayout,
+    );
 
   // Render the UI for your table
   return (
-    <div {...getTableProps()} className="table">
+    <div {...getTableProps()} className='table'>
       <div>
-        {headerGroups.map(headerGroup => (
-          <div {...headerGroup.getHeaderGroupProps()} className="tr">
-            {headerGroup.headers.map(column => (
-              <div {...column.getHeaderProps()} className="th">
+        {headerGroups.map((headerGroup) => (
+          <div {...headerGroup.getHeaderGroupProps()} className='tr'>
+            {headerGroup.headers.map((column) => (
+              <div {...column.getHeaderProps()} className='th'>
                 {column.render('Header')}
               </div>
             ))}
@@ -75,24 +70,23 @@ function Table({ columns, data }) {
       </div>
 
       <div {...getTableBodyProps()}>
-        {rows.map(
-          (row, i) => {
-            prepareRow(row);
-            return (
-              <div {...row.getRowProps()} className="tr">
-                {row.cells.map(cell => {
-                  return (
-                    <div {...cell.getCellProps()} className="td">
-                      {cell.render('Cell')}
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-        )}
+        {rows.map((row, i) => {
+          prepareRow(row);
+          return (
+            <div {...row.getRowProps()} className='tr'>
+              {row.cells.map((cell) => {
+                return (
+                  <div {...cell.getCellProps()} className='td'>
+                    {cell.render('Cell')}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
       </div>
     </div>
-  )
+  );
 }
 
 function App() {
@@ -135,16 +129,16 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  const data = React.useMemo(() => makeData(20), [])
+  const data = React.useMemo(() => makeData(20), []);
 
   return (
     <Styles>
       <Table columns={columns} data={data} />
     </Styles>
-  )
+  );
 }
 
-export default App
+export default App;

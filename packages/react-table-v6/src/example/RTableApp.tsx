@@ -27,7 +27,7 @@ export class SimpleRTableApp extends React.Component<any, any> {
           {
             Header: 'Last Name',
             id: 'lastName',
-            accessor: d => d.lastName,
+            accessor: (d) => d.lastName,
           },
         ],
       },
@@ -57,7 +57,12 @@ export class SimpleRTableApp extends React.Component<any, any> {
     return (
       <div>
         <h2> simple-react-table-v6 </h2>
-        <ReactTable data={data} columns={pColumns} defaultPageSize={5} className='-striped -highlight' />
+        <ReactTable
+          data={data}
+          columns={pColumns}
+          defaultPageSize={5}
+          className='-striped -highlight'
+        />
       </div>
     );
   }

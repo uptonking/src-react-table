@@ -15,7 +15,7 @@ export function findMaxDepth(columns, depth = 0) {
  * Build the visible columns, headers and flat column list
  */
 export function linkColumnStructure(columns, parent, depth = 0) {
-  return columns.map(column => {
+  return columns.map((column) => {
     column = {
       ...column,
       parent,
@@ -45,7 +45,7 @@ export function assignColumnAccessor(column) {
   if (typeof accessor === 'string') {
     id = id || accessor;
     const accessorPath = accessor.split('.');
-    accessor = row => getBy(row, accessorPath);
+    accessor = (row) => getBy(row, accessorPath);
   }
 
   if (!id && typeof Header === 'string' && Header) {
@@ -123,10 +123,10 @@ export function makeHeaderGroups(
     // The parent columns we're going to scan next
     const parentColumns = [];
 
-    const hasParents = scanColumns.some(d => d.parent);
+    const hasParents = scanColumns.some((d) => d.parent);
 
     // Scan each column for parents
-    scanColumns.forEach(column => {
+    scanColumns.forEach((column) => {
       // What is the latest (last) parent column?
       const latestParentColumn = [...parentColumns].reverse()[0];
 
@@ -258,8 +258,8 @@ export function isFunction(a) {
 export function flattenBy(arr, key) {
   const flat = [];
 
-  const recurse = arr => {
-    arr.forEach(d => {
+  const recurse = (arr) => {
+    arr.forEach((d) => {
       if (!d[key]) {
         flat.push(d);
       } else {
@@ -279,7 +279,7 @@ export function expandRows(
 ) {
   const expandedRows = [];
 
-  const handleRow = row => {
+  const handleRow = (row) => {
     row.isExpanded =
       (row.original && row.original[manualExpandedKey]) || expanded[row.id];
 
@@ -348,7 +348,7 @@ function makePathArray(obj) {
   return (
     flattenDeep(obj)
       // remove all periods in parts
-      .map(d => String(d).replace('.', '_'))
+      .map((d) => String(d).replace('.', '_'))
       // join parts using period
       .join('.')
       // replace brackets with periods

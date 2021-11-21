@@ -13,7 +13,7 @@ const emptyObj = () => ({});
 export const defaultProps: TableProps = {
   // General
   data: [],
-  resolveData: data => data,
+  resolveData: (data) => data,
   loading: false,
   showPagination: true,
   showPaginationTop: false,
@@ -39,7 +39,9 @@ export const defaultProps: TableProps = {
   // eslint-disable-next-line no-unused-vars
   defaultFilterMethod: (filter, row, column) => {
     const id = filter.pivotId || filter.id;
-    return row[id] !== undefined ? String(row[id]).startsWith(filter.value) : true;
+    return row[id] !== undefined
+      ? String(row[id]).startsWith(filter.value)
+      : true;
   },
   // eslint-disable-next-line no-unused-vars
   defaultSortMethod: (a, b, desc) => {
@@ -196,7 +198,11 @@ export const defaultProps: TableProps = {
   TheadComponent: _.makeTemplateComponent('rt-thead', 'Thead'),
   TbodyComponent: _.makeTemplateComponent('rt-tbody', 'Tbody'),
   TrGroupComponent: ({ children, className, ...rest }) => (
-    <div className={classnames('rt-tr-group', className)} role='rowgroup' {...rest}>
+    <div
+      className={classnames('rt-tr-group', className)}
+      role='rowgroup'
+      {...rest}
+    >
       {children}
     </div>
   ),
@@ -208,7 +214,7 @@ export const defaultProps: TableProps = {
   ThComponent: ({ toggleSort, className, children, ...rest }) => (
     <div
       className={classnames('rt-th', className)}
-      onClick={e => toggleSort && toggleSort(e)}
+      onClick={(e) => toggleSort && toggleSort(e)}
       role='columnheader'
       // tabIndex='-1' // Resolves eslint issues without implementing keyboard navigation incorrectly
       tabIndex={-1}
@@ -231,10 +237,14 @@ export const defaultProps: TableProps = {
       }}
       placeholder={column.Placeholder}
       value={filter ? filter.value : ''}
-      onChange={event => onChange(event.target.value)}
+      onChange={(event) => onChange(event.target.value)}
     />
   ),
-  ExpanderComponent: ({ isExpanded }) => <div className={classnames('rt-expander', isExpanded && '-open')}>&bull;</div>,
+  ExpanderComponent: ({ isExpanded }) => (
+    <div className={classnames('rt-expander', isExpanded && '-open')}>
+      &bull;
+    </div>
+  ),
   PivotValueComponent: ({ subRows, value }) => (
     <span>
       {value} {subRows && `(${subRows.length})`}
@@ -242,7 +252,7 @@ export const defaultProps: TableProps = {
   ),
   AggregatedComponent: ({ subRows, column }) => {
     const previewValues = subRows
-      .filter(d => typeof d[column.id] !== 'undefined')
+      .filter((d) => typeof d[column.id] !== 'undefined')
       .map((row, i) => (
         // eslint-disable-next-line react/no-array-index-key
         <span key={i}>
@@ -258,7 +268,10 @@ export const defaultProps: TableProps = {
   PreviousComponent: undefined,
   NextComponent: undefined,
   LoadingComponent: ({ className, loading, loadingText, ...rest }) => (
-    <div className={classnames('-loading', { '-active': loading }, className)} {...rest}>
+    <div
+      className={classnames('-loading', { '-active': loading }, className)}
+      {...rest}
+    >
       <div className='-loading-inner'>{loadingText}</div>
     </div>
   ),

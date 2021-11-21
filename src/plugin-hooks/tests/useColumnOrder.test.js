@@ -1,7 +1,7 @@
-import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
-import { useTable } from '../../hooks/useTable'
-import { useColumnOrder } from '../useColumnOrder'
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import { useTable } from '../../hooks/useTable';
+import { useColumnOrder } from '../useColumnOrder';
 
 const data = [
   {
@@ -36,19 +36,19 @@ const data = [
     status: 'In Relationship',
     progress: 70,
   },
-]
+];
 
 function shuffle(arr, mapping) {
   if (arr.length !== mapping.length) {
-    throw new Error()
+    throw new Error();
   }
-  arr = [...arr]
-  mapping = [...mapping]
-  const shuffled = []
+  arr = [...arr];
+  mapping = [...mapping];
+  const shuffled = [];
   while (arr.length) {
-    shuffled.push(arr.splice([mapping.shift()], 1)[0])
+    shuffled.push(arr.splice([mapping.shift()], 1)[0]);
   }
-  return shuffled
+  return shuffled;
 }
 
 function Table({ columns, data }) {
@@ -66,17 +66,17 @@ function Table({ columns, data }) {
       columns,
       data,
     },
-    useColumnOrder
-  )
+    useColumnOrder,
+  );
 
   const testColumnOrder = () => {
     setColumnOrder(
       shuffle(
-        visibleColumns.map(d => d.id),
-        [1, 4, 2, 0, 3, 5]
-      )
-    )
-  }
+        visibleColumns.map((d) => d.id),
+        [1, 4, 2, 0, 3, 5],
+      ),
+    );
+  };
 
   return (
     <>
@@ -85,7 +85,7 @@ function Table({ columns, data }) {
         <thead>
           {headerGroups.map((headerGroup, i) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
             </tr>
@@ -93,14 +93,16 @@ function Table({ columns, data }) {
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.slice(0, 10).map((row, i) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell, i) => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  );
                 })}
               </tr>
-            )
+            );
           })}
         </tbody>
       </table>
@@ -108,7 +110,7 @@ function Table({ columns, data }) {
         <code>{JSON.stringify(state, null, 2)}</code>
       </pre>
     </>
-  )
+  );
 }
 
 function App() {
@@ -149,16 +151,16 @@ function App() {
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  return <Table columns={columns} data={data} />
+  return <Table columns={columns} data={data} />;
 }
 
 test('renders a column-orderable table', () => {
-  const rtl = render(<App />)
+  const rtl = render(<App />);
 
-  expect(rtl.getAllByRole('columnheader').map(d => d.textContent)).toEqual([
+  expect(rtl.getAllByRole('columnheader').map((d) => d.textContent)).toEqual([
     'Name',
     'Info',
     'First Name',
@@ -167,11 +169,11 @@ test('renders a column-orderable table', () => {
     'Visits',
     'Status',
     'Profile Progress',
-  ])
+  ]);
 
-  fireEvent.click(rtl.getByText('Randomize Columns'))
+  fireEvent.click(rtl.getByText('Randomize Columns'));
 
-  expect(rtl.getAllByRole('columnheader').map(d => d.textContent)).toEqual([
+  expect(rtl.getAllByRole('columnheader').map((d) => d.textContent)).toEqual([
     'Name',
     'Info',
     'Name',
@@ -182,5 +184,5 @@ test('renders a column-orderable table', () => {
     'First Name',
     'Age',
     'Status',
-  ])
-})
+  ]);
+});

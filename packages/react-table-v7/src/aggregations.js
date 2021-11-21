@@ -10,7 +10,7 @@ export function sum(values, aggregatedValues) {
 export function min(values) {
   let min = 0;
 
-  values.forEach(value => {
+  values.forEach((value) => {
     if (typeof value === 'number') {
       min = Math.min(min, value);
     }
@@ -22,7 +22,7 @@ export function min(values) {
 export function max(values) {
   let max = 0;
 
-  values.forEach(value => {
+  values.forEach((value) => {
     if (typeof value === 'number') {
       max = Math.max(max, value);
     }
@@ -35,7 +35,7 @@ export function minMax(values) {
   let min = 0;
   let max = 0;
 
-  values.forEach(value => {
+  values.forEach((value) => {
     if (typeof value === 'number') {
       min = Math.min(min, value);
       max = Math.max(max, value);

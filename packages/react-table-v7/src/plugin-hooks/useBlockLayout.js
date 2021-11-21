@@ -30,7 +30,7 @@ const getRowStyles = (props, { instance }) => [
   },
 ];
 
-export const useBlockLayout = hooks => {
+export const useBlockLayout = (hooks) => {
   hooks.getRowProps.push(getRowStyles);
   hooks.getHeaderGroupProps.push(getRowStyles);
   hooks.getFooterGroupProps.push(getRowStyles);

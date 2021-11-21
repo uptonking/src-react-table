@@ -1,10 +1,10 @@
 // 本文件结构分两部分，前面全是表格各部分(表头尾、行、列、单元格)的默认属性(主要实现无障碍a11y)，后面是返回插件配置对象的方法
-const defaultGetTableProps = props => ({
+const defaultGetTableProps = (props) => ({
   role: 'table',
   ...props,
 });
 
-const defaultGetTableBodyProps = props => ({
+const defaultGetTableBodyProps = (props) => ({
   role: 'rowgroup',
   ...props,
 });

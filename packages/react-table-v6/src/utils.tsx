@@ -98,7 +98,9 @@ function orderBy(arr, funcs, dirs, indexKey) {
       }
     }
     // Use the row index for tie breakers
-    return dirs[0] ? rowA[indexKey] - rowB[indexKey] : rowB[indexKey] - rowA[indexKey];
+    return dirs[0]
+      ? rowA[indexKey] - rowB[indexKey]
+      : rowB[indexKey] - rowA[indexKey];
   });
 }
 
@@ -219,8 +221,12 @@ function splitProps({ className, style, ...rest }) {
 function compactObject(obj) {
   const newObj = {};
   if (obj) {
-    Object.keys(obj).map(key => {
-      if (Object.prototype.hasOwnProperty.call(obj, key) && obj[key] !== undefined && typeof obj[key] !== 'undefined') {
+    Object.keys(obj).map((key) => {
+      if (
+        Object.prototype.hasOwnProperty.call(obj, key) &&
+        obj[key] !== undefined &&
+        typeof obj[key] !== 'undefined'
+      ) {
         newObj[key] = obj[key];
       }
       return true;

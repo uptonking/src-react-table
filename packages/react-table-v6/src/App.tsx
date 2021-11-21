@@ -1,6 +1,6 @@
 import React from 'react';
 // import { CheckboxWithLabel } from '@examples-hub/sample-react-components-ts';
-import {SimpleRTableApp} from './example/RTableApp'
+import { SimpleRTableApp } from './example/RTableApp';
 
 import './index.css';
 

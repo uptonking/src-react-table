@@ -1,10 +1,10 @@
-import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
-import { useTable } from '../../hooks/useTable'
-import { useExpanded } from '../useExpanded'
-import makeTestData from '../../../test-utils/makeTestData'
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import { useTable } from '../../hooks/useTable';
+import { useExpanded } from '../useExpanded';
+import makeTestData from '../../../test-utils/makeTestData';
 
-const data = makeTestData(3, 3, 3)
+const data = makeTestData(3, 3, 3);
 
 function Table({ columns: userColumns, data, SubComponent }) {
   const {
@@ -19,16 +19,16 @@ function Table({ columns: userColumns, data, SubComponent }) {
       columns: userColumns,
       data,
     },
-    useExpanded
-  )
+    useExpanded,
+  );
 
   return (
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
+              {headerGroup.headers.map((column) => (
                 <th {...column.getHeaderProps()}>{column.render('Header')}</th>
               ))}
             </tr>
@@ -36,15 +36,15 @@ function Table({ columns: userColumns, data, SubComponent }) {
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.map((row, i) => {
-            prepareRow(row)
-            const { key, ...rowProps } = row.getRowProps()
+            prepareRow(row);
+            const { key, ...rowProps } = row.getRowProps();
             return (
               <React.Fragment key={key}>
                 <tr {...rowProps}>
-                  {row.cells.map(cell => {
+                  {row.cells.map((cell) => {
                     return (
                       <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    )
+                    );
                   })}
                 </tr>
                 {!row.subRows.length && row.isExpanded ? (
@@ -55,12 +55,12 @@ function Table({ columns: userColumns, data, SubComponent }) {
                   </tr>
                 ) : null}
               </React.Fragment>
-            )
+            );
           })}
         </tbody>
       </table>
     </>
-  )
+  );
 }
 
 function App() {
@@ -87,8 +87,8 @@ function App() {
         Cell: ({ row: { id } }) => `Row ${id}`,
       },
     ],
-    []
-  )
+    [],
+  );
 
   return (
     <Table
@@ -96,30 +96,30 @@ function App() {
       data={data}
       SubComponent={({ row }) => <span>SubComponent: {row.id}</span>}
     />
-  )
+  );
 }
 
 test('renders an expandable table', () => {
-  const rtl = render(<App />)
+  const rtl = render(<App />);
 
-  rtl.getByText('Row 0')
+  rtl.getByText('Row 0');
 
-  fireEvent.click(rtl.getByText('Expand Row 0'))
+  fireEvent.click(rtl.getByText('Expand Row 0'));
 
-  rtl.getByText('Row 0.0')
-  rtl.getByText('Row 0.1')
-  rtl.getByText('Row 0.2')
+  rtl.getByText('Row 0.0');
+  rtl.getByText('Row 0.1');
+  rtl.getByText('Row 0.2');
 
-  fireEvent.click(rtl.getByText('Expand Row 0.1'))
+  fireEvent.click(rtl.getByText('Expand Row 0.1'));
 
-  rtl.getByText('Row 0.1.2')
+  rtl.getByText('Row 0.1.2');
 
-  fireEvent.click(rtl.getByText('Expand Row 0.1.2'))
+  fireEvent.click(rtl.getByText('Expand Row 0.1.2'));
 
-  rtl.getByText('SubComponent: 0.1.2')
+  rtl.getByText('SubComponent: 0.1.2');
 
-  fireEvent.click(rtl.getByText('Collapse Row 0'))
+  fireEvent.click(rtl.getByText('Collapse Row 0'));
 
-  expect(rtl.queryByText('SubComponent: 0.1.2')).toBe(null)
-  rtl.getByText('Expand Row 0')
-})
+  expect(rtl.queryByText('SubComponent: 0.1.2')).toBe(null);
+  rtl.getByText('Expand Row 0');
+});
