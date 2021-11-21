@@ -5,9 +5,9 @@ import * as examples from '.';
 const exampleNameArr = Object.keys(examples);
 
 export function ExampleListApp() {
-  // const [curName, setCurName] = useState('');
-  const [curEgName, setCurEgName] = useState('AbsoluteLayoutTable');
-  // const [curName, setCurName] = useState('AbsoluteGridApp');
+  // const [curEgName, setCurEgName] = useState('');
+  const [curEgName, setCurEgName] = useState('A0Simple');
+  // const [curEgName, setCurEgName] = useState('AbsoluteLayoutTable');
 
   const handleClickEgName = (name) => {
     setCurEgName(name);

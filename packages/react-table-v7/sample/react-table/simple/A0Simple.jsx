@@ -1,8 +1,11 @@
-import React from 'react';
-import { useTable } from '../../src/react-table';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { useTable } from '../../../src/react-table';
 
 function App() {
-  const data = React.useMemo(
+  // 获取表格中对应的数据，array of objects
+  // * use useMemo here to ensure that our data isn't recreated on every render.
+  const data = useMemo(
     () => [
       {
         col1: 'Hello',
@@ -20,7 +23,8 @@ function App() {
     [],
   );
 
-  const columns = React.useMemo(
+  // 定义columns
+  const columns = useMemo(
     () => [
       {
         Header: 'Column 1',
@@ -35,18 +39,19 @@ function App() {
   );
 
   const tableInstance = useTable({ columns, data });
-  console.log('==tableInstance,', tableInstance);
+  console.log(';;tableInstance,', tableInstance);
+
   const { getTableProps, headerGroups, getTableBodyProps, rows, prepareRow } =
     tableInstance;
 
-  // 最重要的任务是处理headerGroups和rows
+  // 最重要的任务是处理header-groups和body-rows
   return (
-    // apply the table props
+    // apply the table props to the outmost
     <table
       {...getTableProps()}
       style={{
-        border: 'solid 2px teal',
-        // borderCollapse: 'collapse'
+        // border: 'solid 2px teal',
+        borderCollapse: 'collapse'
       }}
     >
       <thead>
@@ -63,7 +68,7 @@ function App() {
                     {...column.getHeaderProps()}
                     style={{
                       border: 'solid 1px blue',
-                      background: 'aliceblue',
+                      // background: 'aliceblue',
                     }}
                     key={i}
                   >

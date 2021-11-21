@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  useTable,
-  useResizeColumns,
-  useFlexLayout,
-  useRowSelect,
-} from '../../src/react-table';
 
-import makeData from '../simple/makeData';
+import {
+  useFlexLayout,
+  useResizeColumns,
+  useRowSelect,
+  useTable,
+} from '../../../src/react-table';
+import makeData from '../utils/makeData';
 
 const Styles = styled.div`
   padding: 1rem;

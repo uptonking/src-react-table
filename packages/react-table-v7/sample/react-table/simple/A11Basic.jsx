@@ -1,28 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useTable, useBlockLayout } from '../../src/react-table';
 
-import makeData from '../simple/makeData';
+import { useTable } from '../../../src/react-table';
+import makeData from '../utils/makeData';
 
-const Styles = styled.div`
+const StyledDiv = styled.div`
   padding: 1rem;
 
-  .table {
-    display: inline-block;
+  table {
     border-spacing: 0;
     border: 1px solid black;
 
-    .tr {
+    tr {
       :last-child {
-        .td {
+        td {
           border-bottom: 0;
         }
       }
     }
 
-    /* 设置表头行单元格和数据行单元格的样式 */
-    .th,
-    .td {
+    th,
+    td {
       margin: 0;
       padding: 0.5rem;
       border-bottom: 1px solid black;
@@ -32,74 +30,57 @@ const Styles = styled.div`
         border-right: 0;
       }
     }
-
-    .th {
-      font-weight: bold;
-    }
   }
 `;
 
+/** 使用useTable实现的最基本的Table组件 */
 function Table({ columns, data }) {
-  const defaultColumn = React.useMemo(
-    () => ({
-      // width: 150,
-    }),
-    [],
-  );
-
+  // Use the state and functions returned from useTable to build your UI
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable(
-      {
-        columns,
-        data,
-        defaultColumn,
-      },
-      useBlockLayout,
-    );
+    useTable({
+      columns,
+      data,
+    });
 
+  // Render the UI for your table
   return (
-    <div {...getTableProps()} className='table'>
-      <div>
+    <table {...getTableProps()}>
+      <thead>
         {headerGroups.map((headerGroup, index) => (
-          <div
-            {...headerGroup.getHeaderGroupProps()}
-            className='tr'
-            key={index}
-          >
+          <tr {...headerGroup.getHeaderGroupProps()} key={index}>
             {headerGroup.headers.map((column, i) => (
-              <div {...column.getHeaderProps()} className='th' key={i}>
+              <th {...column.getHeaderProps()} key={i}>
                 {column.render('Header')}
-              </div>
+              </th>
             ))}
-          </div>
+          </tr>
         ))}
-      </div>
-
-      <div {...getTableBodyProps()}>
+      </thead>
+      <tbody {...getTableBodyProps()}>
         {rows.map((row, i) => {
           prepareRow(row);
           return (
-            <div {...row.getRowProps()} className='tr' key={i}>
-              {row.cells.map((cell, index) => {
+            <tr {...row.getRowProps()} key={i}>
+              {row.cells.map((cell, ii) => {
                 return (
-                  <div {...cell.getCellProps()} className='td' key={index}>
+                  <td {...cell.getCellProps()} key={ii}>
                     {cell.render('Cell')}
-                  </div>
+                  </td>
                 );
               })}
-            </div>
+            </tr>
           );
         })}
-      </div>
-    </div>
+      </tbody>
+    </table>
   );
 }
 
-function BlockLayoutTable() {
+function App() {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: 'UserName',
         columns: [
           {
             Header: 'First Name',
@@ -117,12 +98,10 @@ function BlockLayoutTable() {
           {
             Header: 'Age',
             accessor: 'age',
-            width: 50,
           },
           {
             Header: 'Visits',
             accessor: 'visits',
-            width: 60,
           },
           {
             Header: 'Status',
@@ -141,10 +120,10 @@ function BlockLayoutTable() {
   const data = React.useMemo(() => makeData(20), []);
 
   return (
-    <Styles>
+    <StyledDiv>
       <Table columns={columns} data={data} />
-    </Styles>
+    </StyledDiv>
   );
 }
 
-export default BlockLayoutTable;
+export default App;

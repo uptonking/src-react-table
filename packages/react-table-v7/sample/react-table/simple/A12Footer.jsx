@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 // import { useTable } from 'react-table';
-import { useTable } from '../../src/react-table';
+import { useTable } from '../../../src/react-table';
 
-import makeData from './makeData';
+import makeData from '../utils/makeData';
 
 const Styles = styled.div`
   padding: 1rem;

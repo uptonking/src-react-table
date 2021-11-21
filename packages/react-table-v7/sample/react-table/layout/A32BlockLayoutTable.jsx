@@ -1,50 +1,40 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useTable, useAbsoluteLayout } from '../../src/react-table';
 
-import makeData from '../simple/makeData';
+import { useBlockLayout, useTable } from '../../../src/react-table';
+import makeData from '../utils/makeData';
 
 const Styles = styled.div`
   padding: 1rem;
 
-  * {
-    box-sizing: border-box;
-  }
-
   .table {
-    border: 1px solid #000;
-    max-width: 700px;
-    overflow-x: auto;
-  }
+    display: inline-block;
+    border-spacing: 0;
+    border: 1px solid black;
 
-  .header {
-    font-weight: bold;
-  }
-
-  .rows {
-    overflow-y: auto;
-  }
-
-  .row {
-    border-bottom: 1px solid #000;
-    height: 32px;
-
-    &.body {
+    .tr {
       :last-child {
-        border: 0;
+        .td {
+          border-bottom: 0;
+        }
       }
     }
-  }
 
-  /* 设置表头行单元格和数据行单元格的样式 */
-  .cell {
-    height: 100%;
-    line-height: 30px;
-    border-right: 1px solid #000;
-    padding-left: 5px;
+    /* 设置表头行单元格和数据行单元格的样式 */
+    .th,
+    .td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
 
-    :last-child {
-      border: 0;
+      :last-child {
+        border-right: 0;
+      }
+    }
+
+    .th {
+      font-weight: bold;
     }
   }
 `;
@@ -52,7 +42,7 @@ const Styles = styled.div`
 function Table({ columns, data }) {
   const defaultColumn = React.useMemo(
     () => ({
-      width: 150,
+      // width: 150,
     }),
     [],
   );
@@ -64,7 +54,7 @@ function Table({ columns, data }) {
         data,
         defaultColumn,
       },
-      useAbsoluteLayout,
+      useBlockLayout,
     );
 
   return (
@@ -73,12 +63,11 @@ function Table({ columns, data }) {
         {headerGroups.map((headerGroup, index) => (
           <div
             {...headerGroup.getHeaderGroupProps()}
-            className='row header-group'
+            className='tr'
             key={index}
           >
             {headerGroup.headers.map((column, i) => (
-              // 这里表头单元格的class用的也是cell
-              <div {...column.getHeaderProps()} className='cell header' key={i}>
+              <div {...column.getHeaderProps()} className='th' key={i}>
                 {column.render('Header')}
               </div>
             ))}
@@ -86,16 +75,18 @@ function Table({ columns, data }) {
         ))}
       </div>
 
-      <div className='rows' {...getTableBodyProps()}>
+      <div {...getTableBodyProps()}>
         {rows.map((row, i) => {
           prepareRow(row);
           return (
-            <div {...row.getRowProps()} className='row body' key={`row${i}`}>
-              {row.cells.map((cell, index) => (
-                <div {...cell.getCellProps()} key={index} className='cell'>
-                  {cell.render('Cell')}
-                </div>
-              ))}
+            <div {...row.getRowProps()} className='tr' key={i}>
+              {row.cells.map((cell, index) => {
+                return (
+                  <div {...cell.getCellProps()} className='td' key={index}>
+                    {cell.render('Cell')}
+                  </div>
+                );
+              })}
             </div>
           );
         })}
@@ -104,7 +95,7 @@ function Table({ columns, data }) {
   );
 }
 
-function AbsoluteLayoutTable() {
+function BlockLayoutTable() {
   const columns = React.useMemo(
     () => [
       {
@@ -156,4 +147,4 @@ function AbsoluteLayoutTable() {
   );
 }
 
-export default AbsoluteLayoutTable;
+export default BlockLayoutTable;

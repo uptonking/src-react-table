@@ -1,13 +1,30 @@
 // react-table basic
-export { default as A0Simple } from './simple/A0Simple';
-export { default as A1Basic } from './simple/A1Basic';
-export { default as A2Footer } from './simple/A2Footer';
-export { default as A3Sorting } from './simple/A3Sorting';
+export { default as A0Simple } from './react-table/simple/A0Simple';
+export { default as A11Basic } from './react-table/simple/A11Basic';
+export { default as A12Footer } from './react-table/simple/A12Footer';
+
+export { default as A21Sorting } from './react-table/common/A21Sorting';
+export { default as A22Filtering } from './react-table/common/A22Filtering';
+export { default as A23Grouping } from './react-table/common/A23Grouping';
+export { default as A24Pagination } from './react-table/common/A24Pagination';
+export { default as A24PaginationControlled } from './react-table/common/A24PaginationControlled';
+export { default as A25Expanding } from './react-table/common/A25Expanding';
+export { default as A26SubComponent } from './react-table/common/A26SubComponent';
+export { default as A27EditableData } from './react-table/common/A27EditableData';
 
 // react-table layout
-export { default as AbsoluteLayoutTable } from './layout/AbsoluteLayoutTable';
-export { default as BlockLayoutTable } from './layout/BlockLayoutTable';
-export { default as FlexLayoutTable } from './layout/FlexLayoutTable';
+export { default as A31AbsoluteLayoutTable } from './react-table/layout/A31AbsoluteLayoutTable';
+export { default as A32BlockLayoutTable } from './react-table/layout/A32BlockLayoutTable';
+export { default as A33FlexLayoutTable } from './react-table/layout/A33FlexLayoutTable';
+
+export { default as ReactTableV7KitchenSinkApp } from './react-table/kitchen-sink/A41KitchenSink';
+export { default as A42VirtualizedReactWindow } from './react-table/kitchen-sink/A42VirtualizedReactWindow';
+export { default as A43MUIKitchenSink } from './react-table/kitchen-sink/A43MUIKitchenSink';
+
+export { default as A51ColumnResizing } from './react-table/custom-col/A51ColumnResizing';
+
+export { default as A71DataDrivenStyles } from './react-table/theming/A71DataDrivenStyles';
+export { default as A72MUITable } from './react-table/theming/A72MUITable';
 
 // react-table-plugin-system
 export { default as App1CustomHooks } from './plugins/App1CustomHooks';
