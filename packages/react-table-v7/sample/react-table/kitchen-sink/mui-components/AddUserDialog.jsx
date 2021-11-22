@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
 import Button from '@material-ui/core/Button';
@@ -147,8 +147,8 @@ const AddUserDialog = (props) => {
   );
 };
 
-AddUserDialog.propTypes = {
-  addUserHandler: PropTypes.func.isRequired,
-};
+// AddUserDialog.propTypes = {
+//   addUserHandler: PropTypes.func.isRequired,
+// };
 
 export default AddUserDialog;

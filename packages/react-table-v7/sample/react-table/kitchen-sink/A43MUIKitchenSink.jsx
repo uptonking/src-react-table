@@ -14,6 +14,7 @@ const MUIKitchenSink = () => {
       {
         Header: 'First Name',
         accessor: 'firstName',
+        // minWidth:100,
       },
       {
         Header: 'Last Name',
@@ -22,6 +23,8 @@ const MUIKitchenSink = () => {
       {
         Header: 'Age',
         accessor: 'age',
+        minWidth:500,
+
       },
       {
         Header: 'Visits',

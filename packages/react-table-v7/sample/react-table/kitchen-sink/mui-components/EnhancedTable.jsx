@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import React from 'react';
 
 import Checkbox from '@material-ui/core/Checkbox';
@@ -31,11 +31,7 @@ const IndeterminateCheckbox = React.forwardRef(
       resolvedRef.current.indeterminate = indeterminate;
     }, [resolvedRef, indeterminate]);
 
-    return (
-      <>
-        <Checkbox ref={resolvedRef} {...rest} />
-      </>
-    );
+    return <Checkbox ref={resolvedRef} {...rest} />;
   },
 );
 
@@ -80,18 +76,18 @@ const EditableCell = ({
   );
 };
 
-EditableCell.propTypes = {
-  cell: PropTypes.shape({
-    value: PropTypes.any.isRequired,
-  }),
-  row: PropTypes.shape({
-    index: PropTypes.number.isRequired,
-  }),
-  column: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-  }),
-  updateMyData: PropTypes.func.isRequired,
-};
+// EditableCell.propTypes = {
+//   cell: PropTypes.shape({
+//     value: PropTypes.any.isRequired,
+//   }),
+//   row: PropTypes.shape({
+//     index: PropTypes.number.isRequired,
+//   }),
+//   column: PropTypes.shape({
+//     id: PropTypes.number.isRequired,
+//   }),
+//   updateMyData: PropTypes.func.isRequired,
+// };
 
 // Set our editable cell renderer as the default Cell renderer
 const defaultColumn = {
@@ -264,12 +260,12 @@ const EnhancedTable = ({
   );
 };
 
-EnhancedTable.propTypes = {
-  columns: PropTypes.array.isRequired,
-  data: PropTypes.array.isRequired,
-  updateMyData: PropTypes.func.isRequired,
-  setData: PropTypes.func.isRequired,
-  skipPageReset: PropTypes.bool.isRequired,
-};
+// EnhancedTable.propTypes = {
+//   columns: PropTypes.array.isRequired,
+//   data: PropTypes.array.isRequired,
+//   updateMyData: PropTypes.func.isRequired,
+//   setData: PropTypes.func.isRequired,
+//   skipPageReset: PropTypes.bool.isRequired,
+// };
 
 export default EnhancedTable;

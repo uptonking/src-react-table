@@ -1,5 +1,4 @@
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import React from 'react';
 
 import IconButton from '@material-ui/core/IconButton';
@@ -42,12 +41,10 @@ const TableToolbar = (props) => {
     setGlobalFilter,
     globalFilter,
   } = props;
+
+  const toolbarHighlightStyle = numSelected > 0 ? classes.highlight : '';
   return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
+    <Toolbar className={`${classes.root} ${toolbarHighlightStyle}`}>
       <AddUserDialog addUserHandler={addUserHandler} />
       {numSelected > 0 ? (
         <Typography
@@ -80,13 +77,13 @@ const TableToolbar = (props) => {
   );
 };
 
-TableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  addUserHandler: PropTypes.func.isRequired,
-  deleteUserHandler: PropTypes.func.isRequired,
-  setGlobalFilter: PropTypes.func.isRequired,
-  preGlobalFilteredRows: PropTypes.array.isRequired,
-  globalFilter: PropTypes.string.isRequired,
-};
+// TableToolbar.propTypes = {
+//   numSelected: PropTypes.number.isRequired,
+//   addUserHandler: PropTypes.func.isRequired,
+//   deleteUserHandler: PropTypes.func.isRequired,
+//   setGlobalFilter: PropTypes.func.isRequired,
+//   preGlobalFilteredRows: PropTypes.array.isRequired,
+//   globalFilter: PropTypes.string.isRequired,
+// };
 
 export default TableToolbar;

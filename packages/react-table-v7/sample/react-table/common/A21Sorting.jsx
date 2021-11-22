@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // import { useTable, useSortBy } from 'react-table';
-import { useSortBy, useTable } from '../../../src/react-table';
+import { useSortBy, useTable } from '../../../src/react-table.js';
 import makeData from '../utils/makeData';
 
 const Styles = styled.div`

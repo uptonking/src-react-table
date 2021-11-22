@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import React from 'react';
 
 import IconButton from '@material-ui/core/IconButton';
@@ -78,11 +78,11 @@ const TablePaginationActions = (props) => {
   );
 };
 
-TablePaginationActions.propTypes = {
-  count: PropTypes.number.isRequired,
-  onChangePage: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
-};
+// TablePaginationActions.propTypes = {
+//   count: PropTypes.number.isRequired,
+//   onChangePage: PropTypes.func.isRequired,
+//   page: PropTypes.number.isRequired,
+//   rowsPerPage: PropTypes.number.isRequired,
+// };
 
 export default TablePaginationActions;

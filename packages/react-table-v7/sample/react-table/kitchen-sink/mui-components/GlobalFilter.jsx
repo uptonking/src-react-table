@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import React from 'react';
 
 import InputBase from '@material-ui/core/InputBase';
@@ -76,10 +76,10 @@ const GlobalFilter = ({
   );
 };
 
-GlobalFilter.propTypes = {
-  preGlobalFilteredRows: PropTypes.array.isRequired,
-  globalFilter: PropTypes.string.isRequired,
-  setGlobalFilter: PropTypes.func.isRequired,
-};
+// GlobalFilter.propTypes = {
+//   preGlobalFilteredRows: PropTypes.array.isRequired,
+//   globalFilter: PropTypes.string.isRequired,
+//   setGlobalFilter: PropTypes.func.isRequired,
+// };
 
 export default GlobalFilter;
