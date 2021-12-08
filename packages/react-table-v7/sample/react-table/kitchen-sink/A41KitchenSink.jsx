@@ -535,7 +535,7 @@ const IndeterminateCheckbox = React.forwardRef(
   },
 );
 
-function ReactTableV7KitchenSinkApp() {
+export function ReactTableV7KitchenSinkApp() {
   const columns = React.useMemo(
     () => [
       {

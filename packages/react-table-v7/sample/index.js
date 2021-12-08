@@ -17,7 +17,7 @@ export { default as A31AbsoluteLayoutTable } from './react-table/layout/A31Absol
 export { default as A32BlockLayoutTable } from './react-table/layout/A32BlockLayoutTable';
 export { default as A33FlexLayoutTable } from './react-table/layout/A33FlexLayoutTable';
 
-export { default as ReactTableV7KitchenSinkApp } from './react-table/kitchen-sink/A41KitchenSink';
+export { default as A41ReactTableV7KitchenSinkApp } from './react-table/kitchen-sink/A41KitchenSink';
 export { default as A42VirtualizedReactWindow } from './react-table/kitchen-sink/A42VirtualizedReactWindow';
 export { default as A43MUIKitchenSink } from './react-table/kitchen-sink/A43MUIKitchenSink';
 
