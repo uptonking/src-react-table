@@ -6,6 +6,7 @@ export { default as A12Footer } from './react-table/simple/A12Footer';
 export { default as A21Sorting } from './react-table/common/A21Sorting';
 export { default as A22Filtering } from './react-table/common/A22Filtering';
 export { default as A23Grouping } from './react-table/common/A23Grouping';
+export { default as A23GroupingColumn } from './react-table/common/A23GroupingColumn';
 export { default as A24Pagination } from './react-table/common/A24Pagination';
 export { default as A24PaginationControlled } from './react-table/common/A24PaginationControlled';
 export { default as A25Expanding } from './react-table/common/A25Expanding';

@@ -34,6 +34,20 @@ const Styles = styled.div`
   }
 `;
 
+function useControlledState(state, { instance }) {
+  return React.useMemo(() => {
+    if (state.groupBy.length) {
+      return {
+        ...state,
+        hiddenColumns: [...state.hiddenColumns, ...state.groupBy].filter(
+          (d, i, all) => all.indexOf(d) === i,
+        ),
+      };
+    }
+    return state;
+  }, [state]);
+}
+
 function Table({ columns, data }) {
   const {
     getTableProps,
@@ -41,14 +55,71 @@ function Table({ columns, data }) {
     headerGroups,
     rows,
     prepareRow,
-    state: { groupBy, expanded },
+    state,
   } = useTable(
     {
       columns,
       data,
     },
     useGroupBy,
-    useExpanded, // useGroupBy would be pretty useless without useExpanded ;)
+    useExpanded,
+    // Our custom plugin to add the expander column
+    (hooks) => {
+      hooks.useControlledState.push(useControlledState);
+      hooks.visibleColumns.push((columns, { instance }) => {
+        if (!instance.state.groupBy.length) {
+          return columns;
+        }
+
+        return [
+          {
+            id: 'expander', // Make sure it has an ID
+            // Build our expander column
+            Header: ({ allColumns, state: { groupBy } }) => {
+              return groupBy.map((columnId) => {
+                const column = allColumns.find((d) => d.id === columnId);
+
+                return (
+                  <span {...column.getHeaderProps()}>
+                    {column.canGroupBy ? (
+                      // If the column can be grouped, let's add a toggle
+                      <span {...column.getGroupByToggleProps()}>
+                        {column.isGrouped ? '🛑 已分组 ' : '👊 未分组'}
+                      </span>
+                    ) : null}
+                    {column.render('Header')}{' '}
+                  </span>
+                );
+              });
+            },
+            Cell: ({ row }) => {
+              if (row.canExpand) {
+                const groupedCell = row.allCells.find((d) => d.isGrouped);
+
+                return (
+                  <span
+                    {...row.getToggleRowExpandedProps({
+                      style: {
+                        // We can even use the row.depth property
+                        // and paddingLeft to indicate the depth
+                        // of the row
+                        paddingLeft: `${row.depth * 2}rem`,
+                      },
+                    })}
+                  >
+                    {row.isExpanded ? '👇' : '👉'} {groupedCell.render('Cell')}{' '}
+                    ({row.subRows.length})
+                  </span>
+                );
+              }
+
+              return null;
+            },
+          },
+          ...columns,
+        ];
+      });
+    },
   );
 
   // We don't want to render all of the rows for this example, so cap
@@ -58,15 +129,15 @@ function Table({ columns, data }) {
   return (
     <>
       <pre>
-        <code>{JSON.stringify({ groupBy, expanded }, null, 2)}</code>
+        <code>{JSON.stringify({ state }, null, 2)}</code>
       </pre>
       <Legend />
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map((headerGroup, idxHeader) => (
-            <tr {...headerGroup.getHeaderGroupProps()} key={idxHeader}>
-              {headerGroup.headers.map((column, idxCol) => (
-                <th {...column.getHeaderProps()} key={idxCol}>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>
                   {column.canGroupBy ? (
                     // If the column can be grouped, let's add a toggle
                     <span {...column.getGroupByToggleProps()}>
@@ -80,14 +151,15 @@ function Table({ columns, data }) {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {firstPageRows.map((row, idxRow) => {
+          {firstPageRows.map((row, i) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()} key={idxRow}>
-                {row.cells.map((cell, idxCell) => {
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
                   return (
                     <td
-                      // For educational purposes, let's color the cell depending on what type it is given
+                      // For educational purposes, let's color the
+                      // cell depending on what type it is given
                       // from the useGroupBy hook
                       {...cell.getCellProps()}
                       style={{
@@ -99,24 +171,15 @@ function Table({ columns, data }) {
                           ? '#ff000042'
                           : 'white',
                       }}
-                      key={idxCell}
                     >
-                      {cell.isGrouped ? (
-                        // If it's a grouped cell, add an expander and row count
-                        <>
-                          <span {...row.getToggleRowExpandedProps()}>
-                            {row.isExpanded ? '👇' : '👉'}
-                          </span>{' '}
-                          {cell.render('Cell')} ({row.subRows.length})
-                        </>
-                      ) : cell.isAggregated ? (
-                        // If the cell is aggregated, use the Aggregated
-                        // renderer for cell
-                        cell.render('Aggregated')
-                      ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
-                        // Otherwise, just render the regular cell
-                        cell.render('Cell')
-                      )}
+                      {cell.isAggregated
+                        ? // If the cell is aggregated, use the Aggregated
+                          // renderer for cell
+                          cell.render('Aggregated')
+                        : cell.isPlaceholder
+                        ? null // For cells with repeated values, render null
+                        : // Otherwise, just render the regular cell
+                          cell.render('Cell')}
                     </td>
                   );
                 })}
@@ -163,7 +226,7 @@ function Legend() {
           padding: '0.5rem',
         }}
       >
-        Repeated Value
+        Placeholder
       </span>
     </div>
   );
@@ -199,6 +262,7 @@ function App() {
             // aggregated further
             aggregate: 'count',
             Aggregated: ({ value }) => `${value} Names`,
+            // disableGroupBy: true
           },
           {
             Header: 'Last Name',
@@ -220,7 +284,7 @@ function App() {
             accessor: 'age',
             // Aggregate the average age of visitors
             aggregate: 'average',
-            Aggregated: ({ value }) => `${Math.round(value * 100) / 100} (avg)`,
+            Aggregated: ({ value }) => `${value} (avg)`,
           },
           {
             Header: 'Visits',
@@ -246,7 +310,7 @@ function App() {
     [],
   );
 
-  const data = React.useMemo(() => makeData(10000), []);
+  const data = React.useMemo(() => makeData(100000), []);
 
   return (
     <Styles>

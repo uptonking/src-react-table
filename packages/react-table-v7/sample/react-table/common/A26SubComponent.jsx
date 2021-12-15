@@ -55,6 +55,8 @@ function Table({ columns: userColumns, data, renderRowSubComponent }) {
     // for sub components too!
   );
 
+  console.log(';;rows, ', rows);
+
   return (
     <>
       <pre>
@@ -166,7 +168,7 @@ function App() {
     [],
   );
 
-  const data = React.useMemo(() => makeData(10), []);
+  const data = React.useMemo(() => makeData(5), []);
 
   // Create a function that will render our row sub components
   const renderRowSubComponent = React.useCallback(

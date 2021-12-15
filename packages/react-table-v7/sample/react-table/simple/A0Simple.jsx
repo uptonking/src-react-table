@@ -39,10 +39,11 @@ function App() {
   );
 
   const tableInstance = useTable({ columns, data });
-  console.log(';;tableInstance,', tableInstance);
+  // console.log(';;tableInstance,', tableInstance);
 
   const { getTableProps, headerGroups, getTableBodyProps, rows, prepareRow } =
     tableInstance;
+
 
   // 最重要的任务是处理header-groups和body-rows
   return (
@@ -51,7 +52,7 @@ function App() {
       {...getTableProps()}
       style={{
         // border: 'solid 2px teal',
-        borderCollapse: 'collapse'
+        borderCollapse: 'collapse',
       }}
     >
       <thead>

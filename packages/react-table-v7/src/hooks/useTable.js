@@ -2,24 +2,25 @@
 // 文件主要结构为一系列模块级的代表defaultProps的变量，
 // 以及4个func：applyDefaults,useTable,calculateHeaderWidths,accessRowsForColumn
 import React from 'react';
+
 import { getCircularReplacer } from '../../test-utils/logUtils';
+import makeDefaultPluginHooks from '../makeDefaultPluginHooks';
 import {
-  linkColumnStructure,
-  flattenColumns,
-  assignColumnAccessor,
-  unpreparedAccessWarning,
-  makeHeaderGroups,
-  decorateColumn,
-} from '../utils';
-import {
-  useGetLatest,
-  reduceHooks,
   actions,
   loopHooks,
   makePropGetter,
   makeRenderer,
+  reduceHooks,
+  useGetLatest,
 } from '../publicUtils';
-import makeDefaultPluginHooks from '../makeDefaultPluginHooks';
+import {
+  assignColumnAccessor,
+  decorateColumn,
+  flattenColumns,
+  linkColumnStructure,
+  makeHeaderGroups,
+  unpreparedAccessWarning,
+} from '../utils';
 import { useColumnVisibility } from './useColumnVisibility';
 
 // 下面的变量都会在applyDefaults()中赋值给props，作为默认值
@@ -64,9 +65,7 @@ function applyDefaults(props) {
  * @param  {...any} plugins 支持官方和第三方插件。最后会加入到返回对象的属性中。
  */
 export const useTable = (props, ...plugins) => {
-  console.log('==useTable');
-  console.log('props4useTable, ', props);
-  // console.log('plugins, ', plugins);
+  console.log('==useTable,props,plugins', props, plugins);
 
   // Apply default props
   props = applyDefaults(props);
@@ -102,10 +101,10 @@ export const useTable = (props, ...plugins) => {
   plugins.filter(Boolean).forEach((plugin) => {
     plugin(getInstance().hooks);
   });
-  console.log(
-    'getInstance-hooks, ',
-    JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
-  );
+  // console.log(
+  //   'getInstance-hooks, ',
+  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  // );
 
   // Consume all hooks and make a getter for them
   const getHooks = useGetLatest(getInstance().hooks);
@@ -171,7 +170,7 @@ export const useTable = (props, ...plugins) => {
   // Start the reducer，获取最顶级的reducerState状态对象和dispatch更新方法
   // todo ==== reducerState的初始值通过init触发计算得到，是lazy init吗，是不是只计算一次？
   const [reducerState, dispatch] = React.useReducer(reducer, undefined, () => {
-    console.log('==init reducerState');
+    // console.log('==init reducerState');
     return reducer(initialState, { type: actions.init });
   });
   // console.log('==useReducer, ', JSON.parse(JSON.stringify(reducerState)));
@@ -184,7 +183,7 @@ export const useTable = (props, ...plugins) => {
     { instance: getInstance() },
   );
 
-  console.log('==state-init， ', JSON.parse(JSON.stringify(state)));
+  // console.log('==state-init， ', JSON.parse(JSON.stringify(state)));
   // 将表格状态及修改状态的方法添加到顶级ref对象
   Object.assign(getInstance(), {
     state,
@@ -208,10 +207,10 @@ export const useTable = (props, ...plugins) => {
     ],
   );
   getInstance().columns = columns;
-  console.log(
-    'instance.columns, ',
-    JSON.parse(JSON.stringify(columns, getCircularReplacer())),
-  );
+  // console.log(
+  //   'instance.columns, ',
+  //   JSON.parse(JSON.stringify(columns, getCircularReplacer())),
+  // );
 
   // Get the flat list of all columns
   // and allow hooks to decorate those columns (and trigger this memoization via deps)
@@ -278,10 +277,10 @@ export const useTable = (props, ...plugins) => {
 
   // 数据解析后的处理逻辑
   loopHooks(getHooks().useInstanceAfterData, getInstance());
-  console.log(
-    'getInstance-useInstanceAfterData, ',
-    JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
-  );
+  // console.log(
+  //   'getInstance-useInstanceAfterData, ',
+  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  // );
 
   // console.log(
   //   'getHooks.visibleColumns.length, ',
@@ -307,10 +306,10 @@ export const useTable = (props, ...plugins) => {
       }),
     ],
   );
-  console.log(
-    'visibleColumns, ',
-    JSON.parse(JSON.stringify(visibleColumns, getCircularReplacer())),
-  );
+  // console.log(
+  //   'visibleColumns, ',
+  //   JSON.parse(JSON.stringify(visibleColumns, getCircularReplacer())),
+  // );
 
   // Combine new visible columns with all columns，
   // 合并修改后的visibleColumns到allColumns
@@ -373,10 +372,10 @@ export const useTable = (props, ...plugins) => {
     ],
   );
   getInstance().headerGroups = headerGroups;
-  console.log(
-    'instance.headerGroups, ',
-    JSON.parse(JSON.stringify(headerGroups, getCircularReplacer())),
-  );
+  // console.log(
+  //   'instance.headerGroups, ',
+  //   JSON.parse(JSON.stringify(headerGroups, getCircularReplacer())),
+  // );
 
   // Get the first level of headers
   // 获取表头的第一行，有些表头可能是placeholder，与原始columns属性类似，但便于排序
@@ -431,10 +430,10 @@ export const useTable = (props, ...plugins) => {
 
   // 通过useInstance修改顶级ref对象
   loopHooks(getHooks().useInstance, getInstance());
-  console.log(
-    'getInstance-useInstance, ',
-    JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
-  );
+  // console.log(
+  //   'getInstance-useInstance, ',
+  //   JSON.parse(JSON.stringify(getInstance(), getCircularReplacer())),
+  // );
 
   // Each materialized header needs to be assigned a render function and other prop getter properties here.
   // 设置要每个表头列要渲染的组件
@@ -577,7 +576,7 @@ export const useTable = (props, ...plugins) => {
 
   // 在返回顶级ref对象前，最后一次提供修改该对象的机会
   loopHooks(getHooks().useFinalInstance, getInstance());
-  console.log('getInstance-useFinalInstance, ', getInstance());
+  // console.log('getInstance-useFinalInstance, ', getInstance());
 
   // 最后返回的对象其实是 instanceRef.current
   return getInstance();

@@ -52,26 +52,32 @@ function Table({ columns: userColumns, data }) {
     useExpanded, // Use the useExpanded plugin hook
   );
 
+  console.log(';;rows, ', rows);
+
   return (
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+          {headerGroups.map((headerGroup, idxHeader) => (
+            <tr {...headerGroup.getHeaderGroupProps()} key={idxHeader}>
+              {headerGroup.headers.map((column, idxHeaderCol) => (
+                <th {...column.getHeaderProps()} key={idxHeaderCol}>
+                  {column.render('Header')}
+                </th>
               ))}
             </tr>
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
+          {rows.map((row, idxRow) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => {
+              <tr {...row.getRowProps()} key={idxRow}>
+                {row.cells.map((cell, idxCell) => {
                   return (
-                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                    <td {...cell.getCellProps()} key={idxCell}>
+                      {cell.render('Cell')}
+                    </td>
                   );
                 })}
               </tr>
