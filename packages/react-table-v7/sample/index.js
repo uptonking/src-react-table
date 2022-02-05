@@ -13,6 +13,10 @@ export { default as A25Expanding } from './react-table/common/A25Expanding';
 export { default as A26SubComponent } from './react-table/common/A26SubComponent';
 export { default as A27EditableData } from './react-table/common/A27EditableData';
 
+// react-table drag-drop eg
+
+export { default as DragDropSortListApp } from './dnd-kit/DragDropSortList';
+
 // react-table layout
 export { default as A31AbsoluteLayoutTable } from './react-table/layout/A31AbsoluteLayoutTable';
 export { default as A32BlockLayoutTable } from './react-table/layout/A32BlockLayoutTable';
