@@ -81,6 +81,7 @@ const rowCount = 500;
 
 /**
  * * 基于react-table和react-virtual实现的virtualized, filterable, selectable table。
+ * copied from https://codesandbox.io/s/x77iw
  */
 export function CubsApp() {
   const mockData = useMemo(() => makeData(rowCount), []);
