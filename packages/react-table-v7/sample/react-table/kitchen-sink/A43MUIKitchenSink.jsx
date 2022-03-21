@@ -23,8 +23,7 @@ const MUIKitchenSink = () => {
       {
         Header: 'Age',
         accessor: 'age',
-        minWidth:500,
-
+        minWidth: 500,
       },
       {
         Header: 'Visits',

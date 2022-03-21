@@ -44,7 +44,6 @@ function App() {
   const { getTableProps, headerGroups, getTableBodyProps, rows, prepareRow } =
     tableInstance;
 
-
   // 最重要的任务是处理header-groups和body-rows
   return (
     // apply the table props to the outmost

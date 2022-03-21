@@ -31,6 +31,9 @@ export { default as A51ColumnResizing } from './react-table/custom-col/A51Column
 export { default as A71DataDrivenStyles } from './react-table/theming/A71DataDrivenStyles';
 export { default as A72MUITable } from './react-table/theming/A72MUITable';
 
+// react-table virtualized
+export { default as A81CubsVirtualizedTable } from './virtualized-filterable-table-cubs/App';
+
 // react-table-plugin-system
 export { default as App1CustomHooks } from './plugins/App1CustomHooks';
 export { default as App2DoublePlugin } from './plugins/App2DoublePlugin';

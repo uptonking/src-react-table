@@ -64,7 +64,7 @@ function applyDefaults(props) {
  * @param {*} props 其实是options，传入数据和配置项，必需包含data,columns。最后会加入到返回对象的属性中。
  * @param  {...any} plugins 支持官方和第三方插件。最后会加入到返回对象的属性中。
  */
-export const  useTable = (props, ...plugins) => {
+export const useTable = (props, ...plugins) => {
   console.log('==useTable,props,plugins', props, plugins);
 
   // Apply default props
