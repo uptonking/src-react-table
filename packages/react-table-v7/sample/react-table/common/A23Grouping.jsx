@@ -57,6 +57,7 @@ function Table({ columns, data }) {
 
   return (
     <>
+      <h3>new group column under the same headerGroup</h3>
       <pre>
         <code>{JSON.stringify({ groupBy, expanded }, null, 2)}</code>
       </pre>

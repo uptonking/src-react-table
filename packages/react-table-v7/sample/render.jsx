@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// import { ExampleListApp as App } from './ExampleListApp';
-import { CubsApp as App } from './virtualized-filterable-table-cubs/App';
+import { ExampleListApp as App } from './ExampleListApp';
+// import { CubsApp as App } from './virtualized-filterable-table-cubs/App';
 
 // import { App } from './demo';
 // import { default as App } from './list/ScrollUpAbsolutePosition';

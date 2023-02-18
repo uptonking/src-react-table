@@ -28,7 +28,8 @@ module.exports = merge(devServerConfig, {
       excludeAliases: ['console'],
     }),
   ],
-  // devServer: {
-  //   contentBase: path.resolve(__dirname, '../dist'),
-  // },
+  devServer: {
+    // contentBase: path.resolve(__dirname, '../dist'),
+    port: 8990,
+  },
 });

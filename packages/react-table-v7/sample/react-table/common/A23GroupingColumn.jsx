@@ -314,6 +314,7 @@ function App() {
 
   return (
     <Styles>
+      <h3>new group column without original headerHeader</h3>
       <Table columns={columns} data={data} />
     </Styles>
   );
